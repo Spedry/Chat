@@ -1,18 +1,12 @@
-package sk.Spedry.GUI;
+package ignore.GUI;
 
-import jdk.swing.interop.SwingInterOpUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
 import java.net.Socket;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.Base64;
 
 public class TestPOST {
     public static void POST() {

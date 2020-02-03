@@ -1,10 +1,10 @@
-package sk.Spedry.GUI;
+package ignore.GUI;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import static sk.Spedry.GUI.TestPOST.POST;
+import static ignore.GUI.TestPOST.POST;
 
 public class Chat {
     private JButton Send;

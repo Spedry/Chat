@@ -14,7 +14,7 @@ public class Client {
     public static void createSocket() {
         System.out.println("aktuálna verzia");
         try {
-            socket = new Socket("localhost", PORT);
+            socket = new Socket("Spedry", PORT);
             sentMessege();
         } catch (IOException e) {
             e.printStackTrace();

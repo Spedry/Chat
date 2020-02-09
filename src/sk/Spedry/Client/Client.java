@@ -1,7 +1,9 @@
 package sk.Spedry.Client;
 
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 
 import static sk.Spedry.Server.Server.GB;
 
@@ -12,9 +14,16 @@ public class Client {
     private static Socket socket;
 
     public static void createSocket() {
-        System.out.println("aktuálna verzia");
+        String hostname = null;
         try {
-            socket = new Socket("Spedry", PORT);
+            InetAddress ip = null;
+            ip = InetAddress.getLocalHost();
+            hostname = ip.getHostName();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        try {
+            socket = new Socket(hostname, PORT);
             sentMessege();
         } catch (IOException e) {
             e.printStackTrace();

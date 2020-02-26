@@ -7,10 +7,11 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Date;
+import data.Overenie;
 
 public class Server implements Runnable {
     // proste port
-    static final int PORT = 8000;
+    static final int PORT = 8080;
     static final boolean napojenie = true;
     private Socket pripojenie;
     public static final int GB = 8;
@@ -59,16 +60,23 @@ public class Server implements Runnable {
             vystup = new PrintWriter(pripojenie.getOutputStream(), true);
             vystup.println("Server prijal správu: " + messege);
             System.out.println("Server prijal správu: " + messege);*/
-
-
             
-            vystupBytes = new DataOutputStream(new BufferedOutputStream(pripojenie.getOutputStream()));
+            /*vystupBytes = new DataOutputStream(new BufferedOutputStream(pripojenie.getOutputStream()));
             vstupBytes = new DataInputStream(new BufferedInputStream(pripojenie.getInputStream()));
             vstupBytes.read(bytes);
             messege = new String(bytes);
             System.out.println("bytes: " + bytes);
-            System.out.println("messege: " + messege);
-        } catch (IOException e) {
+            System.out.println("messege: " + messege);*/
+            //FileOutputStream out = new FileOutputStream("Data/Overenie.bin");
+            ObjectInputStream objectInputStream = new ObjectInputStream(pripojenie.getInputStream());
+            //ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("Data/Overenie.bin"));
+            System.out.println("lol");
+            Overenie overenieRead = (Overenie) objectInputStream.readObject();
+            objectInputStream.close();
+
+            System.out.println(overenieRead.getMeno() + overenieRead.getHeslo());
+            
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

@@ -53,8 +53,18 @@ public class Server implements Runnable {
         byte[] bytes = new byte[1024 * GB];
         DataInputStream vstupBytes = null;
         DataOutputStream vystupBytes = null;
+        ObjectInputStream objectInputStream = null;
 
         try {
+            new RegisterUser(objectInputStream = new ObjectInputStream(pripojenie.getInputStream()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException cnfe) {
+            cnfe.printStackTrace();
+            System.out.println("nebola najdená class RegisterUser");
+        }
+
+        //try {
             /*vstup = new BufferedReader(new InputStreamReader(pripojenie.getInputStream()));
             messege = vstup.readLine();
             vystup = new PrintWriter(pripojenie.getOutputStream(), true);
@@ -68,16 +78,10 @@ public class Server implements Runnable {
             System.out.println("bytes: " + bytes);
             System.out.println("messege: " + messege);*/
             //FileOutputStream out = new FileOutputStream("Data/Overenie.bin");
-            ObjectInputStream objectInputStream = new ObjectInputStream(pripojenie.getInputStream());
-            //ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream("Data/Overenie.bin"));
-            System.out.println("lol");
-            Overenie overenieRead = (Overenie) objectInputStream.readObject();
-            objectInputStream.close();
 
-            System.out.println(overenieRead.getMeno() + overenieRead.getHeslo());
             
-        } catch (IOException | ClassNotFoundException e) {
+        /*} catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }

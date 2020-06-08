@@ -7,7 +7,7 @@ import java.net.UnknownHostException;
 
 public class Client {
 
-    static final int PORT = 8080;
+    static final int PORT = 50000;
 
     private static Socket socket;
 
@@ -22,13 +22,13 @@ public class Client {
         }
         try {
             socket = new Socket(hostname, PORT);
-            //sentMessege();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return socket;
     }
-    /*private static void sentMessege() {
+
+    private static void sentMessege() {
         BufferedReader userMessege = null;
         PrintWriter sentUserMessege = null;
         BufferedReader vstup = null;
@@ -48,7 +48,7 @@ public class Client {
             vstup = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             System.out.println("Server prijal správu: " + messege);*/
 
-            /*userMessege = new BufferedReader(new InputStreamReader(System.in));
+            userMessege = new BufferedReader(new InputStreamReader(System.in));
             System.out.println("Zadajte správu: ");
             messege = userMessege.readLine();
             bytes = messege.getBytes();
@@ -58,6 +58,5 @@ public class Client {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-    }*/
+    }
 }

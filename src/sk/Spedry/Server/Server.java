@@ -11,7 +11,7 @@ import data.Overenie;
 
 public class Server implements Runnable {
     // proste port
-    static final int PORT = 8080;
+    static final int PORT = 50000;
     static final boolean napojenie = true;
     private Socket pripojenie;
     public static final int GB = 8;
@@ -56,31 +56,28 @@ public class Server implements Runnable {
         ObjectInputStream objectInputStream = null;
 
         try {
-            new RegisterUser(objectInputStream = new ObjectInputStream(pripojenie.getInputStream()));
+            new RegisterUser(new ObjectInputStream(pripojenie.getInputStream()));
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException cnfe) {
-            cnfe.printStackTrace();
-            System.out.println("nebola najdená class RegisterUser");
         }
-
-        //try {
-            /*vstup = new BufferedReader(new InputStreamReader(pripojenie.getInputStream()));
+        /*
+        try {
+            vstup = new BufferedReader(new InputStreamReader(pripojenie.getInputStream()));
             messege = vstup.readLine();
             vystup = new PrintWriter(pripojenie.getOutputStream(), true);
             vystup.println("Server prijal správu: " + messege);
-            System.out.println("Server prijal správu: " + messege);*/
+            System.out.println("Server prijal správu: " + messege);
             
-            /*vystupBytes = new DataOutputStream(new BufferedOutputStream(pripojenie.getOutputStream()));
+            vystupBytes = new DataOutputStream(new BufferedOutputStream(pripojenie.getOutputStream()));
             vstupBytes = new DataInputStream(new BufferedInputStream(pripojenie.getInputStream()));
             vstupBytes.read(bytes);
             messege = new String(bytes);
             System.out.println("bytes: " + bytes);
-            System.out.println("messege: " + messege);*/
+            System.out.println("messege: " + messege);
             //FileOutputStream out = new FileOutputStream("Data/Overenie.bin");
 
             
-        /*} catch (IOException | ClassNotFoundException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }*/
     }

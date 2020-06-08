@@ -39,7 +39,7 @@ public class ChatFX extends Application {
 
         window.setTitle("Panchatune");
         // definowať ktorá scéna sa ma zobraziť vo window
-        window.setScene(LoginFX.Scene(window, chatWin, socket));
+        window.setScene(LoginFX.Scene(window, chatWin));
         // ukáž window
         window.show();
     }

@@ -6,7 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import data.Overenie;
+import data.Register;
 import sk.Spedry.Client.Client;
 
 import java.io.IOException;
@@ -48,8 +48,8 @@ public class LoginFX {
             objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
             //ObjectInputStream objectInputStream = new ObjectInputStream(socket.getInputStream());
             //Overenie overenie = new Overenie(name.getText(), password.getText());
-            Overenie overenie = new Overenie(name.getText(), password.getText());
-            objectOutputStream.writeObject(overenie);
+            Register register = new Register(name.getText(), password.getText());
+            objectOutputStream.writeObject(register);
             //objectOutputStream.flush();
             objectOutputStream.close();
                 /*if (name.getText().equals("Spedry"funkcia na zistenie mena) && password.getText().equals("123"funkcia na zistenie hesla)) {

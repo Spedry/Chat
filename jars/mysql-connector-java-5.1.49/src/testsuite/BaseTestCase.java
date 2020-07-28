@@ -627,7 +627,7 @@ public abstract class BaseTestCase extends TestCase {
     }
 
     /**
-     * Creates resources used by all tests.
+     * Creates sk.Spedry.GUI.resources used by all tests.
      * 
      * @throws Exception
      *             if an error occurs.
@@ -703,7 +703,7 @@ public abstract class BaseTestCase extends TestCase {
     }
 
     /**
-     * Destroys resources created during the test case.
+     * Destroys sk.Spedry.GUI.resources created during the test case.
      */
     @Override
     public void tearDown() throws Exception {

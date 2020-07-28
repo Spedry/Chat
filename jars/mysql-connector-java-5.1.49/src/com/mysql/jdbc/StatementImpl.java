@@ -506,7 +506,7 @@ public class StatementImpl implements Statement {
 
     /**
      * In many cases, it is desirable to immediately release a Statement's
-     * database and JDBC resources instead of waiting for this to happen when it
+     * database and JDBC sk.Spedry.GUI.resources instead of waiting for this to happen when it
      * is automatically closed. The close method provides this immediate
      * release.
      * 
@@ -2149,7 +2149,7 @@ public class StatementImpl implements Statement {
     }
 
     /**
-     * Closes this statement, and frees resources.
+     * Closes this statement, and frees sk.Spedry.GUI.resources.
      * 
      * @param calledExplicitly
      *            was this called from close()?

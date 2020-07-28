@@ -97,7 +97,7 @@ public interface StatementInterceptorV2 extends Extension {
     public abstract boolean executeTopLevelOnly();
 
     /**
-     * Called by the driver when this extension should release any resources
+     * Called by the driver when this extension should release any sk.Spedry.GUI.resources
      * it is holding and cleanup internally before the connection is
      * closed.
      */

@@ -1144,7 +1144,7 @@ public class UpdatableResultSet extends ResultSetImpl {
     }
 
     /**
-     * Closes this ResultSet and releases resources.
+     * Closes this ResultSet and releases sk.Spedry.GUI.resources.
      * 
      * @param calledExplicitly
      *            was realClose called by the standard ResultSet.close() method, or was it closed internally by the

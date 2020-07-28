@@ -402,7 +402,7 @@ public class MysqlXAConnection extends MysqlPooledConnection implements XAConnec
      *             manager may throw one of the XA_RB* exceptions.
      * 
      *             Upon return, the resource manager has rolled back the branch's work and
-     *             has released all held resources.
+     *             has released all held sk.Spedry.GUI.resources.
      */
     public void rollback(Xid xid) throws XAException {
         StringBuilder commandBuf = new StringBuilder(MAX_COMMAND_LENGTH);
@@ -529,7 +529,7 @@ public class MysqlXAConnection extends MysqlPooledConnection implements XAConnec
      *             exceptions.
      * 
      *             Upon return, the resource manager has rolled back the branch's work and
-     *             has released all held resources.
+     *             has released all held sk.Spedry.GUI.resources.
      */
 
     public void commit(Xid xid, boolean onePhase) throws XAException {

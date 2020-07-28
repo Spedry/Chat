@@ -51,7 +51,7 @@ public interface Extension {
     public abstract void init(Connection conn, Properties props) throws SQLException;
 
     /**
-     * Called by the driver when this extension should release any resources
+     * Called by the driver when this extension should release any sk.Spedry.GUI.resources
      * it is holding and cleanup internally before the connection is
      * closed.
      */

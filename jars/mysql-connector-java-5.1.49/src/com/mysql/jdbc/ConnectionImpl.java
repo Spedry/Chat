@@ -1300,7 +1300,7 @@ public class ConnectionImpl extends ConnectionPropertiesImpl implements MySQLCon
             // checking this.io != null isn't enough if connection is used concurrently (the usual situation
             // with application servers which have additional thread management), this.io can become null
             // at any moment after this check, causing a race condition and NPEs on next calls;
-            // but we may ignore them because at this stage null this.io means that we successfully closed all resources by other thread.
+            // but we may ignore them because at this stage null this.io means that we successfully closed all sk.Spedry.GUI.resources by other thread.
             try {
                 this.io.forceClose();
                 this.io.releaseResources();
@@ -1314,7 +1314,7 @@ public class ConnectionImpl extends ConnectionPropertiesImpl implements MySQLCon
     }
 
     /**
-     * Destroys this connection and any underlying resources
+     * Destroys this connection and any underlying sk.Spedry.GUI.resources
      * 
      * @param fromWhere
      * @param whyCleanedUp
@@ -1440,7 +1440,7 @@ public class ConnectionImpl extends ConnectionPropertiesImpl implements MySQLCon
 
     /**
      * In some cases, it is desirable to immediately release a Connection's
-     * database and JDBC resources instead of waiting for them to be
+     * database and JDBC sk.Spedry.GUI.resources instead of waiting for them to be
      * automatically released (cant think why off the top of my head) <B>Note:</B>
      * A Connection is automatically closed when it is garbage collected.
      * Certain fatal errors also result in a closed connection.
@@ -4143,7 +4143,7 @@ public class ConnectionImpl extends ConnectionPropertiesImpl implements MySQLCon
     }
 
     /**
-     * Closes connection and frees resources.
+     * Closes connection and frees sk.Spedry.GUI.resources.
      * 
      * @param calledExplicitly
      *            is this being called from close()
@@ -4177,7 +4177,7 @@ public class ConnectionImpl extends ConnectionPropertiesImpl implements MySQLCon
 
                 if (getUseUsageAdvisor()) {
                     if (!calledExplicitly) {
-                        String message = "Connection implicitly closed by Driver. You should call Connection.close() from your code to free resources more efficiently and avoid resource leaks.";
+                        String message = "Connection implicitly closed by Driver. You should call Connection.close() from your code to free sk.Spedry.GUI.resources more efficiently and avoid resource leaks.";
 
                         this.eventSink.processEvent(ProfilerEvent.TYPE_USAGE, this, null, null, 0, new Throwable(), message);
                     }
@@ -5400,15 +5400,15 @@ public class ConnectionImpl extends ConnectionPropertiesImpl implements MySQLCon
      * <ul>
      * <li>The connection marked as closed
      * <li>Closes any physical connection to the database
-     * <li>Releases resources used by the connection
+     * <li>Releases sk.Spedry.GUI.resources used by the connection
      * <li>Insures that any thread that is currently accessing the connection will either progress to completion or throw an <code>SQLException</code>.
      * </ul>
      * <p>
-     * Calling <code>abort</code> marks the connection closed and releases any resources. Calling <code>abort</code> on a closed connection is a no-op.
+     * Calling <code>abort</code> marks the connection closed and releases any sk.Spedry.GUI.resources. Calling <code>abort</code> on a closed connection is a no-op.
      * <p>
-     * It is possible that the aborting and releasing of the resources that are held by the connection can take an extended period of time. When the
+     * It is possible that the aborting and releasing of the sk.Spedry.GUI.resources that are held by the connection can take an extended period of time. When the
      * <code>abort</code> method returns, the connection will have been marked as closed and the <code>Executor</code> that was passed as a parameter to abort
-     * may still be executing tasks to release resources.
+     * may still be executing tasks to release sk.Spedry.GUI.resources.
      * <p>
      * This method checks to see that there is an <code>SQLPermission</code> object before allowing the method to proceed. If a <code>SecurityManager</code>
      * exists and its <code>checkPermission</code> method denies calling <code>abort</code>, this method throws a <code>java.lang.SecurityException</code>.

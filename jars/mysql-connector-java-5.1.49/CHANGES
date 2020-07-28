@@ -1729,7 +1729,7 @@ Version 5.1.42
       
     - Added two new connection properties, "selfDestructOnPingSecondsLifetime" and 
       "selfDestructOnPingMaxOperations" designed to control overall connection lifetime
-      (useful to reclaim resources on the server side) for connection pools that don't have such a 
+      (useful to reclaim sk.Spedry.gui.resources on the server side) for connection pools that don't have such a
       facility. 
       
       The driver will consult the values of these properties when a ping is sent, either through 
@@ -3221,7 +3221,7 @@ nn-nn-07 - Version 3.1.15
       PacketTooBigExceptions when "max_allowed_packet" is similar in size
       to the default "sendBlobChunkSize" which is 1M.
 
-    - CallableStatement.clearParameters() now clears resources associated
+    - CallableStatement.clearParameters() now clears sk.Spedry.gui.resources associated
       with INOUT/OUTPUT parameters as well as INPUT parameters.
 
     - Fixed BUG#12417 - Connection.prepareCall() is database name
@@ -3485,7 +3485,7 @@ nn-nn-07 - Version 3.1.15
 
     - Added finalizers to ResultSet and Statement implementations to be JDBC
       spec-compliant, which requires that if not explicitly closed, these
-      resources should be closed upon garbage collection.
+      sk.Spedry.gui.resources should be closed upon garbage collection.
 
     - Fixed BUG#9682 - Stored procedures with DECIMAL parameters with
 	  storage specifications that contained "," in them would fail.
@@ -3859,7 +3859,7 @@ nn-nn-07 - Version 3.1.15
 	  info).
 
 	- ServerPreparedStatements weren't actually de-allocating
-	  server-side resources when .close() was called.
+	  server-side sk.Spedry.gui.resources when .close() was called.
 
 	- Added 'logSlowQueries' property, along with property
 	  'slowQueriesThresholdMillis' to control when a query should
@@ -4950,7 +4950,7 @@ nn-nn-07 - Version 3.1.15
 
     - More code cleanup
 
-    - PreparedStatement now releases resources on .close() (SF bug 553268)
+    - PreparedStatement now releases sk.Spedry.gui.resources on .close() (SF bug 553268)
 
     - Quoted identifiers not used if server version does not support them. Also,
       if server started with --ansi or --sql-mode=ANSI_QUOTES then '"' will be

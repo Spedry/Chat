@@ -825,7 +825,7 @@ public class ResultSetImpl implements ResultSetInternalMethods {
 
     /**
      * In some cases, it is desirable to immediately release a ResultSet
-     * database and JDBC resources instead of waiting for this to happen when it
+     * database and JDBC sk.Spedry.GUI.resources instead of waiting for this to happen when it
      * is automatically closed. The close method provides this immediate
      * release.
      * 
@@ -6569,7 +6569,7 @@ public class ResultSetImpl implements ResultSetInternalMethods {
     }
 
     /**
-     * Closes this ResultSet and releases resources.
+     * Closes this ResultSet and releases sk.Spedry.GUI.resources.
      * 
      * @param calledExplicitly
      *            was realClose called by the standard ResultSet.close() method, or was it closed internally by the

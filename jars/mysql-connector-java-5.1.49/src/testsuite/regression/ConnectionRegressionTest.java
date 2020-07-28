@@ -6121,7 +6121,7 @@ public class ConnectionRegressionTest extends BaseTestCase {
             }
 
             void releaseResources() {
-                System.out.println("Start releasing mock server resources.");
+                System.out.println("Start releasing mock server sk.Spedry.GUI.resources.");
                 if (this.serverSocket != null) {
                     try {
                         this.serverSocket.close();

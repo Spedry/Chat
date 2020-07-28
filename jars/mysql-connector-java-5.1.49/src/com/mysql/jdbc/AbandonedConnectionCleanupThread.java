@@ -185,7 +185,7 @@ public class AbandonedConnectionCleanupThread implements Runnable {
      * @param conn
      *            the Connection object to track for finalization
      * @param io
-     *            the network resources to close on the connection finalization
+     *            the network sk.Spedry.GUI.resources to close on the connection finalization
      */
     protected static void trackConnection(MySQLConnection conn, NetworkResources io) {
         threadRefLock.lock();
@@ -200,7 +200,7 @@ public class AbandonedConnectionCleanupThread implements Runnable {
     }
 
     /**
-     * Release resources from the given {@link ConnectionFinalizerPhantomReference} and remove it from the references set.
+     * Release sk.Spedry.GUI.resources from the given {@link ConnectionFinalizerPhantomReference} and remove it from the references set.
      * 
      * @param reference
      *            the {@link ConnectionFinalizerPhantomReference} to finalize.

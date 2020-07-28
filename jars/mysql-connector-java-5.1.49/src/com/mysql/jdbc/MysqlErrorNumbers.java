@@ -231,7 +231,7 @@ public final class MysqlErrorNumbers {
     public final static int ER_SLAVE_NOT_RUNNING = 1199; //SQLSTATE: HY000 Message: This operation requires a running slave; configure slave and do START SLAVE
     public final static int ER_BAD_SLAVE = 1200; //SQLSTATE: HY000 Message: The server is not configured as slave; fix in config file or with CHANGE MASTER TO
     public final static int ER_MASTER_INFO = 1201; //SQLSTATE: HY000 Message: Could not initialize master info structure; more error messages can be found in the MySQL error log
-    public final static int ER_SLAVE_THREAD = 1202; //SQLSTATE: HY000 Message: Could not create slave thread; check system resources
+    public final static int ER_SLAVE_THREAD = 1202; //SQLSTATE: HY000 Message: Could not create slave thread; check system sk.Spedry.GUI.resources
     public final static int ER_TOO_MANY_USER_CONNECTIONS = 1203; //SQLSTATE: 42000 Message: User %s already has more than 'max_user_connections' active connections
     public final static int ER_SET_CONSTANTS_ONLY = 1204; //SQLSTATE: HY000 Message: You may only use constant expressions with SET
     public final static int ER_LOCK_WAIT_TIMEOUT = 1205; //SQLSTATE: HY000 Message: Lock wait timeout exceeded; try restarting transaction

@@ -31,7 +31,7 @@ import java.util.Properties;
  * Classes that implement this interface and provide a no-args constructor can be used by the driver to store and retrieve client information and/or labels.
  * 
  * The driver will create an instance for each Connection instance, and call initialize() once and only once. When the connection is closed, destroy() will be
- * called, and the provider is expected to clean up any resources at this time.
+ * called, and the provider is expected to clean up any sk.Spedry.GUI.resources at this time.
  */
 public interface JDBC4ClientInfoProvider {
     /**
@@ -51,7 +51,7 @@ public interface JDBC4ClientInfoProvider {
      * Called once by the driver when the connection this provider instance
      * belongs to is being closed.
      * 
-     * Implementations are expected to clean up and resources at this point
+     * Implementations are expected to clean up and sk.Spedry.GUI.resources at this point
      * in time.
      * 
      * @throws SQLException

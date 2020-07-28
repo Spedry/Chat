@@ -7803,7 +7803,7 @@ public class StatementRegressionTest extends BaseTestCase {
         try {
             future1.get(5, TimeUnit.SECONDS);
         } catch (TimeoutException e) {
-            // The connection hung, forcibly closing it releases resources.
+            // The connection hung, forcibly closing it releases sk.Spedry.GUI.resources.
             this.stmt.execute("KILL CONNECTION " + testConn.getId());
             fail("Connection hung after executeUpdate().");
         }
@@ -7821,7 +7821,7 @@ public class StatementRegressionTest extends BaseTestCase {
         try {
             this.rs = future2.get(5, TimeUnit.SECONDS);
         } catch (TimeoutException e) {
-            // The connection hung, forcibly closing it releases resources.
+            // The connection hung, forcibly closing it releases sk.Spedry.GUI.resources.
             this.stmt.execute("KILL CONNECTION " + testConn.getId());
             fail("Connection hung after executeQuery().");
         }
@@ -7908,7 +7908,7 @@ public class StatementRegressionTest extends BaseTestCase {
             try {
                 future.get(10, TimeUnit.SECONDS);
             } catch (TimeoutException e) {
-                // The connection hung, forcibly closing it releases resources.
+                // The connection hung, forcibly closing it releases sk.Spedry.GUI.resources.
                 this.stmt.executeQuery("KILL CONNECTION " + testConn.getId());
                 fail(testCase + ": Connection hung!");
             }

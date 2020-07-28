@@ -967,7 +967,7 @@ public class ServerPreparedStatement extends PreparedStatement {
     }
 
     /**
-     * Closes this connection and frees all resources.
+     * Closes this connection and frees all sk.Spedry.GUI.resources.
      * 
      * @param calledExplicitly
      *            was this called from close()?
@@ -993,7 +993,7 @@ public class ServerPreparedStatement extends PreparedStatement {
                 //
                 // Don't communicate with the server if we're being called from the finalizer...
                 // 
-                // This will leak server resources, but if we don't do this, we'll deadlock (potentially, because there's no guarantee when, what order, and
+                // This will leak server sk.Spedry.GUI.resources, but if we don't do this, we'll deadlock (potentially, because there's no guarantee when, what order, and
                 // what concurrency finalizers will be called with). Well-behaved programs won't rely on finalizers to clean up their statements.
                 //
 

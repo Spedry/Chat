@@ -1059,7 +1059,7 @@ public class PreparedStatement extends com.mysql.jdbc.StatementImpl implements j
      * In general, parameter values remain in force for repeated used of a
      * Statement. Setting a parameter value automatically clears its previous
      * value. However, in some cases, it is useful to immediately release the
-     * resources used by the current parameter values; this can be done by
+     * sk.Spedry.GUI.resources used by the current parameter values; this can be done by
      * calling clearParameters
      * 
      * @exception SQLException
@@ -2743,7 +2743,7 @@ public class PreparedStatement extends com.mysql.jdbc.StatementImpl implements j
     }
 
     /**
-     * Closes this statement, releasing all resources
+     * Closes this statement, releasing all sk.Spedry.GUI.resources
      * 
      * @param calledExplicitly
      *            was this called by close()?

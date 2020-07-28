@@ -292,7 +292,7 @@ public class Blob implements java.sql.Blob, OutputStreamWatcher {
     }
 
     /**
-     * This method frees the <code>Blob</code> object and releases the resources that
+     * This method frees the <code>Blob</code> object and releases the sk.Spedry.GUI.resources that
      * it holds. The object is invalid once the <code>free</code> method is called.
      * <p>
      * After <code>free</code> has been called, any attempt to invoke a method other than <code>free</code> will result in a <code>SQLException</code> being
@@ -301,7 +301,7 @@ public class Blob implements java.sql.Blob, OutputStreamWatcher {
      * 
      * @throws SQLException
      *             if an error occurs releasing
-     *             the Blob's resources
+     *             the Blob's sk.Spedry.GUI.resources
      * @exception SQLFeatureNotSupportedException
      *                if the JDBC driver does not support
      *                this method

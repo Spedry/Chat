@@ -22,7 +22,7 @@ public class App extends Application {
     //použitá literatúra knihy a hlavne stranky ako stackoverflow
     //čo presne budem popisovať v mojej bakalarke napr jednotlive kapitoli, ich počet a na čo budú zamerané
     //Odosielať JSON object alebo JAVA object na server
-    //
+    //je zložite spraviť .exe súbor
 
     @Override
     public void start(Stage primaryStage) throws Exception {

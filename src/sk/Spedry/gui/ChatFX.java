@@ -1,4 +1,4 @@
-package sk.Spedry.GUI;
+package sk.Spedry.gui;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

@@ -1,13 +1,11 @@
-package sk.Spedry.Server;
+package sk.Spedry.server;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.Date;
-import data.Overenie;
 
 public class Server implements Runnable {
     // proste port
@@ -18,7 +16,7 @@ public class Server implements Runnable {
     private static InetAddress ip = null;
     private static String hostname = null;
 
-    public Server(Socket c) throws UnknownHostException {
+    public Server(Socket c) {
         pripojenie = c;
     }
 
@@ -31,7 +29,7 @@ public class Server implements Runnable {
             System.out.println("Vaša aktuálna IP adresa je: " + ip + "\n" + "Meno hosta je: " + hostname + "\nServer nabieha.\nČaká na input na porte: " + PORT + "...");
 
             while(true) {
-                sk.Spedry.Server.Server myServer = new sk.Spedry.Server.Server(serverConnect.accept());
+                sk.Spedry.server.Server myServer = new sk.Spedry.server.Server(serverConnect.accept());
 
                 if(napojenie) {
                     System.out.println("Pripojenie nadviazané. (" + new Date() + ")");

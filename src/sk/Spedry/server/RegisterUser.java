@@ -1,4 +1,4 @@
-package sk.Spedry.Server;
+package sk.Spedry.server;
 
 import data.Register;
 import java.io.IOException;

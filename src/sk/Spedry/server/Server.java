@@ -58,6 +58,10 @@ public class Server implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        //prijatý JSON bude bude obsahovať spravu aj identifikátor
+        //štuijná vedecká činnosť
+
         /*
         try {
             vstup = new BufferedReader(new InputStreamReader(pripojenie.getInputStream()));

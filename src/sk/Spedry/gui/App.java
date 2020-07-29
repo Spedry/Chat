@@ -18,12 +18,22 @@ public class App extends Application {
         //odoslaním informačnej spravy informujúcej o typu dát ktorú prýdu ešte pred odoslaním dát
         //pribaliť k dátam informačnu spravu
         //Port???
+
+        //Protokol medzi klienta-server
     //odosielanie obrazkov, emoji, gif
     //použitá literatúra knihy a hlavne stranky ako stackoverflow
     //čo presne budem popisovať v mojej bakalarke napr jednotlive kapitoli, ich počet a na čo budú zamerané
     //Odosielať JSON object alebo JAVA object na server
     //je zložite spraviť .exe súbor
     //čas odoslania správy a "zobrazené" z FB
+    //použiť oracle DOCS knižnice
+    //JAVA knihy
+
+    //použiť JSON
+    //identifikácia pomocou IF alebo SWITCH CASE
+    //apache tomcat log4J knižnica
+    //vytvoriť script na odosielanie správ z cca 20000 users
+    // testovanie pomocou pythom alebo postman na odosielanie správ
 
     @Override
     public void start(Stage primaryStage) throws Exception {

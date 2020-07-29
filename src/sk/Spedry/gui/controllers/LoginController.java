@@ -15,7 +15,6 @@ public class LoginController {
 
     public PasswordField passwordField;
     public TextField usernameField;
-    public AnchorPane loginAnchor;
 
     public void loginOnAction(ActionEvent actionEvent) {
 
@@ -27,5 +26,9 @@ public class LoginController {
         Stage widnow = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         widnow.setScene(scene);
         widnow.show();
+    }
+
+    public void registerOnAction(ActionEvent actionEvent) {
+
     }
 }

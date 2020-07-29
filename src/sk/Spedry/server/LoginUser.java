@@ -29,7 +29,8 @@ public class LoginUser {
                 Statement stmt = conn.createStatement();
         ) {
             String strSelect = "select UserName from Users";
-
+            //logger.debug username - čo obsahuje
+            //jeden logger na celí program
             ResultSet rset = stmt.executeQuery(strSelect);
 
             while(rset.next()) {

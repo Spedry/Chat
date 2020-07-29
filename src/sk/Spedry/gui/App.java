@@ -23,6 +23,7 @@ public class App extends Application {
     //čo presne budem popisovať v mojej bakalarke napr jednotlive kapitoli, ich počet a na čo budú zamerané
     //Odosielať JSON object alebo JAVA object na server
     //je zložite spraviť .exe súbor
+    //čas odoslania správy a "zobrazené" z FB
 
     @Override
     public void start(Stage primaryStage) throws Exception {

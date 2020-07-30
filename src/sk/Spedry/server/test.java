@@ -30,7 +30,7 @@ public class test {
 
     public static void main(String[] args) throws Exception {
         System.out.println("The chat server is running...");
-        var pool = Executors.newFixedThreadPool(500);
+        var pool = Executors.newFixedThreadPool(500);//nastavý maximálny počet threads, všetky ostatne threds budú čakať v queue
         try (var listener = new ServerSocket(59001)) {
             while (true) {
                 pool.execute(new Handler(listener.accept())); // tuto asi je pes zakopaný

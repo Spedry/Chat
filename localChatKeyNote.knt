@@ -1,0 +1,67 @@
+#!GFKNT 2.0
+# This is an automatically generated file. Do not edit.
+#/
+#?
+#$0
+#C03-08-2020 18:13:47
+#^010000000000000000000000
+%+
+NN=Spedry
+ID=1
+II=1
+DC=03-08-2020 18:13:47
+TI=0
+TS=4
+CX=1237
+CY=0
+BG=clWindow
+CH=1
+FC=clWindowText
+FN=Tahoma
+FS=8
+LN=1033
+ST=
+FL=101110000000100000000000
+SN=1
+TW=227
+EN=New node
+TB=clWindow
+TH=1
+TC=clWindowText
+TN=Tahoma
+TZ=8
+TY=
+%-
+LV=0
+ND=Server
+DI=1
+NF=000000100000000000000000
+BC=clWindow
+IX=0
+%:
+{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+\pard\f0\fs16\lang1033\par
+}
+%-
+LV=1
+ND=Server
+DI=2
+NF=000000000000000000000000
+BC=clWindow
+IX=0
+SS=1237
+%:
+{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+{\colortbl ;\red128\green128\blue128;}
+{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+\pard\box\brdrdash\brdrw0 \cf1\f0\fs16\lang1033 /*BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(prepojenie.getInputStream()));\line jsonObject = new JSONObject(bufferedReader);*/\par
+\par
+\par
+\line /*while (true) \{\line     try \{\line         BufferedReader in = null;\line         in = new BufferedReader(new InputStreamReader(prepojenie.getInputStream()));\line         jsonObject = new JSONObject(in.readLine());\line     \} catch (IOException e) \{\line         e.printStackTrace();\line     \} finally \{\line         break;\line     \}\line\}*/\par
+\par
+\line /*try \{\line\line     while (true) \{\line         jsonObject = new JSONObject(new BufferedReader(new InputStreamReader(prepojenie.getInputStream())).readLine());\line         System.out.println("json: " + jsonObject);\line         System.out.println("username:" + jsonObject.getJSONObject("Data").getString("Username"));\line         System.out.println("password:" + jsonObject.getJSONObject("Data").getString("Password"));\line\line         if(!jsonObject.getJSONObject("Data").getString("Username").isBlank() ||\line                 !jsonObject.getJSONObject("Data").getString("Password").isBlank())\line             break;\line         if(jsonObject.length() > 0)\line             System.out.println("empty data");\line     \}\line\} catch (IOException ioe) \{\line     ioe.printStackTrace();\line\} catch (JSONException jsone) \{\line     jsone.printStackTrace();\line\}*/\par
+
+\pard\cf0\par
+}
+%%

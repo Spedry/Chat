@@ -26,10 +26,8 @@ public class ServerMain {
 
                 Server startServer = new Server(serverConnect.accept());
 
-                if(serverConnect.isBound()) {
-                    System.out.println("Connection established. (" + new Date() + ")");
-                    System.out.println("Number of active threads from the given thread: " + Thread.activeCount());
-                }
+                System.out.println("Connection established. (" + new Date() + ")");
+                System.out.println("Number of active threads from the given thread: " + Thread.activeCount());
 
                 Thread thread = new Thread(startServer);
                 thread.start();

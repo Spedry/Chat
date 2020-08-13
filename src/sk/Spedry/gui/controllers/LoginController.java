@@ -10,21 +10,32 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import sk.Spedry.gui.Client;
 import java.io.IOException;
 
 public class LoginController {
 
     public PasswordField passwordField;
     public TextField usernameField;
+    public static String jsonObject = null;
+    Client client = Client.getInstance(); //to get access to the Client class what was created in class App
 
-    public void loginOnAction(ActionEvent actionEvent) throws JSONException {
-        String jsonString = new JSONObject()
+    public void loginOnAction() throws JSONException {
+        jsonObject = new JSONObject()
                 .put("ID", "LoU") //Login of User
                 .put("Data", new JSONObject()
-                        .put("username", usernameField.getText())
-                        .put("password", passwordField.getText())) //nahradiť za hash
-                .toString();
+                        .put("Username", usernameField.getText())
+                        .put("Password", passwordField.getText())) //nahradiť za hash
+                        .toString();
+        System.out.println(jsonObject);
+        System.out.println(client);
+        client.setInput(jsonObject);
+        //setUserMessege(new BufferedReader(new StringReader(jsonObject)));
+        //App.getClient().getPrintWriter().println(jsonObject);
+        /*try (PrintWriter out = App.out) {
+            out.write(jsonObject);
+        }*/
+        //App.client.out(jsonObject);
     }
 
     public void signUpOnAction(ActionEvent actionEvent) throws IOException {

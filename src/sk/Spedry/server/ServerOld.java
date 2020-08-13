@@ -54,11 +54,11 @@ public class ServerOld implements Runnable {
         DataOutputStream vystupBytes = null;
         ObjectInputStream objectInputStream = null;
 
-        try {
+        /*try {
             new RegisterUser(new ObjectInputStream(pripojenie.getInputStream()));
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
         //prijatý JSON bude bude obsahovať spravu aj identifikátor
         //štuijná vedecká činnosť

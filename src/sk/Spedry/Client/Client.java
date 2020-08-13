@@ -28,7 +28,30 @@ public class Client {
         return socket;
     }
 
-    private static void sentMessege() {
+    /*public static boolean isSocketAlive() {
+        boolean isAlive = false;
+        ipPort();
+        // Creates a socket address from a hostname and a port number
+        SocketAddress socketAddress = new InetSocketAddress(ip, PORT);
+        Socket socket = new Socket();
+
+        // Timeout required - it's in milliseconds
+        int timeout = 5000;
+
+        try {
+            socket.connect(socketAddress, timeout);
+            socket.close();
+            isAlive = true;
+
+        } catch (SocketTimeoutException ste) {
+            System.out.println("SocketTimeoutException " + ip + ":" + PORT + ". " + ste.getMessage());
+        } catch (IOException ioe) {
+            System.out.println("IOException - Unable to connect to " + ip + ":" + PORT + ". " + ioe.getMessage());
+        }
+        return isAlive;
+    }*/
+
+    /*private static void sentMessege() {
         BufferedReader userMessege = null;
         PrintWriter sentUserMessege = null;
         BufferedReader vstup = null;
@@ -40,23 +63,23 @@ public class Client {
         byte[] bytes;
 
         try {
-            /*userMessege = new BufferedReader(new InputStreamReader(System.in));
+            userMessege = new BufferedReader(new InputStreamReader(System.in));
             System.out.println("Zadajte správu: ");
             messege = userMessege.readLine();
             sentUserMessege = new PrintWriter(socket.getOutputStream(), true);
             sentUserMessege.println(messege);
             vstup = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            System.out.println("Server prijal správu: " + messege);*/
+            System.out.println("Server prijal správu: " + messege);
 
             userMessege = new BufferedReader(new InputStreamReader(System.in));
             System.out.println("Zadajte správu: ");
             messege = userMessege.readLine();
             bytes = messege.getBytes();
             sentUserMessegeBytes = new DataOutputStream(socket.getOutputStream());
-            //sentUserMessegeBytes.write(bytes.length);
+            sentUserMessegeBytes.write(bytes.length);
             sentUserMessegeBytes.write(bytes);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

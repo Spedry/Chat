@@ -23,7 +23,6 @@ public class ServerMain {
                 + "\nWainting for input on port: " + PORT + "...");
         try {
             while(true) {
-
                 Server startServer = new Server(serverConnect.accept());
 
                 System.out.println("Connection established. (" + new Date() + ")");

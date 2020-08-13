@@ -1,4 +1,4 @@
-package sk.Spedry.gui.controllers;
+package sk.Spedry.client.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -10,7 +10,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.json.JSONException;
 import org.json.JSONObject;
-import sk.Spedry.gui.Client;
+import sk.Spedry.client.Client;
 import java.io.IOException;
 
 public class LoginController {

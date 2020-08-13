@@ -1,7 +1,4 @@
-package sk.Spedry.gui;
-
-import org.json.JSONObject;
-import sk.Spedry.gui.controllers.LoginController;
+package sk.Spedry.client;
 
 import java.io.*;
 import java.net.InetAddress;

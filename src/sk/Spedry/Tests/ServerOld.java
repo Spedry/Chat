@@ -1,4 +1,4 @@
-package sk.Spedry.server;
+package sk.Spedry.Tests;
 
 import java.io.*;
 import java.net.InetAddress;

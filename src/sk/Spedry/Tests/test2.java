@@ -1,9 +1,8 @@
-package sk.Spedry.server;
+package sk.Spedry.Tests;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import sk.Spedry.Client.Client;
-import sk.Spedry.gui.App;
+import sk.Spedry.client.Client;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,7 +18,7 @@ public class test2 {
 
     public static void main(String[] args) throws JSONException {
         //java.awt.EventQueue.invokeLater(() -> {
-            socket = Client.createSocket();
+            //socket = Client.createSocket(); //bolo odstranené
 
             try {
                 //socket.setKeepAlive(true);

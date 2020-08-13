@@ -1,4 +1,4 @@
-package sk.Spedry.gui.controllers;
+package sk.Spedry.client.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.PasswordField;
@@ -7,8 +7,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import org.json.JSONException;
 import org.json.JSONObject;
-import sk.Spedry.gui.App;
-import sk.Spedry.gui.Client;
+import sk.Spedry.client.App;
+import sk.Spedry.client.Client;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;

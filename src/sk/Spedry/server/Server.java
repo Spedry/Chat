@@ -36,11 +36,6 @@ public class Server implements Runnable {
                 } catch (JSONException jsone) {
                     jsone.printStackTrace();
                 }
-                /*System.out.println("json: " + jsonObject);
-                System.out.println("username:" + jsonObject.getJSONObject(D).getString(U));
-                System.out.println("password:" + jsonObject.getJSONObject(D).getString(P));*/
-                /*if(jsonObject.length() > 0)
-                    System.out.println("empty data");*/
             } while (jsonObject.getJSONObject(D).getString(U).isBlank() &&
                     jsonObject.getJSONObject(D).getString(P).isBlank());
         } catch (JSONException jsone) {
@@ -49,33 +44,9 @@ public class Server implements Runnable {
     }
 
     private void loadJsonObject(BufferedReader br) throws IOException, JSONException {
-        /*try {
-            System.out.println("načítanie");
-            char[] buffer = new char[1024 * 2];
-            int charsRead = 0;
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(prepojenie.getInputStream()));
-            while ((charsRead = bufferedReader.read(buffer)) != -1) {
-                String data = new String(buffer).substring(0, charsRead);
-                jsonObject = new JSONObject(data);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
-        //in = new BufferedReader(new InputStreamReader(prepojenie.getInputStream()));
-        /* String data;
-        while ((data = in.readLine()) != null) {
-            System.out.println("while readline");
-            jsonObject = new JSONObject(data);
-        }*/
-        /*System.out.println("data before "+data);
-        data = in.readLine();
-        System.out.println("data after "+data);
-        jsonObject = new JSONObject(data);*/
         String data;
         System.out.println(br.toString());
-        while((data=br.readLine()) != "") {
+        while((data=br.readLine()) != null) {
             System.out.println("while data: " + data);
             jsonObject = new JSONObject(data);
             if(!jsonObject.getJSONObject(D).getString(U).isBlank() &&

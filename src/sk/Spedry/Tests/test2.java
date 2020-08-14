@@ -1,4 +1,4 @@
-package sk.Spedry.Tests;
+package main.java.sk.Spedry.Tests;
 
 import org.json.JSONException;
 import org.json.JSONObject;

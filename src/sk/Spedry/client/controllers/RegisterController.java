@@ -5,14 +5,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import sk.Spedry.client.Client;
 import org.json.JSONException;
 import org.json.JSONObject;
-import sk.Spedry.client.App;
-import sk.Spedry.client.Client;
-
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.nio.charset.StandardCharsets;
 
 public class RegisterController {
 

@@ -25,24 +25,19 @@ public class RegisterUser {
                 Statement stmt = conn.createStatement();
         ) {
             String SELECT = "select UserName from Users";
-
             ResultSet QUARY = stmt.executeQuery(SELECT);
-
             boolean possibleToReg = true;
             while(QUARY.next()) {
                 String UserName = QUARY.getString("UserName");
                 if (UserName.equals(jsonObject.getJSONObject("Data").getString("Username"))) {
-                    //odošly že sa zadane meno už používa a uživateľ si musí zvoliť iné
-                    System.out.println("tento uživateľ už je...");
                     possibleToReg = false;
-                    registered = false;
                     break;
                 }
             }
             if (possibleToReg) {
-                SELECT = "insert into users(UserName, UserH) values(\"" + jsonObject.getJSONObject("Data").getString("Username") +
-                        "\",\"" + jsonObject.getJSONObject("Data").getString("Password") + "\")";
-                int countInserted = stmt.executeUpdate(SELECT);
+                SELECT = "insert into users(UserName, UserH) values(" + jsonObject.getJSONObject("Data").getString("Username") +
+                        "," + jsonObject.getJSONObject("Data").getString("Password") + ")";
+                stmt.executeUpdate(SELECT);
                 registered = true;
             }
         } catch (SQLException sqle) {

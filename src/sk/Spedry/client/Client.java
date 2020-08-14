@@ -1,5 +1,7 @@
 package sk.Spedry.client;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -13,6 +15,7 @@ public class Client implements Runnable {
     private BufferedReader inputReader;
     private String input;
     private static volatile Client instance;
+    private static JSONObject jsonObject;
 
     private Client() {
         String hostname = null;
@@ -34,7 +37,6 @@ public class Client implements Runnable {
         if (instance == null){ //if there is no instance available... create new one
             instance = new Client();
         }
-
         return instance;
     }
 
@@ -44,19 +46,42 @@ public class Client implements Runnable {
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             while (true) {
-                while (input == null) {
+                if (input == null) {
                     Thread.sleep(1000);
+                    System.out.println(input);
+                } else {
+                    inputReader = new BufferedReader(new StringReader(input));
+                    while ((input = inputReader.readLine()) != null) {
+                        getPrintWriter().println(input);
+                    }
+                    jsonObject = new JSONObject(in.readLine());
+                    switch (jsonObject.getString("ID")) {
+                        case "LoU":
+                            System.out.println("lou funguje");
+                            if (jsonObject.getJSONObject("Data").getBoolean("Attempt"))
+                                System.out.println("bolo prijate true");
+                            else
+                                System.out.println("bolo prijate false");
+                            break;
+                        case "RoNU":
+                            System.out.println("ronu funguje");
+                            if (jsonObject.getJSONObject("Data").getBoolean("Attempt"))
+                                System.out.println("bol si zaregistrovaný");
+                            else
+                                System.out.println("meno je duplicitné");
+                            break;
+                        default:
+                            System.out.println("neznáme ID");
+                            return;
+                    }
                 }
-                inputReader = new BufferedReader(new StringReader(input));
-                while ((input = inputReader.readLine()) != null) {
-                    getPrintWriter().println(input);
-                }
-                if(in.ready()) break;
             }
-            System.out.println("success");
-            //socket.close();
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        } catch (InterruptedException ie) {
+            ie.printStackTrace();
+        } catch (JSONException jsone) {
+            jsone.printStackTrace();
         }
     }
 

@@ -27,8 +27,6 @@ public class LoginController {
                         .put("Username", usernameField.getText())
                         .put("Password", passwordField.getText())) //nahradiť za hash
                         .toString();
-        System.out.println(jsonObject);
-        System.out.println(client);
         client.setInput(jsonObject);
         //setUserMessege(new BufferedReader(new StringReader(jsonObject)));
         //App.getClient().getPrintWriter().println(jsonObject);
@@ -39,7 +37,7 @@ public class LoginController {
     }
 
     public void signUpOnAction(ActionEvent actionEvent) throws IOException {
-        Parent register = FXMLLoader.load(getClass().getResource("/registerPopup.fxml"));
+        Parent register = FXMLLoader.load(getClass().getResource("/registerScene.fxml"));
         Scene scene = new Scene(register);
         Stage widnow = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         widnow.setScene(scene);

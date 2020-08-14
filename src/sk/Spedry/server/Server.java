@@ -1,6 +1,5 @@
 package sk.Spedry.server;
 
-import com.mysql.jdbc.log.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -80,13 +79,17 @@ public class Server implements Runnable {
                             login = loginUser.Login();
                             if (!login)
                                 jsonObject = null;
-                            //out.println("login");
+                            out.println(createJson("LoU", login));
                             break;
                         case "RoNU":
                             System.out.println("register: " + jsonObject);
                             RegisterUser registerUser = new RegisterUser(jsonObject);
                             register = registerUser.Register();
                             jsonObject = null;
+                            // možnosť vzniknutia problému kedy je možná uživatela registrovať
+                            // ale nastane chyba teda program si aj napriek chybe bude myslieť
+                            // že sa uživatelové menu nachádzalo v databáze
+                            out.println(createJson("RoNU", register));
                             break;
                         default:
                             System.out.println("neznáme ID");
@@ -100,8 +103,12 @@ public class Server implements Runnable {
             e.printStackTrace();
         }
     }
-
-    private static void verification() {
-
+    // PREROBIŤ NAJSŤ MOŽNOSŤ AKO POUŽIVAŤ IBA JEDNU METODU
+    private String createJson(String IDString, boolean attempt) throws JSONException {
+        return new JSONObject()
+                .put("ID", IDString)
+                .put("Data", new JSONObject()
+                        .put("Attempt", attempt))
+                        .toString();
     }
 }

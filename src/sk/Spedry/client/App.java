@@ -20,7 +20,7 @@ public class App extends Application {
         thread.start();
 
         window = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("/login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/loginScene.fxml"));
         Scene login = new Scene(root);
         window.setScene(login);
         window.show();

@@ -10,8 +10,10 @@ public class ServerMain {
     static final int PORT = 50000;
     private static InetAddress ip = null;
     private static String hostname = null;
-
+    //private static final Logger logger = LogManager.getLogger(ServerMain.class);
     public static void main(String[] args) throws IOException {
+        //BasicConfigurator.configure();
+        //logger.debug("test");
         System.out.println("Loading...");
 
         ServerSocket serverConnect = new ServerSocket(PORT);
@@ -20,7 +22,7 @@ public class ServerMain {
         System.out.println("IP: " + ip
                 + "\nName of host: " + hostname
                 + "\nServer is starting..."
-                + "\nWainting for input on port: " + PORT + "...");
+                + "\nWaiting for input on port: " + PORT + "...");
         try {
             while(true) {
                 Server startServer = new Server(serverConnect.accept());

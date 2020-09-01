@@ -35,8 +35,9 @@ public class RegisterUser {
                 }
             }
             if (possibleToReg) {
-                SELECT = "insert into users(UserName, UserH) values(" + jsonObject.getJSONObject("Data").getString("Username") +
-                        "," + jsonObject.getJSONObject("Data").getString("Password") + ")";
+                SELECT = "insert into users(UserName, UserH) values(\"" + jsonObject.getJSONObject("Data").getString("Username") +
+                        "\",\"" + jsonObject.getJSONObject("Data").getString("Password") + "\")";
+                System.out.println(SELECT);
                 stmt.executeUpdate(SELECT);
                 registered = true;
             }

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.Objects;
 
 public class Server implements Runnable {
@@ -16,6 +17,7 @@ public class Server implements Runnable {
 
     public Server(Socket prepojenie) {
         this.prepojenie = prepojenie;
+        //prepojenie.setSoTimeout(10*1000);
     }
 
     static PrintWriter out;
@@ -88,12 +90,14 @@ public class Server implements Runnable {
                             jsonObject = null;
                             // možnosť vzniknutia problému kedy je možná uživatela registrovať
                             // ale nastane chyba teda program si aj napriek chybe bude myslieť
-                            // že sa uživatelové menu nachádzalo v databáze
+                            // že sa uživatelové meno nachádzalo v databáze
                             out.println(createJson("RoNU", register));
                             break;
                         default:
                             System.out.println("neznáme ID");
-                            return;
+                            out.println(createJson("Fail", login));
+                            //return;
+                            break;
                     }
                 } catch (JSONException jsone) {
                     jsone.printStackTrace();

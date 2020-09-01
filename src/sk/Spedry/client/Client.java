@@ -1,11 +1,20 @@
 package sk.Spedry.client;
 
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.awt.event.ActionEvent;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import javafx.stage.Stage;
+import sk.Spedry.client.controllers.ChatController;
 
 public class Client implements Runnable {
     static final int PORT = 50000;
@@ -16,6 +25,7 @@ public class Client implements Runnable {
     private String input;
     private static volatile Client instance;
     private static JSONObject jsonObject;
+    public static Stage window;
 
     private Client() {
         String hostname = null;
@@ -54,12 +64,22 @@ public class Client implements Runnable {
                     while ((input = inputReader.readLine()) != null) {
                         getPrintWriter().println(input);
                     }
+                    System.out.println(socket.isClosed());
+                    System.out.println(socket.isConnected());
                     jsonObject = new JSONObject(in.readLine());
                     switch (jsonObject.getString("ID")) {
                         case "LoU":
                             System.out.println("lou funguje");
-                            if (jsonObject.getJSONObject("Data").getBoolean("Attempt"))
+                            if (jsonObject.getJSONObject("Data").getBoolean("Attempt")) {
                                 System.out.println("bolo prijate true");
+                                Platform.runLater(() -> {
+                                    try {
+                                        App.chatScene();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                });
+                            }
                             else
                                 System.out.println("bolo prijate false");
                             break;
@@ -72,16 +92,21 @@ public class Client implements Runnable {
                             break;
                         default:
                             System.out.println("neznáme ID");
-                            return;
+                            //return;
+                            break;
                     }
                 }
             }
         } catch (IOException ioe) {
             ioe.printStackTrace();
+            System.out.println("ioe: " + socket.isClosed());
+            System.out.println(socket.isConnected());
         } catch (InterruptedException ie) {
             ie.printStackTrace();
+            System.out.println("ie: " + socket.isClosed());
         } catch (JSONException jsone) {
             jsone.printStackTrace();
+            System.out.println("json: " + socket.isClosed());
         }
     }
 

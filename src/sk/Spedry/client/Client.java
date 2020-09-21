@@ -1,36 +1,25 @@
 package sk.Spedry.client;
 
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.stage.Stage;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.awt.event.ActionEvent;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import javafx.stage.Stage;
-import sk.Spedry.client.controllers.ChatController;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Client implements Runnable {
-    static final int PORT = 50000;
-    private Socket socket;
-    private PrintWriter out;
-    private BufferedReader in;
-    private BufferedReader inputReader;
-    private String input;
+
     private static volatile Client instance;
-    private static JSONObject jsonObject;
-    public static Stage window;
 
     private Client() {
         String hostname = null;
         try {
-            InetAddress ip = null;
+            InetAddress ip;
             ip = InetAddress.getLocalHost();
             hostname = ip.getHostName();
         } catch (UnknownHostException e) {
@@ -44,69 +33,127 @@ public class Client implements Runnable {
     }
     // Singleton pattern https://en.wikipedia.org/wiki/Singleton_pattern
     public static Client getInstance() {
-        if (instance == null){ //if there is no instance available... create new one
-            instance = new Client();
+        if(instance == null){ //if there is no instance available... create new one
+            synchronized (Client.class) {
+                if(instance == null){ // double check - Thread Safe Singleton: https://www.journaldev.com/1377/java-singleton-design-pattern-best-practices-examples
+                    instance = new Client();
+                }
+            }
         }
         return instance;
+    }
+
+    static final int PORT = 50000;
+    private Socket socket;
+    private PrintWriter out;
+    private InputStreamReader in;
+    private BufferedReader inputReader;
+    private String input;
+    private static JSONObject jsonObject;
+    public static Stage window;
+    private static LinkedBlockingQueue<JSONObject> dataQueue;
+
+    private void getJsonObject(BufferedReader br) throws IOException, JSONException, InterruptedException {
+        String data;
+
+        while((data = br.readLine()) != null) {
+            dataQueue.put(new JSONObject(data)); // .put by mohlo byť nahradené za .add keďže dataQueue nieje omezená
+            System.out.println(data);
+        }
     }
 
     @Override
     public void run() {
         try {
             out = new PrintWriter(socket.getOutputStream(), true);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            while (true) {
-                if (input == null) {
-                    Thread.sleep(1000);
-                    System.out.println(input);
-                } else {
-                    inputReader = new BufferedReader(new StringReader(input));
-                    while ((input = inputReader.readLine()) != null) {
-                        getPrintWriter().println(input);
-                    }
-                    System.out.println(socket.isClosed());
-                    System.out.println(socket.isConnected());
-                    jsonObject = new JSONObject(in.readLine());
-                    switch (jsonObject.getString("ID")) {
-                        case "LoU":
-                            System.out.println("lou funguje");
-                            if (jsonObject.getJSONObject("Data").getBoolean("Attempt")) {
-                                System.out.println("bolo prijate true");
-                                Platform.runLater(() -> {
-                                    try {
-                                        App.chatScene();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
+            in = new InputStreamReader(socket.getInputStream());
+            dataQueue = new LinkedBlockingQueue<>();
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+        try (BufferedReader br = new BufferedReader(in)) {
+            Thread thread = new Thread(() -> {
+                try {
+
+                    getJsonObject(br);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+            thread.setDaemon(true);
+            thread.start();
+            boolean login = true;
+            while (login) {
+                /*String data;
+                while ((data = br.readLine()) != null) {
+                    // možno nepotrebný while cyklus keďže  odpoveď by mala dôjsť vždy
+                    // môže nastať error v prípade ak načátanie dát bude rýchlejšie
+                    // ako spracovanie a odoslanie odpovedi servera??
+                    System.out.println("while data: " + data);
+                    jsonObject = new JSONObject(data);
+                    break;
+                }*/
+                switch ((jsonObject = dataQueue.take()).getString("ID")) {
+                    case "LoU":
+                        System.out.println("lou funguje");
+                        if (jsonObject.getJSONObject("Data").getBoolean("Attempt")) {
+                            System.out.println("bolo prijate true");
+                            login = false;
+                            Platform.runLater(() -> {
+                                try {
+                                    App.chatScene();
+                                } catch (IOException ioe) {
+                                    ioe.printStackTrace();
+                                }
+                            });
+                        } else
+                            System.out.println("bolo prijate false");
+                        break;
+                    case "RoNU":
+                        System.out.println("ronu funguje");
+                        if (jsonObject.getJSONObject("Data").getBoolean("Attempt")) {
+                            Timer timer = new Timer();
+                            timer.schedule(
+                                new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        Platform.runLater(() -> {
+                                            try {
+                                                App.registrationsSuccessful();
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        });
+                                        timer.cancel();
                                     }
-                                });
-                            }
-                            else
-                                System.out.println("bolo prijate false");
-                            break;
-                        case "RoNU":
-                            System.out.println("ronu funguje");
-                            if (jsonObject.getJSONObject("Data").getBoolean("Attempt"))
-                                System.out.println("bol si zaregistrovaný");
-                            else
-                                System.out.println("meno je duplicitné");
-                            break;
-                        default:
-                            System.out.println("neznáme ID");
-                            //return;
-                            break;
-                    }
+                                }, 5000
+                            );
+                        }
+                        else
+                            System.out.println("meno je duplicitné");
+                        break;
+                    default:
+                        System.out.println("neznáme ID");
+                        break;
                 }
             }
+            System.out.println("lets GOOOOO");
         } catch (IOException ioe) {
             ioe.printStackTrace();
             System.out.println("ioe: " + socket.isClosed());
             System.out.println(socket.isConnected());
-        } catch (InterruptedException ie) {
+        } /*catch (InterruptedException ie) {
             ie.printStackTrace();
             System.out.println("ie: " + socket.isClosed());
-        } catch (JSONException jsone) {
+        }*/ catch (JSONException jsone) {
             jsone.printStackTrace();
             System.out.println("json: " + socket.isClosed());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -115,6 +162,6 @@ public class Client implements Runnable {
     }
 
     public void setInput(String input) {
-        this.input = input;
+        getPrintWriter().println(input);
     }
 }

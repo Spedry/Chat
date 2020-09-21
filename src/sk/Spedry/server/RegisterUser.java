@@ -2,49 +2,61 @@ package sk.Spedry.server;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.apache.logging.log4j.Logger;
 import java.sql.*;
 
-public class RegisterUser {
+public class RegisterUser extends AbsUser {
 
-    private JSONObject jsonObject;
+    private final Logger logger;
+    private final String user_name, hash;
 
-    public RegisterUser(JSONObject jsonObject) {
-        this.jsonObject = jsonObject;
+    public RegisterUser(JSONObject jsonObject, Logger logger, String data, String user_name, String hash) {
+        super(jsonObject, data);
+        this.logger = logger;
+        this.user_name = user_name;
+        this.hash = hash;
     }
 
     public boolean Register() {
+        logger.info("Start of attempt to register");
         boolean registered = false;
         String url = "jdbc:mysql://localhost:3306/chat?useSSL=false&allowPublicKeyRetrieval=true";
         try {
             Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            logger.info("Driver has been registered with the DriverManager");
+        } catch (ClassNotFoundException cnfe) {
+            logger.error("No class with specified name could be found.", cnfe);
         }
+        logger.info("Connecting to database");
         try (
                 Connection conn = DriverManager.getConnection(url, "root", "admin");
-                Statement stmt = conn.createStatement();
+                Statement stmt = conn.createStatement()
         ) {
-            String SELECT = "select UserName from Users";
-            ResultSet QUARY = stmt.executeQuery(SELECT);
+            logger.info("Successfully connected to database");
+            String SELECT = "SELECT UserName FROM Users";
+            logger.debug("SELECT is: " + SELECT);
+            ResultSet QUERY = stmt.executeQuery(SELECT);
             boolean possibleToReg = true;
-            while(QUARY.next()) {
-                String UserName = QUARY.getString("UserName");
-                if (UserName.equals(jsonObject.getJSONObject("Data").getString("Username"))) {
+            logger.info("Querying trough database");
+            while(QUERY.next()) {
+                String UserName = QUERY.getString("UserName");
+                if (UserName.equals(getStringfromJson(user_name))) {
                     possibleToReg = false;
+                    logger.info("The inserted name is already in use");
                     break;
                 }
             }
             if (possibleToReg) {
-                SELECT = "insert into users(UserName, UserH) values(\"" + jsonObject.getJSONObject("Data").getString("Username") +
-                        "\",\"" + jsonObject.getJSONObject("Data").getString("Password") + "\")";
+                SELECT = "INSERT INTO users(UserName, UserH) VALUES(\"" + getStringfromJson(user_name) + "\",\"" + getStringfromJson(hash) + "\")";
                 System.out.println(SELECT);
                 stmt.executeUpdate(SELECT);
                 registered = true;
+                logger.info("New user successfully registered");
             }
         } catch (SQLException sqle) {
-            sqle.printStackTrace();
+            logger.error("Error trying connect to database", sqle);
         } catch (JSONException jsone) {
-            jsone.printStackTrace();
+            logger.error("Error with JSONObject", jsone);
         }
         return registered;
     }

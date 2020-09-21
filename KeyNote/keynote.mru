@@ -71,7 +71,7 @@ FloatRightX=0
 [Main]
 FormVersion=0
 Flags=0
-ShowCmd=1
+ShowCmd=2
 PixelsPerInch=96
 MinMaxPos(1920x1080)=-1,-1,-1,-1
 MinMaxPos=-1,-1,-1,-1

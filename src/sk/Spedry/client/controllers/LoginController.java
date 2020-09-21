@@ -21,12 +21,13 @@ public class LoginController {
     Client client = Client.getInstance(); //to get access to the Client class what was created in class App
 
     public void loginOnAction() throws JSONException {
-        jsonObject = new JSONObject()
-                .put("ID", "LoU") //Login of User
-                .put("Data", new JSONObject()
-                        .put("Username", usernameField.getText())
-                        .put("Password", passwordField.getText())) //nahradiť za hash
-                        .toString();
+        if (usernameField.getText() != null || passwordField.getText() != null)
+            jsonObject = new JSONObject()
+                    .put("ID", "LoU") //Login of User
+                    .put("Data", new JSONObject()
+                            .put("Username", usernameField.getText())
+                            .put("Password", passwordField.getText())) //nahradiť za hash
+                            .toString();
         client.setInput(jsonObject);
         //setUserMessege(new BufferedReader(new StringReader(jsonObject)));
         //App.getClient().getPrintWriter().println(jsonObject);

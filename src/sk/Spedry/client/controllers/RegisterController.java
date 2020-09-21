@@ -1,13 +1,20 @@
 package sk.Spedry.client.controllers;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import sk.Spedry.client.Client;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 public class RegisterController {
 
@@ -18,7 +25,7 @@ public class RegisterController {
     public static String jsonObject = null;
     Client client = Client.getInstance(); //to get access to the Client class what was created in class App
 
-    public void registerOnAction(ActionEvent actionEvent) throws JSONException {
+    public void registerOnAction() throws JSONException {
         if(passwordField.getText().equals(repeatField.getText())) { //nahradiť za hash
             //pridať odpoveď servera na už existujúce username
             //pridať hashing
@@ -40,5 +47,13 @@ public class RegisterController {
     public void errces(String message, String color) {
         errcesMessage.setText(message);
         errcesMessage.setFill(Paint.valueOf(color));
+    }
+
+    public void backChangeSceeneOnAction(ActionEvent actionEvent) throws IOException {
+        Parent register = FXMLLoader.load(getClass().getResource("/loginScene.fxml"));
+        Scene scene = new Scene(register);
+        Stage widnow = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        widnow.setScene(scene);
+        widnow.show();
     }
 }

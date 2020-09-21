@@ -37,5 +37,6 @@ public class ChatController {
                         .put("Message", messageField.getText()))
                 .toString();
         client.setInput(jsonObject);
+        messageField.clear();
     }
 }

@@ -1,5 +1,7 @@
 package sk.Spedry.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sk.Spedry.client.Client;
 
 import java.util.ArrayList;
@@ -8,6 +10,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class MessageHandler implements Runnable {
 
     private static volatile MessageHandler instance;
+    private final Logger logger = LogManager.getLogger(this.getClass());
 
     private MessageHandler() {
         clientList = new ArrayList<Server>();
@@ -36,17 +39,21 @@ public class MessageHandler implements Runnable {
         return messages;
     }
 
-    private void unicast() { // one TO one
+    void unicast() { // one TO one
 
     }
 
-    private void broadcast() { // one TO all
+    void broadcast() { // one TO all
 
     }
 
-    private void multicast() throws InterruptedException { //one TO specific_one's
-        for(Server client : clientList)
+    void multicast() throws InterruptedException { //one TO specific_one's
+        logger.info("Start of for cycle to send");
+        for(Server client : clientList) {
             client.multicast(messages.take());
+            logger.info("Message was sent to online user");
+        }
+        logger.info("Message was sent to all online users");
     }
 
     @Override

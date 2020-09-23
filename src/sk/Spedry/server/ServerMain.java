@@ -4,11 +4,8 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.util.Date;
-
-//import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.BasicConfigurator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class ServerMain {
 
@@ -16,33 +13,34 @@ public class ServerMain {
     private static InetAddress ip = null;
     private static String hostname = null;
 
-    private static final Logger logger = LoggerFactory.getLogger(ServerMain.class);
+    private static final Logger logger = LogManager.getLogger(ServerMain.class);
 
-    //private static final Logger logger = LogManager.getLogger(ServerMain.class);
     public static void main(String[] args) throws IOException {
-        BasicConfigurator.configure();
-        logger.debug("This is my logger handler");
-        System.out.println("Loading...");
-        logger.info("test");
+        logger.info("Server is loading...");
         ServerSocket serverConnect = new ServerSocket(PORT);
         ip = InetAddress.getLocalHost();
         hostname = ip.getHostName();
-        System.out.println("IP: " + ip
-                + "\nName of host: " + hostname
-                + "\nServer is starting..."
-                + "\nWaiting for input on port: " + PORT + "...");
+        logger.info("Info:"
+                + "\n\t\t\tIP: " + ip
+                + "\n\t\t\tName of host: " + hostname
+                + "\n\t\t\tServer is starting..."
+                + "\n\t\t\tWaiting for input on port: " + PORT + "...");
+        //MessageHandler.getInstance();
         try {
             while(true) {
                 Server startServer = new Server(serverConnect.accept());
 
-                System.out.println("Connection established. (" + new Date() + ")");
-                System.out.println("Number of active threads from the given thread: " + Thread.activeCount());
+                logger.info("Connection established. (" + new Date() + ")");
+                logger.info("Number of active threads from the given thread: " + Thread.activeCount());
 
-                Thread thread = new Thread(startServer);
-                thread.start();
+                Thread serverSideHandlerThread = new Thread(startServer);
+                serverSideHandlerThread.start();
             }
         } catch (IOException e) {
-            System.out.println("Error during creating connection: " + e.getMessage());
+            logger.error("Error during creating connection: " + e.getMessage());
         }
     }
+
+
+
 }

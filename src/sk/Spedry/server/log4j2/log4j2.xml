@@ -8,15 +8,27 @@
         <Console name="console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level [%L] - %msg%n" />
         </Console>
-        <File name="fileLogger" fileName="${log-path}/server.log" immediateFlush="true" append="false">
+        <File name="fileLogger-server" fileName="${log-path}/server.log" immediateFlush="true" append="false">
+            <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level [%L] - %msg%n"/>
+        </File>
+        <File name="fileLogger-client" fileName="${log-path}/client.log" immediateFlush="true" append="false">
             <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level [%L] - %msg%n"/>
         </File>
     </Appenders>
 
     <Loggers>
-        <Root level="debug">
+        <logger name="sk.Spedry.client" level="debug" additivity="false">
+            <AppenderRef ref="fileLogger-client"/>
             <AppenderRef ref="console" />
-            <AppenderRef ref="fileLogger"/>
+        </logger>
+
+        <logger name="sk.Spedry.server" level="debug" additivity="false">
+            <AppenderRef ref="fileLogger-server"/>
+            <AppenderRef ref="console" />
+        </logger>
+
+        <Root level="trace">
+            <AppenderRef ref="console" />
         </Root>
     </Loggers>
 </Configuration>

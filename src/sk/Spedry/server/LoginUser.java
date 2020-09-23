@@ -1,5 +1,6 @@
 package sk.Spedry.server;
 
+import org.apache.logging.log4j.LogManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.apache.logging.log4j.Logger;
@@ -7,12 +8,11 @@ import java.sql.*;
 
 public class LoginUser extends AbsUser {
 
-    private final Logger logger;
+    private final Logger logger = LogManager.getLogger(this.getClass());
     private final String user_name, hash;
 
-    public LoginUser(JSONObject jsonObject, Logger logger, String data, String user_name, String hash) {
+    public LoginUser(JSONObject jsonObject, String data, String user_name, String hash) {
         super(jsonObject, data);
-        this.logger = logger;
         this.user_name = user_name;
         this.hash = hash;
     }

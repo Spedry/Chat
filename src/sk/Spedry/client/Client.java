@@ -2,6 +2,8 @@ package sk.Spedry.client;
 
 import javafx.application.Platform;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.*;
@@ -15,6 +17,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class Client implements Runnable {
 
     private static volatile Client instance;
+    private final Logger logger = LogManager.getLogger(this.getClass());
 
     private Client() {
         String hostname = null;
@@ -52,10 +55,17 @@ public class Client implements Runnable {
     private static JSONObject jsonObject;
     public static Stage window;
     private static LinkedBlockingQueue<JSONObject> dataQueue;
+    private final String ioexception = "Reading a network file and got disconnected.\n" +
+            "Reading a local file that was no longer available.\n" +
+            "Using some stream to read data and some other process closed the stream.\n" +
+            "Trying to read/write a file, but don't have permission.\n" +
+            "Trying to write to a file, but disk space was no longer available.\n" +
+            "There are many more examples, but these are the most common, in my experience.";
 
-    private void getJsonObject(BufferedReader br) throws IOException, JSONException, InterruptedException {
+    private boolean login = true;
+
+    private void incomingDataHandler(BufferedReader br) throws IOException, JSONException, InterruptedException {
         String data;
-
         while((data = br.readLine()) != null) {
             dataQueue.put(new JSONObject(data)); // .put by mohlo byť nahradené za .add keďže dataQueue nieje omezená
             System.out.println(data);
@@ -69,39 +79,30 @@ public class Client implements Runnable {
             in = new InputStreamReader(socket.getInputStream());
             dataQueue = new LinkedBlockingQueue<>();
         } catch (IOException ioe) {
-            ioe.printStackTrace();
+            logger.info(ioexception, ioe);
         }
         try (BufferedReader br = new BufferedReader(in)) {
-            Thread thread = new Thread(() -> {
+            Thread incomingDataHandlerThread = new Thread(() -> {
                 try {
-
-                    getJsonObject(br);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    incomingDataHandler(br);
+                } catch (IOException ioe) {
+                    logger.info(ioexception, ioe);
+                } catch (JSONException jsone) {
+                    logger.error("Error with JSONObject", jsone);
+                } catch (InterruptedException ie) {
+                    logger.error("Waiting thread was interrupted - .PUT()", ie);
                 }
             });
-            thread.setDaemon(true);
-            thread.start();
-            boolean login = true;
+            logger.info("New thread to handle incoming data was created");
+            incomingDataHandlerThread.setDaemon(true);
+            incomingDataHandlerThread.start();
+            logger.info("Start of while cycle to login/register");
             while (login) {
-                /*String data;
-                while ((data = br.readLine()) != null) {
-                    // možno nepotrebný while cyklus keďže  odpoveď by mala dôjsť vždy
-                    // môže nastať error v prípade ak načátanie dát bude rýchlejšie
-                    // ako spracovanie a odoslanie odpovedi servera??
-                    System.out.println("while data: " + data);
-                    jsonObject = new JSONObject(data);
-                    break;
-                }*/
                 switch ((jsonObject = dataQueue.take()).getString("ID")) {
                     case "LoU":
-                        System.out.println("lou funguje");
+                        logger.info("Case for LoU");
                         if (jsonObject.getJSONObject("Data").getBoolean("Attempt")) {
-                            System.out.println("bolo prijate true");
+                            logger.info("LoU was successful");
                             login = false;
                             Platform.runLater(() -> {
                                 try {
@@ -110,11 +111,12 @@ public class Client implements Runnable {
                                     ioe.printStackTrace();
                                 }
                             });
+                            logger.info("Scene was changed to chatScene");
                         } else
-                            System.out.println("bolo prijate false");
+                            logger.info("LoU was unsuccessful");
                         break;
                     case "RoNU":
-                        System.out.println("ronu funguje");
+                        logger.info("RoNU was successful");
                         if (jsonObject.getJSONObject("Data").getBoolean("Attempt")) {
                             Timer timer = new Timer();
                             timer.schedule(
@@ -132,28 +134,29 @@ public class Client implements Runnable {
                                     }
                                 }, 5000
                             );
+                            logger.info("Scene was changed to loginScene");
                         }
                         else
-                            System.out.println("meno je duplicitné");
+                            logger.info("RuNU was unsuccessful");
                         break;
                     default:
-                        System.out.println("neznáme ID");
+                        logger.warn("unknown ID");
                         break;
                 }
             }
-            System.out.println("lets GOOOOO");
+            logger.info("End of while cycle to login/register");
+            logger.info("Start of while cycle which will manage incoming messages");
+            while (true) {
+                jsonObject = dataQueue.take();
+                logger.info("Data taken from dataQueue: " + jsonObject);
+                System.out.println(jsonObject);
+            }
         } catch (IOException ioe) {
-            ioe.printStackTrace();
-            System.out.println("ioe: " + socket.isClosed());
-            System.out.println(socket.isConnected());
-        } /*catch (InterruptedException ie) {
-            ie.printStackTrace();
-            System.out.println("ie: " + socket.isClosed());
-        }*/ catch (JSONException jsone) {
-            jsone.printStackTrace();
-            System.out.println("json: " + socket.isClosed());
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error(ioexception, ioe);
+        } catch (JSONException jsone) {
+            logger.error("Error with JSONObject", jsone);
+        } catch (InterruptedException ie) {
+            logger.error("Waiting thread was interrupted - .TAKE()", ie);
         }
     }
 

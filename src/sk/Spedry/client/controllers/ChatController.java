@@ -8,6 +8,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 import sk.Spedry.client.Client;
@@ -21,6 +23,7 @@ public class ChatController {
     public ListView chatMessageListView;
     public static String jsonObject = null;
     Client client = Client.getInstance();
+    private final Logger logger = LogManager.getLogger(this.getClass());
 
     /*public void ChatController(ActionEvent actionEvent) throws IOException {
         Parent register = FXMLLoader.load(getClass().getResource("/chatScene.fxml"));

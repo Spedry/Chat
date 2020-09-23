@@ -10,6 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sk.Spedry.client.Client;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,6 +26,7 @@ public class RegisterController {
     public Text errcesMessage;
     public static String jsonObject = null;
     Client client = Client.getInstance(); //to get access to the Client class what was created in class App
+    private final Logger logger = LogManager.getLogger(this.getClass());
 
     public void registerOnAction() throws JSONException {
         if(passwordField.getText().equals(repeatField.getText())) { //nahradiť za hash

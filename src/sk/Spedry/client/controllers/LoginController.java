@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 import sk.Spedry.client.Client;
@@ -19,6 +21,7 @@ public class LoginController {
     public TextField usernameField;
     public static String jsonObject = null;
     Client client = Client.getInstance(); //to get access to the Client class what was created in class App
+    private final Logger logger = LogManager.getLogger(this.getClass());
 
     public void loginOnAction() throws JSONException {
         if (usernameField.getText() != null || passwordField.getText() != null)

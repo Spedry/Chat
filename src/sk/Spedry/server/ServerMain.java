@@ -25,15 +25,18 @@ public class ServerMain {
                 + "\n\t\t\tName of host: " + hostname
                 + "\n\t\t\tServer is starting..."
                 + "\n\t\t\tWaiting for input on port: " + PORT + "...");
-        //MessageHandler.getInstance();
+        MessageHandler messageHandler = new MessageHandler();
         try {
             while(true) {
-                Server startServer = new Server(serverConnect.accept());
+                Server clientsSide = new Server(serverConnect.accept(), messageHandler);
+
+                messageHandler.addToClientList(clientsSide);
+                clientsSide.setServer(clientsSide);
 
                 logger.info("Connection established. (" + new Date() + ")");
                 logger.info("Number of active threads from the given thread: " + Thread.activeCount());
 
-                Thread serverSideHandlerThread = new Thread(startServer);
+                Thread serverSideHandlerThread = new Thread(clientsSide);
                 serverSideHandlerThread.start();
             }
         } catch (IOException e) {

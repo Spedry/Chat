@@ -67,6 +67,7 @@ public class Client implements Runnable {
     private void incomingDataHandler(BufferedReader br) throws IOException, JSONException, InterruptedException {
         String data;
         while((data = br.readLine()) != null) {
+            logger.info("Data received from while cycle: " + data);
             dataQueue.put(new JSONObject(data)); // .put by mohlo byť nahradené za .add keďže dataQueue nieje omezená
             System.out.println(data);
         }

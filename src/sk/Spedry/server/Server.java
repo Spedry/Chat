@@ -15,9 +15,10 @@ public class Server implements Runnable {
     // Vytvoriť metodu broadcast na odoslanie správy všetkým pripojeným clientom
     private final Socket prepojenie;
     private final Logger logger = LogManager.getLogger(this.getClass());
-
-    public Server(Socket prepojenie) {
+    private final MessageHandler messageHandler;
+    public Server(Socket prepojenie, MessageHandler messageHandler) {
         this.prepojenie = prepojenie;
+        this.messageHandler = messageHandler;
     }
 
     static PrintWriter out;
@@ -53,9 +54,14 @@ public class Server implements Runnable {
                         .put("Attempt", attempt))
                 .toString();
     }
+    private Server server;
+    public void setServer(Server server) {
+        this.server = server;
+    }
 
     @Override
     public void run() {
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> messageHandler.deleteFromClientList(server)));
         try {
             out = new PrintWriter(prepojenie.getOutputStream(), true);
             in = new InputStreamReader(prepojenie.getInputStream());
@@ -86,6 +92,7 @@ public class Server implements Runnable {
                         logger.info("Case for LoU");
                         LoginUser loginUser = new LoginUser(jsonObject, data, user_name, hash);
                         login = loginUser.Login();
+                        //login = true;
                         logger.info("Sending data about successful login");
                         out.println(createJson("LoU", login));
                         break;
@@ -106,12 +113,11 @@ public class Server implements Runnable {
             logger.info("End of while cycle for login/registration");
             logger.info("Start of while cycle which will manage incoming messages");
             while (true) { // bude prijímať správy dokým bude uživateľ online - dokončiť
-                MessageHandler messageHandler = MessageHandler.getInstance();
                 jsonObject = dataQueue.take();
                 logger.info("Data taken from dataQueue: " + jsonObject);
-                messageHandler.addToMessages(getStringfromJson(message));
+                messageHandler.addToMessages(jsonObject);
                 System.out.println(messageHandler.getMessages());
-                messageHandler.multicast();
+                messageHandler.broadcast();
             }
         } catch (IOException ioe) {
             logger.error(ioexception, ioe);
@@ -126,7 +132,7 @@ public class Server implements Runnable {
         return jsonObject.getJSONObject(data).getString(string);
     }
 
-    void multicast(String message) {
+    void multicast(JSONObject message) {
         out.println(message);
     }
 }

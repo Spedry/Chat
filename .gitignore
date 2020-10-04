@@ -24,9 +24,7 @@
 hs_err_pid*
 
 # my own
-.idea
-*.iml
 out
-jars/own
-src/sk/Spedry/Tests
-log
+target
+test
+.log

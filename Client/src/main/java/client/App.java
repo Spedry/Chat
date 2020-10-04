@@ -15,7 +15,7 @@ public class App extends Application {
         launch(args);
     }
 
-    public static Stage window;
+    private static Stage window;
 
     private static final Logger logger = LogManager.getLogger(App.class);
 

@@ -25,13 +25,13 @@ public class Client implements Runnable {
             InetAddress ip;
             ip = InetAddress.getLocalHost();
             hostname = ip.getHostName();
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
+        } catch (UnknownHostException uhe) {
+            logger.warn("IP address of a host could not be determined", uhe);
         }
         try {
             socket = new Socket(hostname, PORT);
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ioe) {
+            logger.error(ioexception, ioe);
         }
     }
     // Singleton pattern https://en.wikipedia.org/wiki/Singleton_pattern
@@ -52,9 +52,9 @@ public class Client implements Runnable {
     private InputStreamReader in;
     private BufferedReader inputReader;
     private String input;
-    private static JSONObject jsonObject;
-    public static Stage window;
-    private static LinkedBlockingQueue<JSONObject> dataQueue;
+    private JSONObject jsonObject;
+    public Stage window;
+    private LinkedBlockingQueue<JSONObject> dataQueue;
     private final String ioexception = "Reading a network file and got disconnected.\n" +
             "Reading a local file that was no longer available.\n" +
             "Using some stream to read data and some other process closed the stream.\n" +

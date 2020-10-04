@@ -21,12 +21,6 @@ public class RegisterUser extends AbsUser {
         logger.info("Start of attempt to register");
         boolean registered = false;
         String url = "jdbc:mysql://localhost:3306/chat?useSSL=false&allowPublicKeyRetrieval=true";
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            logger.info("Driver has been registered with the DriverManager");
-        } catch (ClassNotFoundException cnfe) {
-            logger.error("No class with specified name could be found.", cnfe);
-        }
         logger.info("Connecting to database");
         try (
                 Connection conn = DriverManager.getConnection(url, "root", "admin");

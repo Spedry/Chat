@@ -22,10 +22,10 @@ public class Server implements Runnable {
         this.messageHandler = messageHandler;
     }
 
-    static PrintWriter out;
-    static InputStreamReader in;
-    private static JSONObject jsonObject = null;
-    private static LinkedBlockingQueue<JSONObject> dataQueue;
+    private PrintWriter out;
+    private InputStreamReader in;
+    private JSONObject jsonObject = null;
+    private LinkedBlockingQueue<JSONObject> dataQueue;
     private final String data = "Data", user_name = "Username", hash = "Password", message = "Message";
     private final String ioexception = "Reading a network file and got disconnected.\n" +
             "Reading a local file that was no longer available.\n" +
@@ -55,14 +55,13 @@ public class Server implements Runnable {
                         .put("Attempt", attempt))
                 .toString();
     }
-    private Server server;
-    public void setServer(Server server) {
-        this.server = server;
-    }
 
     @Override
     public void run() {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> messageHandler.deleteFromClientList(server)));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                logger.info("User was disconnected, deletin thread from list ,shuting thread...");
+                messageHandler.deleteFromClientList(this);
+        }));
         try {
             out = new PrintWriter(prepojenie.getOutputStream(), true);
             in = new InputStreamReader(prepojenie.getInputStream());

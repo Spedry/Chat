@@ -21,12 +21,6 @@ public class LoginUser extends AbsUser {
         logger.info("Start of attempt to login");
         boolean login = false;
         String url = "jdbc:mysql://localhost:3306/chat?useSSL=false";
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            logger.info("Driver has been registered with the DriverManager");
-        } catch (ClassNotFoundException cnfe) {
-            logger.error("No class with specified name could be found.", cnfe);
-        }
         logger.info("Connecting to database");
         try (
                 Connection conn = DriverManager.getConnection(url, "root", "admin");

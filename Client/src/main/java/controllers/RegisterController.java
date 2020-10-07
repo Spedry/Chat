@@ -1,5 +1,6 @@
 package controllers;
 
+import client.App;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -25,7 +26,7 @@ public class RegisterController {
     public TextField usernameField;
     public Text errcesMessage;
     public static String jsonObject = null;
-    Client client = Client.getInstance(); //to get access to the Client class what was created in class App
+    //Client client = Client.getInstance(); //to get access to the Client class what was created in class App
     private final Logger logger = LogManager.getLogger(this.getClass());
 
     public void registerOnAction() throws JSONException {
@@ -44,7 +45,7 @@ public class RegisterController {
         else {
             errces("Passwords do not match", "red");
         }
-        client.setInput(jsonObject);
+        App.getInstance().getClient().setInput(jsonObject);
     }
 
     public void errces(String message, String color) {

@@ -1,6 +1,8 @@
 package client;
 
+import controllers.ChatController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -16,17 +18,12 @@ public class App extends Application {
     }
 
     private static Stage window;
-
+    private Client client;
     private static final Logger logger = LogManager.getLogger(App.class);
 
     @Override
     public void start(Stage primaryStage) throws Exception {
         logger.info("App is starting...");
-        Thread clientSideHandlerThread = new Thread(Client.getInstance());
-        clientSideHandlerThread.setDaemon(true);
-        clientSideHandlerThread.start();
-        logger.info("Thread for communication with server was created");
-
         window = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/loginScene.fxml"));
         Scene login = new Scene(root);
@@ -34,6 +31,11 @@ public class App extends Application {
         logger.info("Set scene to loginScene");
         window.show();
         logger.info("Show window of app");
+
+        Thread clientSideHandlerThread = new Thread(client = new Client(this));
+        clientSideHandlerThread.setDaemon(true);
+        clientSideHandlerThread.start();
+        logger.info("Thread for communication with server was created");
     }
 
     public static void chatScene() throws IOException {
@@ -52,5 +54,24 @@ public class App extends Application {
         logger.info("Set scene to loginScene");
         window.show();
         logger.info("Show window of app");
+    }
+
+    public void test(String userName, String message) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/chatScene.fxml"));
+        loader.load();
+        ChatController chatController = loader.getController();
+        chatController.test(userName, message);
+    }
+
+    private static App instance;
+    public App() {
+        instance = this;
+    }
+
+    public static App getInstance() {
+        return instance;
+    }
+    public Client getClient() {
+        return client;
     }
 }

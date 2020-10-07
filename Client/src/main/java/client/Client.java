@@ -1,6 +1,10 @@
 package client;
 
+import controllers.ChatController;
 import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,9 +22,10 @@ public class Client implements Runnable {
 
     private static volatile Client instance;
     private final Logger logger = LogManager.getLogger(this.getClass());
-
-    private Client() {
+    private App app;
+    public Client(App app) {
         String hostname = null;
+        this.app = app;
         try {
             InetAddress ip;
             ip = InetAddress.getLocalHost();
@@ -35,7 +40,7 @@ public class Client implements Runnable {
         }
     }
     // Singleton pattern https://en.wikipedia.org/wiki/Singleton_pattern
-    public static Client getInstance() {
+    /*public static Client getInstance() {
         if(instance == null){ //if there is no instance available... create new one
             synchronized (Client.class) {
                 if(instance == null){ // double check - Thread Safe Singleton: https://www.journaldev.com/1377/java-singleton-design-pattern-best-practices-examples
@@ -44,7 +49,7 @@ public class Client implements Runnable {
             }
         }
         return instance;
-    }
+    }*/
 
     static final int PORT = 50000;
     private Socket socket;
@@ -107,7 +112,7 @@ public class Client implements Runnable {
                             login = false;
                             Platform.runLater(() -> {
                                 try {
-                                    App.chatScene();
+                                    app.chatScene();
                                 } catch (IOException ioe) {
                                     ioe.printStackTrace();
                                 }
@@ -126,7 +131,7 @@ public class Client implements Runnable {
                                     public void run() {
                                         Platform.runLater(() -> {
                                             try {
-                                                App.registrationsSuccessful();
+                                                app.registrationsSuccessful();
                                             } catch (IOException e) {
                                                 e.printStackTrace();
                                             }
@@ -147,11 +152,52 @@ public class Client implements Runnable {
             }
             logger.info("End of while cycle to login/register");
             logger.info("Start of while cycle which will manage incoming messages");
-            while (true) {
-                jsonObject = dataQueue.take();
-                logger.info("Data taken from dataQueue: " + jsonObject);
-                System.out.println(jsonObject);
-            }
+
+            //FXMLLoader fxmlLoader = new FXMLLoader();
+            //Pane p = fxmlLoader.load(getClass().getResource("chatScene.fxml").openStream());
+            //ChatController chatController = (ChatController) fxmlLoader.getController();
+            //getFooController().updatePage(strData);
+            //Controller myController = loader.getController();
+
+            //new Thread(() -> {
+                while (true) {
+                    try {
+                        jsonObject = dataQueue.take();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    logger.info("Data taken from dataQueue: " + jsonObject);
+                    Platform.runLater(() -> {
+                        try {
+                            String s = jsonObject.toString();
+                            app.test("meno", s);
+                            logger.info("test sprava: " + s);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
+            //}).start();
+
+            //while (true) {
+
+            //}
+            //Platform.runLater(() -> chatController.test2("meno", jsonObject.toString()));
+                /*new Thread(() -> {
+                    try {
+                        while (true) {
+                            jsonObject = dataQueue.take();
+                            notifyAll();
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                }).start();
+                while (true) {
+                    wait();
+                    Platform.runLater(() -> chatController.test2("meno", jsonObject.toString()));
+                }*/
         } catch (IOException ioe) {
             logger.error(ioexception, ioe);
         } catch (JSONException jsone) {

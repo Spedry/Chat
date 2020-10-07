@@ -1,5 +1,6 @@
 package controllers;
 
+import client.App;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -20,7 +21,7 @@ public class LoginController {
     public PasswordField passwordField;
     public TextField usernameField;
     public static String jsonObject = null;
-    Client client = Client.getInstance(); //to get access to the Client class what was created in class App
+    //Client client = Client.getInstance(); //to get access to the Client class what was created in class App
     private final Logger logger = LogManager.getLogger(this.getClass());
 
     public void loginOnAction() throws JSONException {
@@ -31,7 +32,7 @@ public class LoginController {
                             .put("Username", usernameField.getText())
                             .put("Password", passwordField.getText())) //nahradiť za hash
                             .toString();
-        client.setInput(jsonObject);
+        App.getInstance().getClient().setInput(jsonObject);
         //setUserMessege(new BufferedReader(new StringReader(jsonObject)));
         //App.getClient().getPrintWriter().println(jsonObject);
         /*try (PrintWriter out = App.out) {

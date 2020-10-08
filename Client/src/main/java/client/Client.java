@@ -2,10 +2,10 @@ package client;
 
 import controllers.ChatController;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
@@ -59,7 +59,9 @@ public class Client implements Runnable {
     private String input;
     private JSONObject jsonObject;
     public Stage window;
-    private LinkedBlockingQueue<JSONObject> dataQueue;
+    BufferedReader br;
+    @Getter
+    public LinkedBlockingQueue<JSONObject> dataQueue;
     private final String ioexception = "Reading a network file and got disconnected.\n" +
             "Reading a local file that was no longer available.\n" +
             "Using some stream to read data and some other process closed the stream.\n" +
@@ -84,10 +86,11 @@ public class Client implements Runnable {
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new InputStreamReader(socket.getInputStream());
             dataQueue = new LinkedBlockingQueue<>();
+            br = new BufferedReader(in);
         } catch (IOException ioe) {
             logger.info(ioexception, ioe);
         }
-        try (BufferedReader br = new BufferedReader(in)) {
+        try {
             Thread incomingDataHandlerThread = new Thread(() -> {
                 try {
                     incomingDataHandler(br);
@@ -100,7 +103,7 @@ public class Client implements Runnable {
                 }
             });
             logger.info("New thread to handle incoming data was created");
-            incomingDataHandlerThread.setDaemon(true);
+            //incomingDataHandlerThread.setDaemon(true);
             incomingDataHandlerThread.start();
             logger.info("Start of while cycle to login/register");
             while (login) {
@@ -126,23 +129,22 @@ public class Client implements Runnable {
                         if (jsonObject.getJSONObject("Data").getBoolean("Attempt")) {
                             Timer timer = new Timer();
                             timer.schedule(
-                                new TimerTask() {
-                                    @Override
-                                    public void run() {
-                                        Platform.runLater(() -> {
-                                            try {
-                                                app.registrationsSuccessful();
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            }
-                                        });
-                                        timer.cancel();
-                                    }
-                                }, 5000
+                                    new TimerTask() {
+                                        @Override
+                                        public void run() {
+                                            Platform.runLater(() -> {
+                                                try {
+                                                    app.registrationsSuccessful();
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            });
+                                            timer.cancel();
+                                        }
+                                    }, 5000
                             );
                             logger.info("Scene was changed to loginScene");
-                        }
-                        else
+                        } else
                             logger.info("RuNU was unsuccessful");
                         break;
                     default:
@@ -152,21 +154,36 @@ public class Client implements Runnable {
             }
             logger.info("End of while cycle to login/register");
             logger.info("Start of while cycle which will manage incoming messages");
+            /*while(true)
+            app.test2();*/
+            /*FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/chatScene.fxml"));
+            loader.load();
+            ChatController chatController = loader.getController();
+            while (true) {
+                //new Thread(() -> {
+                jsonObject = dataQueue.take();
+                String s = jsonObject.toString();
+                logger.info("Data taken from dataQueue: " + jsonObject);
+                Platform.runLater(() -> chatController.test("userName", s));
+                //}).start();
+            }*/
 
-            //FXMLLoader fxmlLoader = new FXMLLoader();
-            //Pane p = fxmlLoader.load(getClass().getResource("chatScene.fxml").openStream());
-            //ChatController chatController = (ChatController) fxmlLoader.getController();
-            //getFooController().updatePage(strData);
-            //Controller myController = loader.getController();
+            /*Task<JSONObject> task = new Task<JSONObject>() {
+                @Override protected JSONObject call() throws Exception {
+                    JSONObject jsonObject;
+                    jsonObject = dataQueue.take();
+                    return jsonObject;
+                }
+            };
+            Platform.runLater(() -> chatController.test("userName", task.getValue().toString()));*/
 
             //new Thread(() -> {
-                while (true) {
+                /*while (true) {
                     try {
                         jsonObject = dataQueue.take();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    logger.info("Data taken from dataQueue: " + jsonObject);
                     Platform.runLater(() -> {
                         try {
                             String s = jsonObject.toString();
@@ -198,9 +215,9 @@ public class Client implements Runnable {
                     wait();
                     Platform.runLater(() -> chatController.test2("meno", jsonObject.toString()));
                 }*/
-        } catch (IOException ioe) {
+        } /*catch (IOException ioe) {
             logger.error(ioexception, ioe);
-        } catch (JSONException jsone) {
+        }*/ catch (JSONException jsone) {
             logger.error("Error with JSONObject", jsone);
         } catch (InterruptedException ie) {
             logger.error("Waiting thread was interrupted - .TAKE()", ie);

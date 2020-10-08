@@ -91,8 +91,8 @@ public class Server implements Runnable {
                     case "LoU":
                         logger.info("Case for LoU");
                         LoginUser loginUser = new LoginUser(jsonObject, data, user_name, hash);
-                        login = loginUser.Login();
-                        //login = true;
+                        //login = loginUser.Login();
+                        login = true;
                         logger.info("Sending data about successful login");
                         out.println(createJson("LoU", login));
                         break;

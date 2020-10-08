@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -61,6 +62,33 @@ public class App extends Application {
         loader.load();
         ChatController chatController = loader.getController();
         chatController.test(userName, message);
+    }
+
+    public void test2() {
+        new Thread(() -> {
+            JSONObject jsonObject = null;
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/chatScene.fxml"));
+            try {
+                loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            ChatController chatController = loader.getController();
+
+                try {
+                    jsonObject = client.getDataQueue().take();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                //logger.info("Data taken from dataQueue: " + jsonObject);
+                JSONObject finalJsonObject = jsonObject;
+                Platform.runLater(() -> {
+                    String s = finalJsonObject.toString();
+                    chatController.test("userName", "message");
+                    logger.info("test sprava: " + s);
+                });
+
+        }).start();
     }
 
     private static App instance;

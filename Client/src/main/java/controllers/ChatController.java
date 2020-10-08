@@ -2,8 +2,10 @@ package controllers;
 
 import client.App;
 import client.Client;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -19,12 +21,16 @@ import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class ChatController /*implements Initializable*/ {
+
+public class ChatController implements Initializable {
 
 
     //Client client = Client.getInstance();
     private final Logger logger = LogManager.getLogger(this.getClass());
+    public Label label;
     private String jsonObject = null;
     @FXML
     public TextField messageField;
@@ -52,7 +58,7 @@ public class ChatController /*implements Initializable*/ {
         App.getInstance().getClient().setInput(jsonObject);
         //client.setInput(jsonObject);
         messageField.clear();
-        test("MENO_TEST: ", "SPRAVA_TEST");
+        //test("MENO_TEST: ", "SPRAVA_TEST");
     }
 
     public void showMessage(String string) {
@@ -80,7 +86,26 @@ public class ChatController /*implements Initializable*/ {
         //Platform.runLater(() -> chatBox.getChildren().add(hbox));
         chatBox.getChildren().add(hbox);
 
+        logger.info(userName + " " + message);
         logger.info("test metoda");
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+            new Thread(() -> {
+                JSONObject J = null;
+                while (true) {
+                    try {
+                        J = App.getInstance().getClient().dataQueue.take();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    logger.info("Data taken from dataQueue: " + jsonObject);
+                    JSONObject finalJ = J;
+                    Platform.runLater(() -> test("userName", finalJ.toString()));
+                }
+            }).start();
     }
 
     /*public void test2(String userName, String message) {

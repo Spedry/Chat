@@ -94,16 +94,21 @@ public class ChatController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
             new Thread(() -> {
-                JSONObject J = null;
+
+                String userName = null, message = null;
                 while (true) {
                     try {
-                        J = App.getInstance().getClient().dataQueue.take();
+                        JSONObject jsonObject = null;
+                        jsonObject = App.getInstance().getClient().dataQueue.take();
+                        userName = jsonObject.getJSONObject("Data").getString("Username");
+                        message = jsonObject.getJSONObject("Data").getString("Message");
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                     logger.info("Data taken from dataQueue: " + jsonObject);
-                    JSONObject finalJ = J;
-                    Platform.runLater(() -> test("userName", finalJ.toString()));
+                    String finalUserName = userName+": ";
+                    String finalMessage = message;
+                    Platform.runLater(() -> test(finalUserName, finalMessage));
                 }
             }).start();
     }

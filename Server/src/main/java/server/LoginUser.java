@@ -1,5 +1,6 @@
 package server;
 
+import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,12 +10,14 @@ import java.sql.*;
 public class LoginUser extends AbsUser {
 
     private final Logger logger = LogManager.getLogger(this.getClass());
-    private final String user_name, hash;
-
-    public LoginUser(JSONObject jsonObject, String data, String user_name, String hash) {
+    private final String userName, hash;
+    @Getter
+    private final String usersName;
+    public LoginUser(JSONObject jsonObject, String data, String userName, String hash) {
         super(jsonObject, data);
-        this.user_name = user_name;
+        this.userName = userName;
         this.hash = hash;
+        usersName = getStringfromJson(userName);
     }
 
     public boolean Login() {
@@ -34,7 +37,7 @@ public class LoginUser extends AbsUser {
             while(QUERY.next()) {
                 int UserID = QUERY.getInt("UserID");
                 String UserName = QUERY.getString("UserName");
-                if (UserName.equals(getStringfromJson(user_name))) {
+                if (UserName.equals(getStringfromJson(userName))) {
                     if (pass(UserID, stmt, getStringfromJson(hash))) {
                         logger.info("Login attempt succeed");
                         //odošli že príhlásenie prebehlo úspešne a umožni uživatelovi vstúpiť do APP

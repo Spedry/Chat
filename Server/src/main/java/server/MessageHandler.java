@@ -32,19 +32,23 @@ public class MessageHandler implements Runnable {
 
     public void addToMessages(JSONObject message) throws InterruptedException {
         messages.put(message);
+        logger.info("Message was add into queue");
     }
 
     public void addToClientList(Server server) {
         clientList.add(server);
+        logger.info("Thread was add into the arraylist");
+        logger.info("Number of client in list: " + clientList.size());
     }
 
     public void deleteFromClientList(Server server) {
         clientList.remove(server);
+        logger.info("Thread was take from arraylist");
     }
 
-    public LinkedBlockingQueue<JSONObject> getMessages() {
+    /*public LinkedBlockingQueue<JSONObject> getMessages() {
         return messages;
-    }
+    }*/
 
     void unicast() { // one TO one
 
@@ -52,8 +56,9 @@ public class MessageHandler implements Runnable {
 
     void broadcast() throws InterruptedException { // one TO all
         logger.info("Start of for cycle to send");
+        String message = messages.take().toString();
         for(Server client : clientList) {
-            client.multicast(messages.take());
+            client.multicast(message);
             logger.info("Message was sent to online user");
         }
         logger.info("Message was sent to all online users");

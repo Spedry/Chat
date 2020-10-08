@@ -26,15 +26,16 @@ public class Server implements Runnable {
     private InputStreamReader in;
     private JSONObject jsonObject = null;
     private LinkedBlockingQueue<JSONObject> dataQueue;
-    private final String data = "Data", user_name = "Username", hash = "Password", message = "Message";
+    private final String   data = "Data", userName = "Username", hash = "Password", message = "Message",
+            messagefromUser = "MfU", loginofUser = "LoU", registrationofNewUser = "RoNU";
     private final String ioexception = "Reading a network file and got disconnected.\n" +
             "Reading a local file that was no longer available.\n" +
             "Using some stream to read data and some other process closed the stream.\n" +
             "Trying to read/write a file, but don't have permission.\n" +
             "Trying to write to a file, but disk space was no longer available.\n" +
             "There are many more examples, but these are the most common, in my experience.";
-
     private boolean login = false;
+    private String usersName;
 
     private void incomingDataHandler(BufferedReader br) throws IOException, JSONException, InterruptedException {
         String data;
@@ -48,12 +49,16 @@ public class Server implements Runnable {
         }
     }
 
-    private String createJson(String IDString, boolean attempt) throws JSONException {
+    private JSONObject createJson(String IDString,
+                              String dataOne, Object objectOne,
+                              String dataTwo, Object objectTwo) throws JSONException {
+        JSONObject dataOfJsonObject = new JSONObject()
+                .put(dataOne, objectOne);
+        if ( dataTwo != null && objectTwo != null)
+                dataOfJsonObject.put(dataTwo, objectTwo);
         return new JSONObject()
                 .put("ID", IDString)
-                .put("Data", new JSONObject()
-                        .put("Attempt", attempt))
-                .toString();
+                .put("Data", dataOfJsonObject);
     }
 
     @Override
@@ -88,22 +93,24 @@ public class Server implements Runnable {
             while (!login) {
                 logger.info("Switch for ID");
                 switch ((jsonObject = dataQueue.take()).getString("ID")) {
-                    case "LoU":
-                        logger.info("Case for LoU");
-                        LoginUser loginUser = new LoginUser(jsonObject, data, user_name, hash);
-                        //login = loginUser.Login();
-                        login = true;
+                    case loginofUser:
+                        logger.info("Case for " + loginofUser);
+                        LoginUser loginUser = new LoginUser(jsonObject, data, userName, hash);
+                        if (login = loginUser.Login())
+                            usersName = loginUser.getUsersName();
+                        logger.info("Name set to this thread is: " + usersName);
+                        //login = true;
                         logger.info("Sending data about successful login");
-                        out.println(createJson("LoU", login));
+                        out.println(createJson("LoU", "Attempt", login, null, null));
                         break;
-                    case "RoNU":
-                        logger.info("Case for RoNU");
-                        RegisterUser registerUser = new RegisterUser(jsonObject, data, user_name, hash);
+                    case registrationofNewUser:
+                        logger.info("Case for " + registrationofNewUser);
+                        RegisterUser registerUser = new RegisterUser(jsonObject, data, userName, hash);
                         // možnosť vzniknutia problému kedy je možná uživatela registrovať
                         // ale nastane chyba teda program si aj napriek chybe bude myslieť
                         // že sa uživatelové meno nachádzalo v databáze
                         logger.info("Sending data about successful registration");
-                        out.println(createJson("RoNU", registerUser.Register()));
+                        out.println(createJson(registrationofNewUser, "Attempt", registerUser.Register(), null, null));
                         break;
                     default:
                         logger.warn("unknown ID");
@@ -115,8 +122,9 @@ public class Server implements Runnable {
             while (true) { // bude prijímať správy dokým bude uživateľ online - dokončiť
                 jsonObject = dataQueue.take();
                 logger.info("Data taken from dataQueue: " + jsonObject);
-                messageHandler.addToMessages(jsonObject);
-                System.out.println(messageHandler.getMessages());
+                String msg = getStringfromJson(message);
+                messageHandler.addToMessages(createJson(messagefromUser, userName, usersName, message, msg));
+                //System.out.println(messageHandler.getMessages());
                 messageHandler.broadcast();
             }
         } catch (IOException ioe) {
@@ -128,11 +136,11 @@ public class Server implements Runnable {
         }
     }
 
-    String getStringfromJson(String string) throws JSONException {
+    public String getStringfromJson(String string) throws JSONException {
         return jsonObject.getJSONObject(data).getString(string);
     }
 
-    void multicast(JSONObject message) {
+    void multicast(String message) {
         out.println(message);
     }
 }

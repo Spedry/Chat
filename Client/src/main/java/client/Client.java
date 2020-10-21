@@ -55,10 +55,7 @@ public class Client implements Runnable {
     private Socket socket;
     private PrintWriter out;
     private InputStreamReader in;
-    private BufferedReader inputReader;
-    private String input;
     private JSONObject jsonObject;
-    public Stage window;
     BufferedReader br;
     @Getter
     public LinkedBlockingQueue<JSONObject> dataQueue;
@@ -100,6 +97,14 @@ public class Client implements Runnable {
                     logger.error("Error with JSONObject", jsone);
                 } catch (InterruptedException ie) {
                     logger.error("Waiting thread was interrupted - .PUT()", ie);
+                } finally {
+                    try {
+                        out.close();
+                        in.close();
+                        socket.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
             logger.info("New thread to handle incoming data was created");

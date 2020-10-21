@@ -1,0 +1,55 @@
+* {
+	dark-primary-color: #202225;
+	dark-secondary-color: #292B2F;
+	dark-tertiary-color: #2F3136;
+	white-text-color: #FFFFFF;
+	light-text-color: #CCCCCC;
+	gray-text-color: #999999;
+	button-color: #7289DA;
+	text-bar-color: #40444B;
+}
+
+.mainListView {
+	-fx-background-color: dark-primary-color;
+}
+
+.secondaryListView {
+	-fx-background-color: dark-secondary-color;
+}
+
+.list-view .list-cell:even, .list-cell:inactive {
+	-fx-background-color: dark-secondary-color;
+	-fx-text-fill: button-color;
+}
+.list-view .list-cell:odd {
+	-fx-background-color: dark-secondary-color;
+	-fx-text-fill: button-color;
+}
+
+.scroll-pane, .viewport {
+    -fx-background-color: dark-tertiary-color;
+	-fx-border-color: dark-tertiary-color;
+}
+
+.scroll-bar:vertical {
+    -fx-background-color:transparent;
+}
+
+.scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: white-text-color;
+}
+
+.textfield {
+    -fx-background-color: dark-tertiary-color , red , text-bar-color;
+	-fx-text-fill: white-text-color;
+}
+
+.label {
+	-fx-text-fill: white-text-color;
+}

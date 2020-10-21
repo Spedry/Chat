@@ -66,7 +66,7 @@ public class App extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/chatScene.fxml"));
         loader.load();
         ChatController chatController = loader.getController();
-        chatController.test(userName, message);
+        chatController.showMessage(userName, message);
     }
 
     public void test2() {
@@ -89,7 +89,7 @@ public class App extends Application {
                 JSONObject finalJsonObject = jsonObject;
                 Platform.runLater(() -> {
                     String s = finalJsonObject.toString();
-                    chatController.test("userName", "message");
+                    chatController.showMessage("userName", "message");
                     logger.info("test sprava: " + s);
                 });
 

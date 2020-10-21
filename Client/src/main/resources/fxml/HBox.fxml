@@ -1,18 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.TextFlow?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HBox">
+<VBox prefHeight="0.0" prefWidth="350.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.HBoxController">
    <children>
-      <VBox prefHeight="100.0" prefWidth="64.0">
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="350.0">
          <children>
-            <ImageView fx:id="imgHBox" fitHeight="66.0" fitWidth="87.0" pickOnBounds="true" preserveRatio="true" />
-            <TextFlow fx:id="userNameHBox" prefHeight="200.0" prefWidth="200.0" />
+            <ImageView fx:id="imgHBox" fitHeight="30.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/user.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="userNameHBox" alignment="CENTER" prefHeight="37.0" prefWidth="86.0" text="Label" textAlignment="CENTER" textFill="WHITE" />
          </children>
-      </VBox>
-      <TextFlow fx:id="userMesssageHBox" prefHeight="100.0" prefWidth="273.0" />
+      </HBox>
+      <Label fx:id="userMessageHBox" prefHeight="17.0" prefWidth="352.0" text="Label" textFill="WHITE">
+         <opaqueInsets>
+            <Insets left="25.0" />
+         </opaqueInsets></Label>
    </children>
-</HBox>
+</VBox>

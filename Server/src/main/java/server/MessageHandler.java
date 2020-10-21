@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class MessageHandler implements Runnable {
@@ -50,6 +51,22 @@ public class MessageHandler implements Runnable {
         return messages;
     }*/
 
+    public void sendOnlineUsers() {
+        for(Server client : clientList) {
+            List<String> listofOnlineUsers = new ArrayList<String>();
+            client.getUsersName();
+            for(Server clientUserName : clientList) {
+                String userName = clientUserName.getUsersName();
+                if (userName.equals(client.getUsersName())) continue;
+                listofOnlineUsers.add(userName);
+                //client.cast(userName);
+            }
+            client.cast(client.createJsonListofUsers(listofOnlineUsers).toString());
+        }
+    }
+
+
+
     void unicast() { // one TO one
 
     }
@@ -58,7 +75,7 @@ public class MessageHandler implements Runnable {
         logger.info("Start of for cycle to send");
         String message = messages.take().toString();
         for(Server client : clientList) {
-            client.multicast(message);
+            client.cast(message);
             logger.info("Message was sent to online user");
         }
         logger.info("Message was sent to all online users");

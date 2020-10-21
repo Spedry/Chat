@@ -39,6 +39,11 @@ public class App extends Application {
         logger.info("Thread for communication with server was created");
     }
 
+    @Override
+    public void stop() {
+
+    }
+
     public static void chatScene() throws IOException {
         Parent chatScene = FXMLLoader.load(App.class.getResource("/fxml/chatScene.fxml"));
         Scene scene = new Scene(chatScene);

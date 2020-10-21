@@ -18,10 +18,13 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -30,8 +33,11 @@ public class ChatController implements Initializable {
 
     //Client client = Client.getInstance();
     private final Logger logger = LogManager.getLogger(this.getClass());
-    public Label label;
+    private final String   data = "Data", userName = "Username", hash = "Password", message = "Message",
+            messagefromUser = "MfU", showLoginofUser = "SLoU";
     private String jsonObject = null;
+    @FXML
+    public ListView peopleOnline;
     @FXML
     public TextField messageField;
     @FXML
@@ -51,14 +57,12 @@ public class ChatController implements Initializable {
     @FXML
     public void sendOnEnterPress(javafx.event.ActionEvent actionEvent) throws JSONException {
         jsonObject = new JSONObject()
-                .put("ID", "MfU") //message from User
-                .put("Data", new JSONObject()
-                        .put("Message", messageField.getText()))
+                .put("ID", messagefromUser) //message from User
+                .put(data, new JSONObject()
+                        .put(message, messageField.getText()))
                 .toString();
-        App.getInstance().getClient().setInput(jsonObject);
-        //client.setInput(jsonObject);
+        App.getInstance().getClient().setInput(jsonObject); //PREROBIŤ
         messageField.clear();
-        //test("MENO_TEST: ", "SPRAVA_TEST");
     }
 
     public void showMessage(String string) {
@@ -72,7 +76,7 @@ public class ChatController implements Initializable {
 
     public void test(String userName, String message)  {
         Label msgText = new Label(message);
-        Label usrnText = new Label(userName);
+        Label usrnText = new Label(userName + ": ");
         TextFlow tempFlow=new TextFlow();
         tempFlow.getChildren().addAll(usrnText, msgText);
         tempFlow.setMaxWidth(200);
@@ -90,27 +94,55 @@ public class ChatController implements Initializable {
         logger.info("test metoda");
     }
 
+    public void showOnlineUser(List<String> listofOnlineUsers) {
+        peopleOnline.getItems().clear();
+        for (String user : listofOnlineUsers) {
+        Text userText = new Text(user);
+        TextFlow tempFlow=new TextFlow();
+        tempFlow.getChildren().add(userText);
+        //tempFlow.setMaxWidth(200);
+
+        TextFlow flow=new TextFlow(tempFlow);
+        HBox x = new HBox();
+        x.setMaxWidth(peopleOnline.getWidth() - 20);
+        x.setAlignment(Pos.CENTER_LEFT);
+        x.getChildren().add(flow);
+        peopleOnline.getItems().add(x);
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-            new Thread(() -> {
-
-                String userName = null, message = null;
+        Thread thread = new Thread(() -> {
+            try {
                 while (true) {
-                    try {
-                        JSONObject jsonObject = null;
-                        jsonObject = App.getInstance().getClient().dataQueue.take();
-                        userName = jsonObject.getJSONObject("Data").getString("Username");
-                        message = jsonObject.getJSONObject("Data").getString("Message");
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                    JSONObject jsonObject = null;
+                    switch ((jsonObject = App.getInstance().getClient().dataQueue.take()).getString("ID")) { //PREROBIŤ
+                        case messagefromUser:
+                            String userName = null, message = null;
+                            userName = jsonObject.getJSONObject(data).getString(this.userName);
+                            message = jsonObject.getJSONObject(data).getString(this.message);
+                            logger.info("Data taken from dataQueue: " + jsonObject);
+                            String finalUserName = userName;
+                            String finalMessage = message;
+                            Platform.runLater(() -> test(finalUserName, finalMessage));
+                            break;
+                        case showLoginofUser:
+                            JSONArray jsonArray = jsonObject.getJSONArray(data);
+                            List<String> listofOnlineUsers = new ArrayList<>();
+                            for (int i=0; i < jsonArray.length(); i++) {
+                                listofOnlineUsers.add(jsonArray.getString(i));
+                            }
+                            Platform.runLater(() -> showOnlineUser(listofOnlineUsers));
+                            break;
                     }
-                    logger.info("Data taken from dataQueue: " + jsonObject);
-                    String finalUserName = userName+": ";
-                    String finalMessage = message;
-                    Platform.runLater(() -> test(finalUserName, finalMessage));
                 }
-            }).start();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.setDaemon(true);
+        thread.start();
     }
 
     /*public void test2(String userName, String message) {

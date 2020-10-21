@@ -28,7 +28,7 @@ public class ServerMain {
             while(true) {
                 Server clientsSide = new Server(serverConnect.accept(), messageHandler);
 
-                messageHandler.addToClientList(clientsSide);
+                //messageHandler.addToClientList(clientsSide);
 
                 logger.info("Connection established. (" + new Date() + ")");
                 logger.info("Number of active threads from the given thread: " + Thread.activeCount());

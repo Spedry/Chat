@@ -1,5 +1,6 @@
 #NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
-#Tue Sep 29 15:08:33 CEST 2020
+#Tue Nov 17 22:34:01 CET 2020
 javafx-fxml-14.0.2.1.pom>central=
 javafx-fxml-14.0.2.1-win.jar>central=
+javafx-fxml-14.0.2.1-sources.jar>central=
 javafx-fxml-14.0.2.1.jar>central=

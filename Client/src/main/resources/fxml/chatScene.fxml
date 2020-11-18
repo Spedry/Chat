@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/css.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.ChatController">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/css.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <ListView mouseTransparent="true" prefHeight="200.0" prefWidth="200.0" styleClass="mainListView" />
-                  <ListView fx:id="peopleOnline" mouseTransparent="true" prefHeight="400.0" prefWidth="309.0" styleClass="secondaryListView" />
+                  <ListView mouseTransparent="true" prefHeight="200.0" prefWidth="200.0" styleClass="primary-root" />
+                  <ListView fx:id="peopleOnline" mouseTransparent="true" prefHeight="400.0" prefWidth="309.0" styleClass="secondary-root" />
                </children>
             </HBox>
          </children>
@@ -27,9 +27,14 @@
                   <!--<ListView fx:id="chatPane" prefHeight="377.0" prefWidth="407.0" />-->
                </content>
             </ScrollPane>
-            <HBox prefHeight="33.0" prefWidth="408.0">
+            <HBox prefHeight="33.0" prefWidth="408.0" styleClass="tertiary-root">
                <children>
-                  <TextField fx:id="messageField" onAction="#sendOnEnterPress" prefHeight="27.0" prefWidth="408.0" promptText="Message..." styleClass="textfield" />
+                  <TextField fx:id="messageField" prefHeight="27.0" prefWidth="408.0" promptText="Message...">
+                     <styleClass>
+                        <String fx:value="textfield" />
+                        <String fx:value="tertiary-root" />
+                     </styleClass>
+                  </TextField>
                </children>
             </HBox>
          </children>

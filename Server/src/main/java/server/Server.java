@@ -27,7 +27,7 @@ public class Server implements Runnable {
 
     private PrintWriter out;
     private InputStreamReader in;
-    private JSONObject jsonObject = null;
+    private JSONObject jsonObject = null, ENDJSON;
     private LinkedBlockingQueue<JSONObject> dataQueue;
     private final String   data = "Data", userName = "Username", hash = "Password", message = "Message",
             messagefromUser = "MfU", loginofUser = "LoU", registrationofNewUser = "RoNU",
@@ -42,15 +42,29 @@ public class Server implements Runnable {
     @Getter
     private String usersName;
 
-    private void incomingDataHandler(BufferedReader br) throws IOException, JSONException, InterruptedException {
-        String data;
-        logger.info("Start of while cycle to get JSONObject");
-        while ((data = br.readLine()) != null) {
-            logger.debug("data that was received from while cycle: " + data);
-            dataQueue.put(new JSONObject(data)); // .put by mohlo byť nahradené za .add keďže dataQueue nieje omezená
-            logger.info("Data was added into the dataQueue");
-            if (dataQueue.isEmpty()) //nevedno či to fuguje, rýchlosť spracovanie je rýchlejšia
-                logger.info("Data left in dataQueue: " + dataQueue);
+    private void incomingDataHandler(BufferedReader br) {
+        try {
+            String data;
+            logger.info("Start of while cycle to get JSONObject");
+            while ((data = br.readLine()) != null) {
+                logger.debug("data that was received from while cycle: " + data);
+                dataQueue.put(new JSONObject(data)); // .put by mohlo byť nahradené za .add keďže dataQueue nieje omezená
+                logger.info("Data was added into the dataQueue");
+                if (dataQueue.isEmpty()) //nevedno či to fuguje, rýchlosť spracovanie je rýchlejšia
+                    logger.info("Data left in dataQueue: " + dataQueue);
+            }
+        } catch (InterruptedException ie) {
+            logger.error("Waiting thread was interrupted - .PUT()", ie);
+        } catch (IOException ioe) {
+            logger.error(ioexception, ioe);
+        } finally {
+            ENDJSON = new JSONObject()
+                    .put("ID", "END");
+            try {
+                dataQueue.put(ENDJSON);
+            } catch (InterruptedException ie) {
+                logger.error("Waiting thread was interrupted - .PUT()", ie);
+            }
         }
     }
 
@@ -68,37 +82,16 @@ public class Server implements Runnable {
 
     @Override
     public void run() {
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            logger.info("User was disconnected, deletin thread from list ,shuting thread...");
-
-            messageHandler.deleteFromClientList(this);
-            messageHandler.sendOnlineUsers();
-            try {
-                out.close();
-                in.close();
-                prepojenie.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }));
         try {
             out = new PrintWriter(prepojenie.getOutputStream(), true);
             in = new InputStreamReader(prepojenie.getInputStream());
             dataQueue = new LinkedBlockingQueue<>();
         } catch (IOException ioe) {
-            logger.info(ioexception, ioe);
+            logger.warn(ioexception, ioe);
         }
         try (BufferedReader br = new BufferedReader(in)) {
             Thread incomingDataHandlerThread = new Thread(() -> {
-                try {
-                    incomingDataHandler(br);
-                } catch (IOException ioe) {
-                    logger.info(ioexception, ioe);
-                } catch (JSONException jsone) {
-                    logger.error("Error with JSONObject", jsone);
-                } catch (InterruptedException ie) {
-                    logger.error("Waiting thread was interrupted - .PUT()", ie);
-                }
+                incomingDataHandler(br);
             });
             logger.info("New thread to handle incoming data was created");
             incomingDataHandlerThread.setDaemon(true);
@@ -141,8 +134,8 @@ public class Server implements Runnable {
             messageHandler.sendOnlineUsers();
 
             logger.info("Start of while cycle which will manage incoming messages");
-            while (true) { // bude prijímať správy dokým bude uživateľ online - dokončiť
-                jsonObject = dataQueue.take();
+            while (!(jsonObject = dataQueue.take()).equals(ENDJSON)) { // bude prijímať správy dokým bude uživateľ online - dokončiť
+
                 logger.info("Data taken from dataQueue: " + jsonObject);
                 String msg = getStringfromJson(message);
                 messageHandler.addToMessages(createJson(messagefromUser, userName, usersName, message, msg));
@@ -155,6 +148,10 @@ public class Server implements Runnable {
             logger.error("Error with JSONObject", jsone);
         } catch (InterruptedException ie) {
             logger.error("Waiting thread was interrupted - .TAKE()", ie);
+        } finally {
+            logger.info("User was disconnected, deleting thread from list ,shutting down the thread...");
+            messageHandler.deleteFromClientList(this);
+            messageHandler.sendOnlineUsers();
         }
     }
 

@@ -81,6 +81,10 @@ public class Client implements Runnable {
             dataQueue.put(new JSONObject(data)); // .put by mohlo byť nahradené za .add keďže dataQueue nieje omezená
             System.out.println(data);
         }
+        logger.info("While cycle to get messages ended");
+        socket.close();
+        logger.info("Was socket connected: " + socket.isConnected());
+        logger.info("Was socket closed: " + socket.isClosed());
     }
 
     @Override
@@ -103,7 +107,7 @@ public class Client implements Runnable {
                     logger.error("Error with JSONObject", jsone);
                 } catch (InterruptedException ie) {
                     logger.error("Waiting thread was interrupted - .PUT()", ie);
-                } finally {
+                } /*finally {
                     try {
                         out.close();
                         in.close();
@@ -111,7 +115,7 @@ public class Client implements Runnable {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                }
+                }*/
             });
             logger.info("New thread to handle incoming data was created");
             //incomingDataHandlerThread.setDaemon(true);
@@ -180,7 +184,7 @@ public class Client implements Runnable {
     }
 
     public void closeSocket() throws IOException {
-        socket.close();
+        socket.shutdownOutput();
     }
 
     public PrintWriter getPrintWriter() {

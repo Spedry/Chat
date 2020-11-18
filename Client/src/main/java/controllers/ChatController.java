@@ -2,6 +2,8 @@ package controllers;
 
 import client.App;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -28,11 +30,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import javafx.scene.Node;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.LinkedBlockingQueue;
 
 
 public class ChatController implements Initializable {
@@ -43,6 +48,7 @@ public class ChatController implements Initializable {
     private final String   data = "Data", userName = "Username", hash = "Password", message = "Message",
             messagefromUser = "MfU", showLoginofUser = "SLoU";
     private String jsonObject = null;
+    LinkedBlockingQueue<JSONObject> dataQueue;
     @FXML
     public ListView peopleOnline;
     @FXML
@@ -51,18 +57,13 @@ public class ChatController implements Initializable {
     public ScrollPane chatMessageScrollPane;
     @FXML
     public VBox chatBox;
-    @FXML
-    public ListView<HBox> chatPane;
-    /*public void ChatController(ActionEvent actionEvent) throws IOException {
-        Parent register = FXMLLoader.load(getClass().getResource("/chatScene.fxml"));
-        Scene scene = new Scene(register);
-        Stage window = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        window.setScene(scene);
-        window.show();
-    }*/
+
+    public ChatController(LinkedBlockingQueue<JSONObject> dataQueue) {
+        this.dataQueue = dataQueue;
+    }
 
     @FXML
-    public void sendOnEnterPress(javafx.event.ActionEvent actionEvent) throws JSONException {
+    public void sendOnEnterPress() throws JSONException {
         jsonObject = new JSONObject()
                 .put("ID", messagefromUser) //message from User
                 .put(data, new JSONObject()
@@ -123,8 +124,7 @@ public class ChatController implements Initializable {
         //Platform.runLater(() -> chatBox.getChildren().add(hbox));*/
         chatBox.getChildren().add(hBox);
 
-        logger.info(userName + " " + message);
-        logger.info("test metoda");
+        logger.info(userName + " " + userMessage);
     }
 
     public void showOnlineUser(List<String> listofOnlineUsers) {
@@ -153,13 +153,24 @@ public class ChatController implements Initializable {
         }
     }
 
+
+
+    /*public void test(String finalUserName, String finalMessage) {
+        Platform.runLater(() -> showMessage(finalUserName, finalMessage));
+    }*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        logger.info("Initializing");
+        messageField.setOnAction(event -> {
+            logger.info("Messagefield event");
+            sendOnEnterPress();
+        });
+
         Thread thread = new Thread(() -> {
             try {
                 while (true) {
                     JSONObject jsonObject = null;
-                    switch ((jsonObject = App.getInstance().getClient().dataQueue.take()).getString("ID")) { //PREROBIŤ
+                    switch ((jsonObject = dataQueue.take()).getString("ID")) { //PREROBIŤ
                         case messagefromUser:
                             String userName = null, message = null;
                             userName = jsonObject.getJSONObject(data).getString(this.userName);
@@ -181,6 +192,8 @@ public class ChatController implements Initializable {
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            } finally {
+
             }
         });
         thread.setDaemon(true);

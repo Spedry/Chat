@@ -10,7 +10,6 @@ import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
-
 import java.io.IOException;
 
 public class App extends Application {
@@ -41,11 +40,17 @@ public class App extends Application {
 
     @Override
     public void stop() {
-
+        try {
+            client.closeSocket();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public static void chatScene() throws IOException {
-        Parent chatScene = FXMLLoader.load(App.class.getResource("/fxml/chatScene.fxml"));
+    public static void chatScene(ChatController chatController) throws IOException {
+        FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/chatScene.fxml"));
+        loader.setController(chatController);
+        Parent chatScene = loader.load();
         Scene scene = new Scene(chatScene);
         window.setScene(scene);
         logger.info("Set scene to chatScene");
@@ -67,6 +72,12 @@ public class App extends Application {
         loader.load();
         ChatController chatController = loader.getController();
         chatController.showMessage(userName, message);
+    }
+
+    public ChatController test3() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/chatScene.fxml"));
+        loader.load();
+        return loader.getController();
     }
 
     public void test2() {
@@ -100,7 +111,6 @@ public class App extends Application {
     public App() {
         instance = this;
     }
-
     public static App getInstance() {
         return instance;
     }

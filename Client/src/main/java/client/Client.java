@@ -6,14 +6,18 @@ import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -59,6 +63,8 @@ public class Client implements Runnable {
     BufferedReader br;
     @Getter
     public LinkedBlockingQueue<JSONObject> dataQueue;
+    private final String   data = "Data", userName = "Username", hash = "Password", message = "Message",
+            messagefromUser = "MfU", showLoginofUser = "SLoU";
     private final String ioexception = "Reading a network file and got disconnected.\n" +
             "Reading a local file that was no longer available.\n" +
             "Using some stream to read data and some other process closed the stream.\n" +
@@ -120,7 +126,8 @@ public class Client implements Runnable {
                             login = false;
                             Platform.runLater(() -> {
                                 try {
-                                    app.chatScene();
+                                    ChatController chatController = new ChatController(dataQueue);
+                                    app.chatScene(chatController);
                                 } catch (IOException ioe) {
                                     ioe.printStackTrace();
                                 }
@@ -159,74 +166,21 @@ public class Client implements Runnable {
             }
             logger.info("End of while cycle to login/register");
             logger.info("Start of while cycle which will manage incoming messages");
-            /*while(true)
-            app.test2();*/
+
+
             /*FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/chatScene.fxml"));
-            loader.load();
-            ChatController chatController = loader.getController();
-            while (true) {
-                //new Thread(() -> {
-                jsonObject = dataQueue.take();
-                String s = jsonObject.toString();
-                logger.info("Data taken from dataQueue: " + jsonObject);
-                Platform.runLater(() -> chatController.test("userName", s));
-                //}).start();
-            }*/
+            loader.setController(chatController);*/
 
-            /*Task<JSONObject> task = new Task<JSONObject>() {
-                @Override protected JSONObject call() throws Exception {
-                    JSONObject jsonObject;
-                    jsonObject = dataQueue.take();
-                    return jsonObject;
-                }
-            };
-            Platform.runLater(() -> chatController.test("userName", task.getValue().toString()));*/
 
-            //new Thread(() -> {
-                /*while (true) {
-                    try {
-                        jsonObject = dataQueue.take();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    Platform.runLater(() -> {
-                        try {
-                            String s = jsonObject.toString();
-                            app.test("meno", s);
-                            logger.info("test sprava: " + s);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
-                }
-            //}).start();
-
-            //while (true) {
-
-            //}
-            //Platform.runLater(() -> chatController.test2("meno", jsonObject.toString()));
-                /*new Thread(() -> {
-                    try {
-                        while (true) {
-                            jsonObject = dataQueue.take();
-                            notifyAll();
-                        }
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-
-                }).start();
-                while (true) {
-                    wait();
-                    Platform.runLater(() -> chatController.test2("meno", jsonObject.toString()));
-                }*/
-        } /*catch (IOException ioe) {
-            logger.error(ioexception, ioe);
-        }*/ catch (JSONException jsone) {
+        }  catch (JSONException jsone) {
             logger.error("Error with JSONObject", jsone);
         } catch (InterruptedException ie) {
             logger.error("Waiting thread was interrupted - .TAKE()", ie);
         }
+    }
+
+    public void closeSocket() throws IOException {
+        socket.close();
     }
 
     public PrintWriter getPrintWriter() {

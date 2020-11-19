@@ -131,8 +131,6 @@ public class Server implements Runnable {
             //messageHandler.addToMessages(createJson(SLoU, userName, usersName, null, null));
             //messageHandler.broadcast();
 
-            messageHandler.sendOnlineUsers();
-
             logger.info("Start of while cycle which will manage incoming messages");
             while (!(jsonObject = dataQueue.take()).equals(ENDJSON)) { // bude prijímať správy dokým bude uživateľ online - dokončiť
 

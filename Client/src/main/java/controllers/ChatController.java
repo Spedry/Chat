@@ -1,6 +1,7 @@
 package controllers;
 
 import client.App;
+import client.Client;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -48,7 +49,8 @@ public class ChatController implements Initializable {
     private final String   data = "Data", userName = "Username", hash = "Password", message = "Message",
             messagefromUser = "MfU", showLoginofUser = "SLoU";
     private String jsonObject = null;
-    LinkedBlockingQueue<JSONObject> dataQueue;
+    private Client client;
+    private LinkedBlockingQueue<JSONObject> dataQueue;
     @FXML
     public ListView peopleOnline;
     @FXML
@@ -58,7 +60,8 @@ public class ChatController implements Initializable {
     @FXML
     public VBox chatBox;
 
-    public ChatController(LinkedBlockingQueue<JSONObject> dataQueue) {
+    public ChatController(Client client, LinkedBlockingQueue<JSONObject> dataQueue) {
+        this.client = client;
         this.dataQueue = dataQueue;
     }
 
@@ -69,7 +72,7 @@ public class ChatController implements Initializable {
                 .put(data, new JSONObject()
                         .put(message, messageField.getText()))
                 .toString();
-        App.getInstance().getClient().setInput(jsonObject); //PREROBIŤ
+        client.setInput(jsonObject);
         messageField.clear();
     }
 
@@ -125,6 +128,7 @@ public class ChatController implements Initializable {
         chatBox.getChildren().add(hBox);
 
         logger.info(userName + " " + userMessage);
+        chatMessageScrollPane.setVvalue(1);
     }
 
     public void showOnlineUser(List<String> listofOnlineUsers) {

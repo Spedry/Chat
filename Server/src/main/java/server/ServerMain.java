@@ -9,6 +9,8 @@ import org.apache.logging.log4j.Logger;
 
 public class ServerMain {
 
+    //netstat -ano | findstr :<PORT> == netstat -ano | findstr :50000
+    //taskkill /PID <PID> /F == taskkill /PID XXXXXX /F
     private static final int PORT = 50000;
 
     private static final Logger logger = LogManager.getLogger(ServerMain.class);
@@ -40,7 +42,4 @@ public class ServerMain {
             logger.error("Error during creating connection: " + e.getMessage());
         }
     }
-
-
-
 }

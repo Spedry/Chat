@@ -130,7 +130,7 @@ public class Client implements Runnable {
                             login = false;
                             Platform.runLater(() -> {
                                 try {
-                                    ChatController chatController = new ChatController(dataQueue);
+                                    ChatController chatController = new ChatController(this, dataQueue);
                                     app.chatScene(chatController);
                                 } catch (IOException ioe) {
                                     ioe.printStackTrace();

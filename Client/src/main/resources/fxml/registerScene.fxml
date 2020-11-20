@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Text?>
 
 <?import javafx.scene.layout.VBox?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" styleClass="primary-root" stylesheets="@../css/css.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.LoginController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" styleClass="primary-root" stylesheets="@../css/css.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.RegisterController">
    <children>
       <VBox alignment="CENTER" layoutX="350.0" layoutY="79.0" AnchorPane.bottomAnchor="80.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="80.0">
          <children>

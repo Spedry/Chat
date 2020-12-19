@@ -68,7 +68,8 @@ public class ChatController implements Initializable {
     @FXML
     public void sendOnEnterPress() throws JSONException {
         jsonObject = new JSONObject()
-                .put("ID", messagefromUser) //message from User
+                .put("ID", "Message")
+                .put("Type", messagefromUser) //message from User
                 .put(data, new JSONObject()
                         .put(message, messageField.getText()))
                 .toString();

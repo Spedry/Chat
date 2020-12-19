@@ -12,7 +12,7 @@ II=1
 DC=03-08-2020 18:13:47
 TI=0
 TS=4
-CX=234
+CX=0
 CY=0
 BG=clWindow
 CH=1
@@ -21,8 +21,8 @@ FN=Tahoma
 FS=8
 LN=1033
 ST=
-FL=101110000000100000000000
-SN=10
+FL=101110000000100001000000
+SN=7
 TW=227
 EN=New node
 TB=clWindow
@@ -191,6 +191,25 @@ SS=645
 }
 %-
 LV=1
+ND=asurs
+DI=12
+NF=000000000000000000000000
+BC=clWindow
+IX=0
+SS=239
+%:
+{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
+\pard\f0\fs16\lang1033 CREATE TABLE `chat`.`users` (\par
+  `UserID` INT NOT NULL AUTO_INCREMENT,\par
+  `UserName` VARCHAR(50) NOT NULL,\par
+  `UserHash` VARCHAR(64) NOT NULL,\par
+  `PublicKey` VARCHAR(45) NOT NULL,\par
+  `PrivateKey` VARCHAR(45) NOT NULL,\par
+  PRIMARY KEY (`UserID`));\par
+}
+%-
+LV=1
 ND=com.mysql.jdbc.Driver
 DI=11
 NF=000000000000000000000000
@@ -198,9 +217,9 @@ BC=clWindow
 IX=0
 SS=234
 %:
-{\rtf1\ansi\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat{\fonttbl{\f0\fnil\fcharset0 Tahoma;}}
 {\colortbl ;\red204\green120\blue50;\red152\green118\blue170;\red169\green183\blue198;\red106\green135\blue89;}
-{\*\generator Riched20 10.0.18362}\viewkind4\uc1 
+{\*\generator Riched20 10.0.19041}\viewkind4\uc1 
 \pard\box\brdrdash\brdrw0 \cf1\f0\fs16\lang1033 try \cf2\i\{\line     \cf3\i0 Class.\i forName\cf2 (\cf4\i0 "com.mysql.jdbc.Driver"\cf2\i )\cf1\i0 ;\line     \cf2 logger\cf3 .info\cf2\i (\cf4\i0 "Driver has been registered with the DriverManager"\cf2\i )\cf1\i0 ;\line\cf2\i\} \cf1\i0 catch \cf2\i (\cf3\i0 ClassNotFoundException cnfe\cf2\i ) \{\line     \i0 logger\cf3 .error\cf2\i (\cf4\i0 "No class with specified name could be found."\cf1 , \cf3 cnfe\cf2\i )\cf1\i0 ;\line\cf2\i\}\par
 
 \pard\cf0\i0\par

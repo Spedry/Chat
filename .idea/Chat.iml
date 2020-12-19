@@ -5,8 +5,5 @@
     <content url="file://$MODULE_DIR$" />
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:14.0.2.1" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:14.0.2.1" level="project" />
-    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:14.0.2.1" level="project" />
   </component>
 </module>

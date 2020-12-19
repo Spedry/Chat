@@ -1,7 +1,12 @@
 package server;
 
-import com.mysql.cj.xdevapi.JsonArray;
+import database.GetPublicKey;
+import database.LoginUser;
+import database.RegisterUser;
+import hash.Hashing;
+import lombok.NonNull;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.appender.rolling.action.IfAll;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,10 +16,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import lombok.Getter;
-import lombok.Setter;
 
 public class Server implements Runnable {
     private final Socket prepojenie;
@@ -68,18 +75,6 @@ public class Server implements Runnable {
         }
     }
 
-    private JSONObject createJson(String IDString,
-                              String dataOne, Object objectOne,
-                              String dataTwo, Object objectTwo) throws JSONException {
-        JSONObject dataOfJsonObject = new JSONObject()
-                .put(dataOne, objectOne);
-        if ( dataTwo != null && objectTwo != null)
-                dataOfJsonObject.put(dataTwo, objectTwo);
-        return new JSONObject()
-                .put("ID", IDString)
-                .put(data, dataOfJsonObject);
-    }
-
     @Override
     public void run() {
         try {
@@ -90,67 +85,130 @@ public class Server implements Runnable {
             logger.warn(ioexception, ioe);
         }
         try (BufferedReader br = new BufferedReader(in)) {
+
+            logger.info("Creating thread to handle incoming data");
             Thread incomingDataHandlerThread = new Thread(() -> {
                 incomingDataHandler(br);
             });
-            logger.info("New thread to handle incoming data was created");
             incomingDataHandlerThread.setDaemon(true);
             incomingDataHandlerThread.start();
+            logger.info("New thread to handle incoming data was created");
+
             logger.info("Start of while cycle for login/registration");
-            while (!login) {
-                logger.info("Switch for ID");
-                switch ((jsonObject = dataQueue.take()).getString("ID")) {
-                    case loginofUser:
-                        logger.info("Case for " + loginofUser);
-                        LoginUser loginUser = new LoginUser(jsonObject, data, userName, hash);
-                        if (login = loginUser.Login())
-                            usersName = loginUser.getUsersName();
-                        logger.info("Name set to this thread is: " + usersName);
-                        //login = true;
-                        logger.info("Sending data about successful login");
-                        out.println(createJson("LoU", "Attempt", login, null, null));
-                        break;
-                    case registrationofNewUser:
-                        logger.info("Case for " + registrationofNewUser);
-                        RegisterUser registerUser = new RegisterUser(jsonObject, data, userName, hash);
-                        // možnosť vzniknutia problému kedy je možná uživatela registrovať
-                        // ale nastane chyba teda program si aj napriek chybe bude myslieť
-                        // že sa uživatelové meno nachádzalo v databáze
-                        logger.info("Sending data about successful registration");
-                        out.println(createJson(registrationofNewUser, "Attempt", registerUser.Register(), null, null));
-                        break;
-                    default:
-                        logger.warn("unknown ID");
-                        break;
-                }
-            }
+            logger.info("Switch for ID");
+            enter();
+            if (login) messageHandler.addToClientList(this);
             logger.info("End of while cycle for login/registration");
 
-            if (login) messageHandler.addToClientList(this);
-            //cast(createJson(SLoU, userName, usersName, null, null).toString());
-            //messageHandler.addToMessages(createJson(SLoU, userName, usersName, null, null));
-            //messageHandler.broadcast();
-
             logger.info("Start of while cycle which will manage incoming messages");
-            while (!(jsonObject = dataQueue.take()).equals(ENDJSON)) { // bude prijímať správy dokým bude uživateľ online - dokončiť
-
+            while (!jsonObject.equals(ENDJSON)) { // bude prijímať správy dokým bude uživateľ online - dokončiť
                 logger.info("Data taken from dataQueue: " + jsonObject);
                 String msg = getStringfromJson(message);
                 messageHandler.addToMessages(createJson(messagefromUser, userName, usersName, message, msg));
-                //System.out.println(messageHandler.getMessages());
                 messageHandler.broadcast();
             }
+            logger.info("Ending while cycle for incoming messages");
+
         } catch (IOException ioe) {
             logger.error(ioexception, ioe);
         } catch (JSONException jsone) {
             logger.error("Error with JSONObject", jsone);
         } catch (InterruptedException ie) {
             logger.error("Waiting thread was interrupted - .TAKE()", ie);
+        } catch (NoSuchAlgorithmException nsae) {
+            logger.error("Cryptographic algorithm is requested but is not available in the environment", nsae);
         } finally {
             logger.info("User was disconnected, deleting thread from list ,shutting down the thread...");
             messageHandler.deleteFromClientList(this);
             messageHandler.sendOnlineUsers();
         }
+    }
+    boolean key = true;
+    private void enter() throws InterruptedException, NoSuchAlgorithmException {
+        byte[] salt = null;
+        while(!login) {
+            switch ((jsonObject = dataQueue.take()).getString("ID")) {
+                case loginofUser:
+                    logger.info("Case for " + loginofUser);
+                    if(key) { // prerobiť IF(KEY)!!!!!!!!!!!!
+                        GetPublicKey getPublicKey = new GetPublicKey(jsonObject);
+                        salt = getPublicKey.GetPK();
+                        if (salt == null) logger.info("SALT IS NULL WTF");
+                        out.println(createJson("LoU", "Key", salt, null, null));
+                        key = false;
+                    } else {
+                        logger.info("Creating LoginUser class");
+                        LoginUser loginUser = new LoginUser(jsonObject, salt);
+                        if (login = loginUser.Login())
+                            usersName = loginUser.getUserName();
+                        logger.info("Name set to this thread is: " + usersName);
+                        logger.info("Sending data about successful login");
+                        out.println(createJson("LoU", "Attempt", login, null, null));
+                        key = true;
+                    }
+                    break;
+                case registrationofNewUser: // prerobiť IF(KEY)!!!!!!!!!!!!
+                    logger.info("Case for " + registrationofNewUser);
+                    if (key) {
+                        salt = getPublicKey();
+                        key = false;
+                    } else {
+                        // možnosť vzniknutia problému kedy je možná uživatela registrovať
+                        // ale nastane chyba teda program si aj napriek chybe bude myslieť
+                        // že sa uživatelové meno nachádzalo v databáze
+                        logger.info("sCreating RegisterUser clas");
+                        RegisterUser registerUser = new RegisterUser(jsonObject, salt);
+                        logger.info("Sending data about successful registration");
+                        out.println(createJson(registrationofNewUser, "Attempt", registerUser.Register(), null, null));
+                        key = true;
+                    }
+                    break;
+                default:
+                    logger.warn("unknown Type");
+                    break;
+            }
+        }
+    }
+
+    private byte[] getPublicKey() throws NoSuchAlgorithmException {
+        byte[] salt = null;
+        switch (jsonObject.getString("ID")) {
+            case loginofUser:
+                GetPublicKey getPublicKey = new GetPublicKey(jsonObject);
+                salt = getPublicKey.GetPK();
+                break;
+            case registrationofNewUser:
+                Hashing hashing = new Hashing();
+                logger.info("Generating salt");
+                salt = hashing.generateSalt();
+                logger.info("Salt was generated");
+                logger.info(salt[1]);
+                logger.info("Sending salt to user");
+                out.println(createJson("RoNU", "Key", salt, null, null));
+                logger.info("Salt was send");
+                break;
+        }
+        return salt;
+    }
+
+    private void incomingMessage() {
+
+    }
+
+    void cast(String message) {
+        out.println(message);
+    }
+
+    private JSONObject createJson(@NonNull String IDString,
+                                  @NonNull String dataOne, @NonNull Object objectOne,
+                                  String dataTwo, Object objectTwo) throws JSONException {
+        JSONObject dataOfJsonObject = new JSONObject()
+                .put(dataOne, objectOne);
+        if (dataTwo != null && objectTwo != null)
+            dataOfJsonObject.put(dataTwo, objectTwo);
+        return new JSONObject()
+                .put("ID", IDString)
+                .put(data, dataOfJsonObject);
     }
 
     public String getStringfromJson(String string) throws JSONException {
@@ -163,9 +221,5 @@ public class Server implements Runnable {
                 .put("ID", showLoginofUser)
                 .put(data, jsonArray);
         return jsonObject;
-    }
-
-    void cast(String message) {
-        out.println(message);
     }
 }

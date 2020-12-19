@@ -1,7 +1,9 @@
 package controllers;
 
 import client.App;
+import client.Client;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -11,51 +13,78 @@ import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import client.Client;
+import client.PassHash;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 
 public class RegisterController {
-
+    @FXML
     public PasswordField repeatField;
+    @FXML
     public PasswordField passwordField;
+    @FXML
     public TextField usernameField;
+    @FXML
     public Text errcesMessage;
     public static String jsonObject = null;
-    //Client client = Client.getInstance(); //to get access to the Client class what was created in class App
+    private Client client;
     private final Logger logger = LogManager.getLogger(this.getClass());
+    @Getter
+    private PassHash passHash;
+    private LoginController loginController;
 
+
+    public RegisterController(LoginController loginController, Client client) {
+        this.loginController = loginController;
+        this.client = client;
+    }
+
+    @FXML
     public void registerOnAction() throws JSONException {
-        if(passwordField.getText().equals(repeatField.getText())) { //nahradiť za hash
+        passHash = new PassHash();
+        jsonObject = new JSONObject()
+                .put("ID", "RoNU")
+                .toString();
+        client.setInput(jsonObject);
+    }
+
+    public void registerUser() {
+        if(passwordField.getText().equals(repeatField.getText())) {
             //pridať odpoveď servera na už existujúce username
             //pridať hashing
-            errces("Succes", "green");
+            messageSuccess("Succes", "green");
+            logger.info("Creating jsonobject");
             jsonObject = new JSONObject()
                     .put("ID", "RoNU") //Registration of New User
                     .put("Data", new JSONObject()
                             .put("Username", usernameField.getText())
-                            .put("Password", passwordField.getText())) //nahradiť za hash
-                            .toString();
-            System.out.println(jsonObject);
+                            .put("Password", passHash.hashIt(passwordField.getText())))
+                    .toString();
+            logger.info("Jsonobject was created");
+            logger.info(jsonObject);
         }
         else {
-            errces("Passwords do not match", "red");
+            logger.warn("Passwords do not match");
+            messageSuccess("Passwords do not match", "red");
         }
-        App.getInstance().getClient().setInput(jsonObject);
+        logger.info("Sending data to server");
+        client.setInput(jsonObject);
     }
 
-    public void errces(String message, String color) {
+    public void messageSuccess(String message, String color) {
         errcesMessage.setText(message);
         errcesMessage.setFill(Paint.valueOf(color));
     }
-
-    public void backChangeSceeneOnAction(ActionEvent actionEvent) throws IOException {
-        Parent register = FXMLLoader.load(getClass().getResource("/fxml/loginScene.fxml"));
-        Scene scene = new Scene(register);
+    @FXML
+    public void backChangeSceneOnAction(ActionEvent actionEvent) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/loginScene.fxml"));
+        loader.setController(loginController);
+        Parent registerScene = loader.load();
+        Scene scene = new Scene(registerScene);
         Stage widnow = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         widnow.setScene(scene);
         widnow.show();

@@ -1,6 +1,8 @@
 package client;
 
 import controllers.ChatController;
+import controllers.LoginController;
+import controllers.RegisterController;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +14,9 @@ import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
+import javax.swing.plaf.TreeUI;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -26,19 +31,38 @@ public class Client implements Runnable {
 
     private static volatile Client instance;
     private final Logger logger = LogManager.getLogger(this.getClass());
-    private App app;
-    public Client(App app) {
-        String hostname = null;
-        this.app = app;
-        try {
+    @Setter
+    private LoginController loginController;
+    private final int port = 50000;
+    private final String hostname = "213.160.168.243";
+    private Socket socket;
+    private PrintWriter out;
+    private InputStreamReader in;
+    private JSONObject jsonObject;
+    BufferedReader br;
+    @Getter
+    public LinkedBlockingQueue<JSONObject> dataQueue;
+    private final String   data = "Data", userName = "Username", hash = "Password", message = "Message",
+            messagefromUser = "MfU", showLoginofUser = "SLoU";
+    private final String ioexception = "Reading a network file and got disconnected.\n" +
+            "Reading a local file that was no longer available.\n" +
+            "Using some stream to read data and some other process closed the stream.\n" +
+            "Trying to read/write a file, but don't have permission.\n" +
+            "Trying to write to a file, but disk space was no longer available.\n" +
+            "There are many more examples, but these are the most common, in my experience.";
+    private boolean login = true;
+
+    public Client(LoginController loginController) {
+        this.loginController = loginController;
+        /*try {
             InetAddress ip;
             ip = InetAddress.getLocalHost();
             hostname = ip.getHostName();
         } catch (UnknownHostException uhe) {
             logger.warn("IP address of a host could not be determined", uhe);
-        }
+        }*/
         try {
-            socket = new Socket(hostname, PORT);
+            socket = new Socket(hostname, port);
         } catch (IOException ioe) {
             logger.error(ioexception, ioe);
         }
@@ -55,38 +79,18 @@ public class Client implements Runnable {
         return instance;
     }*/
 
-    static final int PORT = 50000;
-    private Socket socket;
-    private PrintWriter out;
-    private InputStreamReader in;
-    private JSONObject jsonObject;
-    BufferedReader br;
-    @Getter
-    public LinkedBlockingQueue<JSONObject> dataQueue;
-    private final String   data = "Data", userName = "Username", hash = "Password", message = "Message",
-            messagefromUser = "MfU", showLoginofUser = "SLoU";
-    private final String ioexception = "Reading a network file and got disconnected.\n" +
-            "Reading a local file that was no longer available.\n" +
-            "Using some stream to read data and some other process closed the stream.\n" +
-            "Trying to read/write a file, but don't have permission.\n" +
-            "Trying to write to a file, but disk space was no longer available.\n" +
-            "There are many more examples, but these are the most common, in my experience.";
-
-    private boolean login = true;
-
     private void incomingDataHandler(BufferedReader br) throws IOException, JSONException, InterruptedException {
         String data;
         while((data = br.readLine()) != null) {
             logger.info("Data received from while cycle: " + data);
             dataQueue.put(new JSONObject(data)); // .put by mohlo byť nahradené za .add keďže dataQueue nieje omezená
-            System.out.println(data);
         }
         logger.info("While cycle to get messages ended");
         socket.close();
         logger.info("Was socket connected: " + socket.isConnected());
         logger.info("Was socket closed: " + socket.isClosed());
     }
-
+    boolean key = true;
     @Override
     public void run() {
         try {
@@ -107,79 +111,97 @@ public class Client implements Runnable {
                     logger.error("Error with JSONObject", jsone);
                 } catch (InterruptedException ie) {
                     logger.error("Waiting thread was interrupted - .PUT()", ie);
-                } /*finally {
-                    try {
-                        out.close();
-                        in.close();
-                        socket.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }*/
+                }
             });
             logger.info("New thread to handle incoming data was created");
             //incomingDataHandlerThread.setDaemon(true);
             incomingDataHandlerThread.start();
             logger.info("Start of while cycle to login/register");
-            while (login) {
+
+            while (true) {
                 switch ((jsonObject = dataQueue.take()).getString("ID")) {
                     case "LoU":
-                        logger.info("Case for LoU");
-                        if (jsonObject.getJSONObject("Data").getBoolean("Attempt")) {
-                            logger.info("LoU was successful");
-                            login = false;
-                            Platform.runLater(() -> {
-                                try {
-                                    ChatController chatController = new ChatController(this, dataQueue);
-                                    app.chatScene(chatController);
-                                } catch (IOException ioe) {
-                                    ioe.printStackTrace();
-                                }
-                            });
-                            logger.info("Scene was changed to chatScene");
-                        } else
-                            logger.info("LoU was unsuccessful");
+                        if (key) {
+                            setPublicKey();
+                            key = false;
+                        } else {
+                            logger.info("Case for LoU");
+                            if (jsonObject.getJSONObject("Data").getBoolean("Attempt")) {
+                                logger.info("LoU was successful");
+                                login = false;
+                                Platform.runLater(() -> {
+                                    try {
+                                        ChatController chatController = new ChatController(this, dataQueue);
+                                        loginController.chatScene(chatController);
+                                    } catch (IOException ioe) {
+                                        ioe.printStackTrace();
+                                    }
+                                });
+                                logger.info("Scene was changed to chatScene");
+                            } else
+                                logger.info("LoU was unsuccessful");
+                            key = true;
+                        }
                         break;
                     case "RoNU":
-                        logger.info("RoNU was successful");
-                        if (jsonObject.getJSONObject("Data").getBoolean("Attempt")) {
-                            Timer timer = new Timer();
-                            timer.schedule(
-                                    new TimerTask() {
-                                        @Override
-                                        public void run() {
-                                            Platform.runLater(() -> {
-                                                try {
-                                                    app.registrationsSuccessful();
-                                                } catch (IOException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            });
-                                            timer.cancel();
-                                        }
-                                    }, 5000
-                            );
-                            logger.info("Scene was changed to loginScene");
-                        } else
-                            logger.info("RuNU was unsuccessful");
+                        if (key) {
+                            setPublicKey();
+                            key = false;
+                        } else {
+                            logger.info("Case for RoNU");
+                            if (jsonObject.getJSONObject("Data").getBoolean("Attempt")) {
+                                logger.info("RoNU was successful");
+                                Timer timer = new Timer();
+                                timer.schedule(
+                                        new TimerTask() {
+                                            @Override
+                                            public void run() {
+                                                Platform.runLater(() -> {
+                                                    try {
+                                                        loginController.backToLoginScene(loginController);
+                                                    } catch (IOException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                });
+                                                timer.cancel();
+                                            }
+                                        }, 3000
+                                );
+                                logger.info("Scene was changed to loginScene");
+                            } else
+                                logger.info("RuNU was unsuccessful");
+                            key = true;
+                        }
                         break;
                     default:
                         logger.warn("unknown ID");
                         break;
                 }
             }
-            logger.info("End of while cycle to login/register");
-            logger.info("Start of while cycle which will manage incoming messages");
-
+            //logger.info("End of while cycle to login/register");
+            //logger.info("Start of while cycle which will manage incoming messages");
 
             /*FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/chatScene.fxml"));
             loader.setController(chatController);*/
-
 
         }  catch (JSONException jsone) {
             logger.error("Error with JSONObject", jsone);
         } catch (InterruptedException ie) {
             logger.error("Waiting thread was interrupted - .TAKE()", ie);
+        }
+    }
+
+    private void setPublicKey() {
+
+        switch (jsonObject.getString("ID")) {
+            case "LoU":
+                loginController.getPassHash().setSalt(jsonObject);
+                loginController.loginUser();
+                break;
+            case "RoNU":
+                loginController.getRegisterController().getPassHash().setSalt(jsonObject);
+                loginController.getRegisterController().registerUser();
+                break;
         }
     }
 

@@ -28,7 +28,7 @@ public class GetPublicKey {
                 Statement stmt = conn.createStatement()
         ) {
             logger.info("Successfully connected to database");
-            logger.info("SELECT");
+            logger.info("Creating SELECT");
             String SELECT = "SELECT PublicKey, UserName FROM Users WHERE UserName = \'" + userName + "\'";
             logger.debug("SELECT is: " + SELECT);
             ResultSet QUERY = stmt.executeQuery(SELECT);
@@ -36,7 +36,6 @@ public class GetPublicKey {
                 logger.info(QUERY.getString("UserName"));
                 if(QUERY.getString("UserName").equals(userName)) {
                     salt = QUERY.getBytes("PublicKey");
-                    logger.info(QUERY.getString("PublicKey"));
                 }
             }
         } catch (SQLException sqle) {
@@ -44,21 +43,6 @@ public class GetPublicKey {
         } catch (JSONException jsone) {
             logger.error("Error with JSONObject", jsone);
         }
-        logger.info(salt);
-        bytesToHex(salt);
         return salt;
-    }
-
-    private String bytesToHex(byte[] salt) {
-        logger.info("Bytes to hex");
-        logger.info(salt);
-        byte[] test = salt;
-        logger.info(test);
-        StringBuilder sb = new StringBuilder();
-        for (byte b : salt) {
-            sb.append(String.format("%02x", b));
-        }
-        logger.info("Hex: " + sb.toString());
-        return sb.toString();
     }
 }

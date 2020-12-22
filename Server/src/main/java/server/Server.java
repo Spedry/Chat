@@ -6,7 +6,6 @@ import database.RegisterUser;
 import hash.Hashing;
 import lombok.NonNull;
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.core.appender.rolling.action.IfAll;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,8 +16,6 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import lombok.Getter;
@@ -98,12 +95,13 @@ public class Server implements Runnable {
             logger.info("Switch for ID");
             enter();
             if (login) messageHandler.addToClientList(this);
+            messageHandler.sendOnlineUsers();
             logger.info("End of while cycle for login/registration");
 
             logger.info("Start of while cycle which will manage incoming messages");
-            while (!jsonObject.equals(ENDJSON)) { // bude prijímať správy dokým bude uživateľ online - dokončiť
+            while (!(jsonObject = dataQueue.take()).equals(ENDJSON)) { // bude prijímať správy dokým bude uživateľ online - dokončiť
                 logger.info("Data taken from dataQueue: " + jsonObject);
-                String msg = getStringfromJson(message);
+                String msg = extractData(message);
                 messageHandler.addToMessages(createJson(messagefromUser, userName, usersName, message, msg));
                 messageHandler.broadcast();
             }
@@ -133,8 +131,9 @@ public class Server implements Runnable {
                     if(key) { // prerobiť IF(KEY)!!!!!!!!!!!!
                         GetPublicKey getPublicKey = new GetPublicKey(jsonObject);
                         salt = getPublicKey.GetPK();
+                        String encodedString = org.apache.commons.codec.binary.Base64.encodeBase64String(salt);
                         if (salt == null) logger.info("SALT IS NULL WTF");
-                        out.println(createJson("LoU", "Key", salt, null, null));
+                        out.println(createJson("LoU", "Key", encodedString, null, null));
                         key = false;
                     } else {
                         logger.info("Creating LoginUser class");
@@ -172,24 +171,17 @@ public class Server implements Runnable {
 
     private byte[] getPublicKey() throws NoSuchAlgorithmException {
         byte[] salt = null;
-        switch (jsonObject.getString("ID")) {
-            case loginofUser:
-                GetPublicKey getPublicKey = new GetPublicKey(jsonObject);
-                salt = getPublicKey.GetPK();
-                break;
-            case registrationofNewUser:
-                Hashing hashing = new Hashing();
-                logger.info("Generating salt");
-                salt = hashing.generateSalt();
-                logger.info("Salt was generated");
-                logger.info(salt[1]);
-                logger.info("Sending salt to user");
-                out.println(createJson("RoNU", "Key", salt, null, null));
-                logger.info("Salt was send");
-                break;
-        }
+        Hashing hashing = new Hashing();
+        logger.info("Generating salt");
+        salt = hashing.generateSalt();
+        String encodedString = org.apache.commons.codec.binary.Base64.encodeBase64String(salt);
+        logger.info("Salt was generated");
+        logger.info("Sending salt to user");
+        out.println(createJson("RoNU", "Key", encodedString, null, null));
+        logger.info("Salt was send");
         return salt;
     }
+
 
     private void incomingMessage() {
 
@@ -211,8 +203,9 @@ public class Server implements Runnable {
                 .put(data, dataOfJsonObject);
     }
 
-    public String getStringfromJson(String string) throws JSONException {
-        return jsonObject.getJSONObject(data).getString(string);
+    public String extractData(String typeOfData) throws JSONException {
+        logger.info("TEST: " + jsonObject);
+        return jsonObject.getJSONObject(data).getString(typeOfData);
     }
 
     public JSONObject createJsonListofUsers(List<String> listofOnlineUsers) {

@@ -118,7 +118,7 @@ public class Client implements Runnable {
             incomingDataHandlerThread.start();
             logger.info("Start of while cycle to login/register");
 
-            while (true) {
+            while (login) {
                 switch ((jsonObject = dataQueue.take()).getString("ID")) {
                     case "LoU":
                         if (key) {

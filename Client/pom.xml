@@ -85,6 +85,13 @@
             <version>1.18.12</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.6</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
 

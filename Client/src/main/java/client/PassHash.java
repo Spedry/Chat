@@ -51,11 +51,10 @@ public class PassHash {
 
     public void setSalt(@NonNull JSONObject jsonObject) {
         logger.info("Setting salt");
-        logger.info(jsonObject.toString());
-        logger.info(jsonObject.getJSONObject("Data"));
-        logger.info(jsonObject.getJSONObject("Data").toString().getBytes(StandardCharsets.UTF_8));
-        salt = jsonObject.getJSONObject("Data").toString().getBytes(StandardCharsets.UTF_8);
-        logger.info("Salt was set: " + salt);
+        logger.info(jsonObject);
+        String getBackEncodedString = jsonObject.getJSONObject("Data").getString("Key");
+        this.salt = org.apache.commons.codec.binary.Base64.decodeBase64(getBackEncodedString);
+        logger.info("Salt was set: " + Arrays.toString(salt));
     }
 
     /*private byte[] setSalt() throws NoSuchAlgorithmException {

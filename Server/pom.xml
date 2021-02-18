@@ -34,7 +34,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib</classpathPrefix>
-                            <mainClass>server.ServerMain</mainClass>
+                            <mainClass>clientHandler.ServerMain</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

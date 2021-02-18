@@ -8,14 +8,14 @@
         <Console name="console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level [%L] - %msg%n" />
         </Console>
-        <File name="fileLogger-server" fileName="${log-path}/server.log" immediateFlush="true" append="false">
+        <File name="fileLogger-clientHandler" fileName="${log-path}/clientHandler.log" immediateFlush="true" append="false">
             <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level [%L] - %msg%n"/>
         </File>
     </Appenders>
 
     <Loggers>
         <Root level="debug">
-            <AppenderRef ref="fileLogger-server"/>
+            <AppenderRef ref="fileLogger-clientHandler"/>
             <AppenderRef ref="console" />
         </Root>
     </Loggers>

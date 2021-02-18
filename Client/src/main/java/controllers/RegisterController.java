@@ -1,7 +1,6 @@
 package controllers;
 
-import client.App;
-import client.Client;
+import client.MessageSender;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +15,7 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import client.PassHash;
+import Hashing.Hashing;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.IOException;
@@ -30,40 +29,37 @@ public class RegisterController {
     public TextField usernameField;
     @FXML
     public Text errcesMessage;
-    public static String jsonObject = null;
-    private Client client;
+    public JSONObject jsonObject = null;
+    private MessageSender messageSender;
     private final Logger logger = LogManager.getLogger(this.getClass());
     @Getter
-    private PassHash passHash;
+    private Hashing hashing;
     private LoginController loginController;
 
 
-    public RegisterController(LoginController loginController, Client client) {
+    public RegisterController(LoginController loginController, MessageSender messageSender) {
         this.loginController = loginController;
-        this.client = client;
+        this.messageSender = messageSender;
     }
 
     @FXML
     public void registerOnAction() throws JSONException {
-        passHash = new PassHash();
+        hashing = new Hashing();
         jsonObject = new JSONObject()
-                .put("ID", "RoNU")
-                .toString();
-        client.setInput(jsonObject);
+                .put("ID", "RoNU");
+        messageSender.printWriter(jsonObject);
     }
 
     public void registerUser() {
         if(passwordField.getText().equals(repeatField.getText())) {
             //pridať odpoveď servera na už existujúce username
-            //pridať hashing
             messageSuccess("Succes", "green");
             logger.info("Creating jsonobject");
             jsonObject = new JSONObject()
                     .put("ID", "RoNU") //Registration of New User
                     .put("Data", new JSONObject()
                             .put("Username", usernameField.getText())
-                            .put("Password", passHash.hashIt(passwordField.getText())))
-                    .toString();
+                            .put("Password", hashing.hashIt(passwordField.getText())));
             logger.info("Jsonobject was created");
             logger.info(jsonObject);
         }
@@ -72,7 +68,7 @@ public class RegisterController {
             messageSuccess("Passwords do not match", "red");
         }
         logger.info("Sending data to server");
-        client.setInput(jsonObject);
+        messageSender.printWriter(jsonObject);
     }
 
     public void messageSuccess(String message, String color) {

@@ -43,7 +43,7 @@
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.framework</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.osgi</groupId>
@@ -53,34 +53,34 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.eclipse.tycho</groupId>
       <artifactId>org.eclipse.osgi</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-core</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <!-- Required for JSON support -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-core</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <!-- Required for JSON support -->
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-databind</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
   <build>
@@ -178,7 +178,7 @@
           <execution>
             <id>default</id>
             <goals>
-              <goal>test-jar</goal>
+              <goal>buttonController-jar</goal>
             </goals>
             <configuration>
               <archive>

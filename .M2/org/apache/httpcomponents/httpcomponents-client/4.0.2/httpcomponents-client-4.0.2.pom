@@ -33,11 +33,11 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.apache.httpcomponents</groupId>
-  <artifactId>httpcomponents-client</artifactId>
+  <artifactId>httpcomponents-clientSide</artifactId>
   <name>HttpComponents Client</name>
   <version>4.0.2</version>
-  <description>Components to build client side HTTP services</description>
-  <url>http://hc.apache.org/httpcomponents-client</url>
+  <description>Components to build clientSide side HTTP services</description>
+  <url>http://hc.apache.org/httpcomponents-clientSide</url>
   <inceptionYear>1999</inceptionYear>
   <packaging>pom</packaging>
 
@@ -192,10 +192,10 @@
           <htmlCustomization>src/docbkx/resources/xsl/html_chunk.xsl</htmlCustomization>
           <htmlStylesheet>css/hc-tutorial.css</htmlStylesheet>
           <entities>
-            <entity>
+            <room>
               <name>version</name>
               <value>${pom.version}</value>
-            </entity>
+            </room>
           </entities>
           <postProcess>
             <copy todir="target/site/tutorial">

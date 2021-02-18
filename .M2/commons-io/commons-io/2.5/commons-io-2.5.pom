@@ -229,7 +229,7 @@ file comparators, endian transformation classes, and much more.
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 
@@ -277,7 +277,7 @@ file comparators, endian transformation classes, and much more.
           <!-- limit memory size see IO-161 -->
           <argLine>-Xmx25M</argLine>
           <includes>
-            <!-- Only include test classes, not test data -->
+            <!-- Only include buttonController classes, not buttonController data -->
             <include>**/*Test*.class</include>
           </includes>
           <excludes>
@@ -314,8 +314,8 @@ file comparators, endian transformation classes, and much more.
         <!-- Must agree with report section RAT config -->
         <configuration>
           <excludes>
-            <exclude>src/test/resources/**/*.bin</exclude>
-            <exclude>test/**</exclude>
+            <exclude>src/buttonController/resources/**/*.bin</exclude>
+            <exclude>buttonController/**</exclude>
 
             <!-- The next 3 excludes can be dropped when using CP30 -->
             <exclude>site-content/**</exclude>
@@ -360,8 +360,8 @@ file comparators, endian transformation classes, and much more.
         <!-- Must agree with build section RAT config -->
         <configuration>
           <excludes>
-            <exclude>src/test/resources/**/*.bin</exclude>
-            <exclude>test/**</exclude>
+            <exclude>src/buttonController/resources/**/*.bin</exclude>
+            <exclude>buttonController/**</exclude>
 
             <!-- The next 3 excludes can be dropped when using CP30 -->
             <exclude>site-content/**</exclude>

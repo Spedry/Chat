@@ -95,7 +95,7 @@
     <!-- Site omitted - each project must provide their own -->
 
     <!-- Release Repository (with staging):
-         Refer to this server in your settings.xml using the 'ow2.release' ID -->
+         Refer to this clientHandler in your settings.xml using the 'ow2.release' ID -->
     <repository>
       <id>ow2.release</id>
       <name>OW2 Maven Releases Repository</name>
@@ -103,7 +103,7 @@
     </repository>
 
     <!-- Snapshots Repository:
-         Refer to this server in your settings.xml using the 'ow2.snapshot' ID -->
+         Refer to this clientHandler in your settings.xml using the 'ow2.snapshot' ID -->
     <snapshotRepository>
       <id>ow2.snapshot</id>
       <name>OW2 Maven Snapshots Repository</name>

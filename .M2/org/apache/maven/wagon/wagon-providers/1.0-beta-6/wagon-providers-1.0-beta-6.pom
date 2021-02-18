@@ -40,7 +40,7 @@ under the License.
     <module>wagon-scm</module>
     <module>wagon-ssh-external</module>
     <module>wagon-ssh-common</module>
-    <module>wagon-ssh-common-test</module>
+    <module>wagon-ssh-common-buttonController</module>
     <module>wagon-ssh</module>
     <module>wagon-webdav-jackrabbit</module>
   </modules>
@@ -52,8 +52,8 @@ under the License.
     </dependency>
     <dependency>
       <groupId>org.apache.maven.wagon</groupId>
-      <artifactId>wagon-provider-test</artifactId>
-      <scope>test</scope>
+      <artifactId>wagon-provider-buttonController</artifactId>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 </project>

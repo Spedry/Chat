@@ -127,15 +127,15 @@
         <artifactId>slf4j-simple</artifactId>
         <version>${slf4j.version}</version>
         <type>jar</type>
-        <scope>test</scope>
+        <scope>buttonController</scope>
       </dependency>
 
-      <!-- Standard test -->
+      <!-- Standard buttonController -->
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>4.8.2</version>
-        <scope>test</scope>
+        <scope>buttonController</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -155,9 +155,9 @@
               </goals>
             </execution>
             <execution>
-              <id>process-test-classes</id>
+              <id>process-buttonController-classes</id>
               <goals>
-                <goal>generate-test-metadata</goal>
+                <goal>generate-buttonController-metadata</goal>
               </goals>
             </execution>
           </executions>

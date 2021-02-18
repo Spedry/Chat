@@ -936,7 +936,7 @@ under the License.
             <headerLocation>config/maven-header.txt</headerLocation>
             <!-- workaround to avoid analysing generated content (Modello, plugin help mojo, ...) -->
             <sourceDirectory>src/main/java</sourceDirectory>
-            <testSourceDirectory>src/test/java</testSourceDirectory>
+            <testSourceDirectory>src/buttonController/java</testSourceDirectory>
           </configuration>
         </plugin>
         <plugin>
@@ -1195,7 +1195,7 @@ under the License.
                 <id>default</id>
                 <reports>
                   <report>jxr</report>
-                  <report>test-jxr</report>
+                  <report>buttonController-jxr</report>
                 </reports>
               </reportSet>
             </reportSets>
@@ -1266,7 +1266,7 @@ under the License.
                 <id>default</id>
                 <reports>
                   <report>javadoc</report>
-                  <report>test-javadoc</report>
+                  <report>buttonController-javadoc</report>
                 </reports>
               </reportSet>
             </reportSets>

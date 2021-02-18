@@ -24,7 +24,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.3</version>
         <configuration>
-          <!-- required to ensure the test classes are used, not surefire's plexus-utils -->
+          <!-- required to ensure the buttonController classes are used, not surefire's plexus-utils -->
           <childDelegation>true</childDelegation>
           <excludes>
             <exclude>org/codehaus/plexus/util/FileBasedTestCase.java</exclude>

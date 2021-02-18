@@ -38,13 +38,13 @@ See the Apache License Version 2.0 for the specific language governing permissio
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.sonatype.aether</groupId>
-      <artifactId>aether-test-util</artifactId>
+      <artifactId>aether-buttonController-util</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 

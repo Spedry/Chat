@@ -37,7 +37,7 @@ under the License.
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 </project>

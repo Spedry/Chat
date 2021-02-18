@@ -43,7 +43,7 @@
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-container-default</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
       <version>1.0-alpha-30</version>
     </dependency>
     <dependency>
@@ -61,7 +61,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
 
   </dependencies>
@@ -130,7 +130,7 @@
         <executions>
           <execution>
             <id>sniff</id>
-            <phase>test</phase>
+            <phase>buttonController</phase>
             <goals>
               <goal>check</goal>
             </goals>

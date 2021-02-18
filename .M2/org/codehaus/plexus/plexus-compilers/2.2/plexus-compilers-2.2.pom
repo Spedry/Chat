@@ -25,7 +25,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -33,8 +33,8 @@
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
-      <artifactId>plexus-compiler-test</artifactId>
-      <scope>test</scope>
+      <artifactId>plexus-compiler-buttonController</artifactId>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
   

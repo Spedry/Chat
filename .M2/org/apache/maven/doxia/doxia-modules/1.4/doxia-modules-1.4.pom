@@ -63,12 +63,12 @@ under the License.
       <artifactId>plexus-component-annotations</artifactId>
     </dependency>
 
-    <!-- test -->
+    <!-- buttonController -->
     <dependency>
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-core</artifactId>
-      <type>test-jar</type>
-      <scope>test</scope>
+      <type>buttonController-jar</type>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 </project>

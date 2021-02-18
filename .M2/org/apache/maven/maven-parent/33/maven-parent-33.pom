@@ -954,7 +954,7 @@ under the License.
               <sourceDirectory>src/main/java</sourceDirectory>
             </sourceDirectories>
             <testSourceDirectories>
-              <testSourceDirectory>src/test/java</testSourceDirectory>
+              <testSourceDirectory>src/buttonController/java</testSourceDirectory>
             </testSourceDirectories>
           </configuration>
           <dependencies>
@@ -1303,7 +1303,7 @@ under the License.
                 <id>default</id>
                 <reports>
                   <report>jxr</report>
-                  <report>test-jxr</report>
+                  <report>buttonController-jxr</report>
                 </reports>
               </reportSet>
             </reportSets>
@@ -1362,7 +1362,7 @@ under the License.
                 <id>default</id>
                 <reports>
                   <report>javadoc</report>
-                  <report>test-javadoc</report>
+                  <report>buttonController-javadoc</report>
                 </reports>
               </reportSet>
             </reportSets>

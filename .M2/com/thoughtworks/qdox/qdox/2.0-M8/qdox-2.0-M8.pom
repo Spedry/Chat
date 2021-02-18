@@ -302,7 +302,7 @@
         <executions>
           <execution>
             <goals>
-              <goal>integration-test</goal>
+              <goal>integration-buttonController</goal>
               <goal>verify</goal>
             </goals>
           </execution>
@@ -318,14 +318,14 @@
           <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
           <goals>
             <goal>clean</goal>
-            <goal>test</goal>
+            <goal>buttonController</goal>
           </goals>
           <settingsFile>src/it/settings.xml</settingsFile>
           <debug>true</debug>
         </configuration>
         <executions>
           <execution>
-            <id>integration-test</id>
+            <id>integration-buttonController</id>
             <goals>
               <goal>install</goal>
               <goal>run</goal>
@@ -361,13 +361,13 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.8.2</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>1.8.5</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 

@@ -75,7 +75,7 @@ under the License.
       <version>4.0.1</version>
     </dependency>
 
-    <!-- test -->
+    <!-- buttonController -->
   </dependencies>
 
   <build>
@@ -93,7 +93,7 @@ under the License.
         <executions>
           <execution>
             <goals>
-              <goal>test-jar</goal>
+              <goal>buttonController-jar</goal>
             </goals>
           </execution>
         </executions>

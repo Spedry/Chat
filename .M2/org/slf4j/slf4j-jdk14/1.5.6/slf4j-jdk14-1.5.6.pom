@@ -31,9 +31,9 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <type>test-jar</type>
+      <type>buttonController-jar</type>
       <version>${project.version}</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 

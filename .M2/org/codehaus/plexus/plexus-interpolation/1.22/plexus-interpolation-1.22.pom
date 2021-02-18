@@ -28,7 +28,7 @@
         <configuration>
           <!-- olamy: exclude files with strange names as failed here on osx -->
           <checkModificationExcludes>
-            <checkModificationExclude>**/src/test/resources/utf8/**</checkModificationExclude>
+            <checkModificationExclude>**/src/buttonController/resources/utf8/**</checkModificationExclude>
           </checkModificationExcludes>
         </configuration>
       </plugin>
@@ -40,7 +40,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.11</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
       

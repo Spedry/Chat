@@ -275,9 +275,9 @@ property of their respective owners.
  #
  #  In the case where the program, whether in its original form or
  #  modified, was distributed or delivered to or received by a user from
- #  any person, organization or entity other than ICOT, unless it makes or
+ #  any person, organization or room other than ICOT, unless it makes or
  #  grants independently of ICOT any specific warranty to the user in
- #  writing, such person, organization or entity, will also be exempted
+ #  writing, such person, organization or room, will also be exempted
  #  from and not be held liable to the user for any such damages as noted
  #  above as far as the program is concerned.
  #

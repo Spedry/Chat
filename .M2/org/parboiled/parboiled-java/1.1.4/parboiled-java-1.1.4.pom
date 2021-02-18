@@ -40,13 +40,13 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>5.14.1</version>
-            <scope>test</scope>
+            <scope>buttonController</scope>
         </dependency>
         <dependency>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest_2.10.0-RC3</artifactId>
             <version>1.8-B1</version>
-            <scope>test</scope>
+            <scope>buttonController</scope>
         </dependency>
         <dependency>
             <groupId>org.ow2.asm</groupId>

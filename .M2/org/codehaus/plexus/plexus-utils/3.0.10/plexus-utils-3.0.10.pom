@@ -51,7 +51,7 @@ limitations under the License.
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
-          <!-- required to ensure the test classes are used, not surefire's plexus-utils -->
+          <!-- required to ensure the buttonController classes are used, not surefire's plexus-utils -->
           <childDelegation>true</childDelegation>
           <excludes>
             <exclude>org/codehaus/plexus/util/FileBasedTestCase.java</exclude>

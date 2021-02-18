@@ -4,7 +4,7 @@
   <artifactId>commons-httpclient</artifactId>
   <name>HttpClient</name>
   <version>3.0</version>
-  <description>The HttpClient  component supports the client-side of RFC 1945 (HTTP/1.0)  and RFC 2616 (HTTP/1.1) , several related specifications (RFC 2109 (Cookies) , RFC 2617 (HTTP Authentication) , etc.), and provides a framework by which new request types (methods) or HTTP extensions can be created easily.</description>
+  <description>The HttpClient  component supports the clientSide-side of RFC 1945 (HTTP/1.0)  and RFC 2616 (HTTP/1.1) , several related specifications (RFC 2109 (Cookies) , RFC 2617 (HTTP Authentication) , etc.), and provides a framework by which new request types (methods) or HTTP extensions can be created easily.</description>
   <url>http://jakarta.apache.org/commons/httpclient/</url>
   <issueManagement>
     <url>http://issues.apache.org/bugzilla/buglist.cgi?query_format=advanced&amp;short_desc_type=allwordssubstr&amp;short_desc=&amp;product=HttpClient&amp;component=Commons+HttpClient&amp;long_desc_type=allwordssubstr&amp;long_desc=&amp;bug_file_loc_type=allwordssubstr&amp;bug_file_loc=&amp;keywords_type=anywords&amp;keywords=&amp;bug_status=UNCONFIRMED&amp;bug_status=NEW&amp;bug_status=ASSIGNED&amp;bug_status=REOPENED&amp;bug_status=NEEDINFO&amp;emailassigned_to1=1&amp;emailtype1=substring&amp;email1=&amp;emailreporter2=1&amp;emailtype2=substring&amp;email2=&amp;bugidtype=include&amp;bug_id=&amp;votes=&amp;chfieldfrom=&amp;chfieldto=Now&amp;chfieldvalue=&amp;cmdtype=doit&amp;order=Reuse+same+sort+as+last+time&amp;field0-0-0=noop&amp;type0-0-0=noop&amp;value0-0-0=</url>
@@ -192,10 +192,10 @@
   </organization>
   <build>
     <sourceDirectory>src/java</sourceDirectory>
-    <testSourceDirectory>src/test</testSourceDirectory>
+    <testSourceDirectory>src/buttonController</testSourceDirectory>
     <testResources>
       <testResource>
-        <directory>src/test</directory>
+        <directory>src/buttonController</directory>
         <includes>
           <include>**/*.keystore</include>
         </includes>

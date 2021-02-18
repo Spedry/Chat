@@ -131,12 +131,12 @@
     <module>extras/win32service</module>
     <!--module>extras/gwt</module-->
     <module>extras/threadpool</module>
-    <module>extras/client</module>
+    <module>extras/clientSide</module>
     <module>extras/jetty-java5-stats</module>
 
-    <module>examples/test-webapp</module>
-    <module>examples/test-jaas-webapp</module>
-    <module>examples/test-jndi-webapp</module>
+    <module>examples/buttonController-webapp</module>
+    <module>examples/buttonController-jaas-webapp</module>
+    <module>examples/buttonController-jndi-webapp</module>
     <module>examples/embedded</module>
     <!-- <module>examples/spring-ebj3-demo</module> -->
     <module>examples/tests</module>
@@ -203,7 +203,7 @@
     </dependencies>
   </dependencyManagement>
   <properties>
-    <test-test>${basedir}</test-test>
+    <buttonController-buttonController>${basedir}</buttonController-buttonController>
     <servlet-version>2.5-20081211</servlet-version>
     <jsp21-version>2.1.v20091210</jsp21-version>
     <activation-version>1.1</activation-version>

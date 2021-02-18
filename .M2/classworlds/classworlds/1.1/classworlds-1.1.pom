@@ -76,7 +76,7 @@
   </organization>
   <build>
     <sourceDirectory>src/java/main</sourceDirectory>
-    <testSourceDirectory>src/java/test</testSourceDirectory>
+    <testSourceDirectory>src/java/buttonController</testSourceDirectory>
     <plugins>
       <plugin>
         <artifactId>surefire</artifactId>

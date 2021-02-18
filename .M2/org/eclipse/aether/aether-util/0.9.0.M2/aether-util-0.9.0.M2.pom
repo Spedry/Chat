@@ -38,13 +38,13 @@
     </dependency>
     <dependency>
       <groupId>org.eclipse.aether</groupId>
-      <artifactId>aether-test-util</artifactId>
-      <scope>test</scope>
+      <artifactId>aether-buttonController-util</artifactId>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 

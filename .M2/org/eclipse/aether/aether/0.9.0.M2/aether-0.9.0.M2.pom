@@ -117,7 +117,7 @@
     <module>aether-spi</module>
     <module>aether-util</module>
     <module>aether-impl</module>
-    <module>aether-test-util</module>
+    <module>aether-buttonController-util</module>
     <module>aether-connector-file</module>
     <module>aether-connector-wagon</module>
     <module>aether-connector-asynchttpclient</module>
@@ -170,16 +170,16 @@
       </dependency>
       <dependency>
         <groupId>org.eclipse.aether</groupId>
-        <artifactId>aether-test-util</artifactId>
+        <artifactId>aether-buttonController-util</artifactId>
         <version>${project.version}</version>
-        <scope>test</scope>
+        <scope>buttonController</scope>
       </dependency>
 
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>4.8.2</version>
-        <scope>test</scope>
+        <scope>buttonController</scope>
       </dependency>
 
       <dependency>
@@ -227,7 +227,7 @@
           <executions>
             <execution>
               <id>create-manifest</id>
-              <phase>process-test-classes</phase>
+              <phase>process-buttonController-classes</phase>
               <goals>
                 <goal>manifest</goal>
               </goals>
@@ -496,7 +496,7 @@
                     <!-- CQ #5632 -->
                     <include>org.apache.maven.wagon:wagon-provider-api:1.0</include>
                     <!-- CQ #6816 -->
-                    <include>com.ning:async-http-client:1.7.6</include>
+                    <include>com.ning:async-http-clientSide:1.7.6</include>
                     <!-- CQ #6817 -->
                     <include>io.netty:netty:3.4.4.Final</include>
                     <!-- CQ #5635 -->
@@ -510,12 +510,12 @@
                     <!-- CQ #5641, #5638, #5639, #5640 -->
                     <include>org.sonatype.sisu:sisu-inject-bean:2.3.0</include>
                     <!-- CQ #5660 -->
-                    <include>ch.qos.logback:*:*:*:test</include>
-                    <include>org.apache.maven.wagon:wagon-http-lightweight:*:*:test</include>
-                    <include>org.eclipse.jetty:*:*:*:test</include>
-                    <include>org.mortbay.jetty:*:*:*:test</include>
-                    <include>org.sonatype.http-testing-harness:*:*:*:test</include>
-                    <include>javax.servlet:*:*:*:test</include>
+                    <include>ch.qos.logback:*:*:*:buttonController</include>
+                    <include>org.apache.maven.wagon:wagon-http-lightweight:*:*:buttonController</include>
+                    <include>org.eclipse.jetty:*:*:*:buttonController</include>
+                    <include>org.mortbay.jetty:*:*:*:buttonController</include>
+                    <include>org.sonatype.http-testing-harness:*:*:*:buttonController</include>
+                    <include>javax.servlet:*:*:*:buttonController</include>
                   </includes>
                 </bannedDependencies>
               </rules>
@@ -711,7 +711,7 @@
                         <artifactId>sisu-maven-plugin</artifactId>
                         <versionRange>[1.1,)</versionRange>
                         <goals>
-                          <goal>test-index</goal>
+                          <goal>buttonController-index</goal>
                           <goal>main-index</goal>
                         </goals>
                       </pluginExecutionFilter>

@@ -138,9 +138,9 @@
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
     <scriptSourceDirectory>src/main/scripts</scriptSourceDirectory>
-    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <testSourceDirectory>src/buttonController/java</testSourceDirectory>
     <outputDirectory>target/classes</outputDirectory>
-    <testOutputDirectory>target/test-classes</testOutputDirectory>
+    <testOutputDirectory>target/buttonController-classes</testOutputDirectory>
     <resources>
       <resource>
         <directory>src/main/resources</directory>
@@ -148,7 +148,7 @@
     </resources>
     <testResources>
       <testResource>
-        <directory>src/test/resources</directory>
+        <directory>src/buttonController/resources</directory>
       </testResource>
     </testResources>
     <directory>target</directory>
@@ -208,7 +208,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>classworlds</groupId>

@@ -298,7 +298,7 @@ limitations under the License.
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.2</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 
@@ -505,7 +505,7 @@ limitations under the License.
               <reportSet>
                 <reports>
                   <report>javadoc</report>
-                  <report>test-javadoc</report>
+                  <report>buttonController-javadoc</report>
                 </reports>
               </reportSet>
             </reportSets>

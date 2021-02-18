@@ -20,7 +20,7 @@
     <module>plexus-compiler-api</module>
     <module>plexus-compiler-manager</module>
     <module>plexus-compilers</module>
-    <module>plexus-compiler-test</module>
+    <module>plexus-compiler-buttonController</module>
   </modules>
 
   <scm>
@@ -55,13 +55,13 @@
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>
-        <artifactId>plexus-compiler-test</artifactId>
+        <artifactId>plexus-compiler-buttonController</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <scope>test</scope>
+        <scope>buttonController</scope>
         <version>4.12</version>
       </dependency>
     </dependencies>
@@ -75,7 +75,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 
@@ -134,7 +134,7 @@
 
         <executions>
           <execution>
-            <phase>test</phase>
+            <phase>buttonController</phase>
             <goals>
               <goal>check</goal>
             </goals>

@@ -78,7 +78,7 @@
   </organization>
   <build>
     <sourceDirectory>src/java</sourceDirectory>
-    <testSourceDirectory>src/test</testSourceDirectory>
+    <testSourceDirectory>src/buttonController</testSourceDirectory>
     <defaultGoal>install</defaultGoal>
     <plugins>
       <plugin>

@@ -171,7 +171,7 @@
       <!-- Spring Cloud Config Client -->
       <dependency>
         <groupId>org.apache.logging.log4j</groupId>
-        <artifactId>log4j-spring-cloud-config-client</artifactId>
+        <artifactId>log4j-spring-cloud-config-clientSide</artifactId>
         <version>${project.version}</version>
       </dependency>
     </dependencies>

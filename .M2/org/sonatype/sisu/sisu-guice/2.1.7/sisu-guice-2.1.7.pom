@@ -68,13 +68,13 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.2</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.felix</groupId>
       <artifactId>org.apache.felix.framework</artifactId>
       <version>3.0.2</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 
@@ -192,10 +192,10 @@
 
   <profiles>
     <profile>
-      <id>test</id>
+      <id>buttonController</id>
       <activation>
         <property>
-          <name>!maven.test.skip</name>
+          <name>!maven.buttonController.skip</name>
         </property>
       </activation>
       <build>
@@ -204,12 +204,12 @@
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
               <execution>
-                <id>test</id>
-                <phase>test</phase>
+                <id>buttonController</id>
+                <phase>buttonController</phase>
                 <configuration>
                   <tasks>
 
-                    <property name="external.compile.classpath" refid="maven.test.classpath" />
+                    <property name="external.compile.classpath" refid="maven.buttonController.classpath" />
                     <property name="asm.jar" value="${maven.dependency.asm.asm.jar.path}" />
 
                     <property name="aopalliance.jar" value="${maven.dependency.aopalliance.aopalliance.jar.path}" />
@@ -226,14 +226,14 @@
                     <property name="Bundle-Vendor" value="Sonatype Inc." />
 
                     <ant>
-                      <target name="test.dist" />
+                      <target name="buttonController.dist" />
                     </ant>
 
                     <ant dir="${noaop.dir}">
                       <property name="build.dir" value="${noaop.dir}" />
                       <property name="Bundle-SymbolicName" value="${symbolic.name}-noaop" />
                       <property name="Bundle-Name" value="${project.artifactId}-noaop" />
-                      <target name="test.dist" />
+                      <target name="buttonController.dist" />
                     </ant>
 
                   </tasks>

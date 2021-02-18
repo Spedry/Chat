@@ -4,7 +4,7 @@
   <artifactId>commons-httpclient</artifactId>
   <name>HttpClient</name>
   <version>3.1</version>
-  <description>The HttpClient  component supports the client-side of RFC 1945 (HTTP/1.0)  and RFC 2616 (HTTP/1.1) , several related specifications (RFC 2109 (Cookies) , RFC 2617 (HTTP Authentication) , etc.), and provides a framework by which new request types (methods) or HTTP extensions can be created easily.</description>
+  <description>The HttpClient  component supports the clientSide-side of RFC 1945 (HTTP/1.0)  and RFC 2616 (HTTP/1.1) , several related specifications (RFC 2109 (Cookies) , RFC 2617 (HTTP Authentication) , etc.), and provides a framework by which new request types (methods) or HTTP extensions can be created easily.</description>
   <url>http://jakarta.apache.org/httpcomponents/httpclient-3.x/</url>
   <issueManagement>
     <url>http://issues.apache.org/jira/browse/HTTPCLIENT</url>
@@ -200,7 +200,7 @@
   </organization>
   <build>
     <sourceDirectory>src/java</sourceDirectory>
-    <testSourceDirectory>src/test</testSourceDirectory>
+    <testSourceDirectory>src/buttonController</testSourceDirectory>
     <resources>
       <resource>
         <directory>src/resources</directory>
@@ -208,7 +208,7 @@
     </resources>
     <testResources>
       <testResource>
-        <directory>src/test</directory>
+        <directory>src/buttonController</directory>
         <includes>
           <include>**/*.keystore</include>
         </includes>
@@ -230,7 +230,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>commons-logging</groupId>

@@ -373,7 +373,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 
@@ -389,7 +389,7 @@
 
   <build>
     <sourceDirectory>src/java</sourceDirectory>
-    <testSourceDirectory>src/test</testSourceDirectory>
+    <testSourceDirectory>src/buttonController</testSourceDirectory>
       <plugins>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -409,7 +409,7 @@
                 <tasks>
                   <ant antfile="build-testframework.xml" target="jar">
                     <property name="component.version"    value="${project.version}"/>
-                    <property name="test.classes"         value="${project.build.directory}/test-classes"/>
+                    <property name="buttonController.classes"         value="${project.build.directory}/buttonController-classes"/>
                     <property name="dist.home"            value="${project.build.directory}"/>
                     <property name="maven.compile.source" value="${maven.compile.source}"/>
                     <property name="maven.compile.target" value="${maven.compile.target}"/>

@@ -112,7 +112,7 @@
   </organization>
   <build>
     <sourceDirectory>src/java</sourceDirectory>
-    <testSourceDirectory>src/test</testSourceDirectory>
+    <testSourceDirectory>src/buttonController</testSourceDirectory>
     <plugins>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -141,7 +141,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.7</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>avalon-framework</groupId>

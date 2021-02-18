@@ -171,25 +171,25 @@ under the License.
       <groupId>org.apache.maven.plugin-testing</groupId>
       <artifactId>maven-plugin-testing-harness</artifactId>
       <version>2.1</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-compat</artifactId>
       <version>${mavenVersion}</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
       <version>1.9.5</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 
@@ -256,7 +256,7 @@ under the License.
               <version>3.2.0</version>
               <executions>
                 <execution>
-                  <id>integration-test</id>
+                  <id>integration-buttonController</id>
                   <configuration>
                     <environmentVariables>
                       <JENKINS_MAVEN_AGENT_DISABLED>true</JENKINS_MAVEN_AGENT_DISABLED>
@@ -291,7 +291,7 @@ under the License.
                     </properties>
                     <goals>
                       <goal>clean</goal>
-                      <goal>test-compile</goal>
+                      <goal>buttonController-compile</goal>
                     </goals>
                   </configuration>
                 </execution>
@@ -301,7 +301,7 @@ under the License.
         </pluginManagement>
       </build>
       <!--
-      add those dependency just to have faster it test (for folks who doesn't have those locally
+      add those dependency just to have faster it buttonController (for folks who doesn't have those locally
       they will be downloaded from local repo rather than central
       -->
       <dependencies>
@@ -309,25 +309,25 @@ under the License.
           <groupId>org.codehaus.groovy</groupId>
           <artifactId>groovy-eclipse-compiler</artifactId>
           <version>${groovyEclipseCompilerVersion}</version>
-          <scope>test</scope>
+          <scope>buttonController</scope>
         </dependency>
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
           <artifactId>groovy-eclipse-batch</artifactId>
           <version>${groovy-eclipse-batch}</version>
-          <scope>test</scope>
+          <scope>buttonController</scope>
         </dependency>
         <dependency>
           <groupId>org.codehaus.groovy</groupId>
           <artifactId>groovy-all</artifactId>
           <version>${groovyVersion}</version>
-          <scope>test</scope>
+          <scope>buttonController</scope>
         </dependency>
         <dependency>
           <groupId>org.apache.openjpa</groupId>
           <artifactId>openjpa</artifactId>
           <version>${openJpaVersion}</version>
-          <!-- TODO: scope test? -->
+          <!-- TODO: scope buttonController? -->
         </dependency>
       </dependencies>
     </profile>

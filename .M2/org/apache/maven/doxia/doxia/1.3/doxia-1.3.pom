@@ -157,7 +157,7 @@ under the License.
   <modules>
     <module>doxia-logging-api</module>
     <module>doxia-sink-api</module>
-    <module>doxia-test-docs</module>
+    <module>doxia-buttonController-docs</module>
     <module>doxia-core</module>
     <module>doxia-modules</module>
   </modules>
@@ -205,7 +205,7 @@ under the License.
       </dependency>
       <dependency>
         <groupId>org.apache.maven.doxia</groupId>
-        <artifactId>doxia-test-docs</artifactId>
+        <artifactId>doxia-buttonController-docs</artifactId>
         <version>${projectVersion}</version>
       </dependency>
       <dependency>
@@ -217,7 +217,7 @@ under the License.
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-core</artifactId>
         <version>${projectVersion}</version>
-        <type>test-jar</type>
+        <type>buttonController-jar</type>
       </dependency>
 
       <!-- doxia modules -->
@@ -295,7 +295,7 @@ under the License.
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.2</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 

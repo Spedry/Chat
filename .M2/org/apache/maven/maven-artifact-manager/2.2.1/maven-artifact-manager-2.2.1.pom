@@ -37,12 +37,12 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.wagon</groupId>
       <artifactId>wagon-file</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.wagon</groupId>
       <artifactId>wagon-http</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -68,13 +68,13 @@ under the License.
       <groupId>easymock</groupId>
       <artifactId>easymock</artifactId>
       <version>1.2_Java1.3</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>edu.umd.cs.mtc</groupId>
       <artifactId>multithreadedtc-jdk14</artifactId>
       <version>1.01</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 

@@ -124,13 +124,13 @@ under the License.
       <groupId>org.apache.maven.plugin-testing</groupId>
       <artifactId>maven-plugin-testing-harness</artifactId>
       <version>1.2</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.2</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 
@@ -159,10 +159,10 @@ under the License.
             </configuration>
             <executions>
               <execution>
-                <id>integration-test</id>
+                <id>integration-buttonController</id>
                 <goals>
                   <goal>install</goal>
-                  <goal>integration-test</goal>
+                  <goal>integration-buttonController</goal>
                 </goals>
               </execution>
             </executions>

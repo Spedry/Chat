@@ -76,21 +76,21 @@
   <dependencies>
     <dependency>
       <groupId>org.ow2.asm</groupId>
-      <artifactId>asm-test</artifactId>
+      <artifactId>asm-buttonController</artifactId>
       <version>6.2</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.1.0</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
       <version>5.1.0</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 </project>

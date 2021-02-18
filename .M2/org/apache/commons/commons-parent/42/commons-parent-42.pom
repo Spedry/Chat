@@ -242,7 +242,7 @@ Version 39:
     </mailingList>
   </mailingLists>
   <build>
-    <!-- TODO find a better way to add N&L files to jars and test jars
+    <!-- TODO find a better way to add N&L files to jars and buttonController jars
          See also maven-remote-resources-plugin configuration below.
     -->
     <resources>
@@ -260,11 +260,11 @@ Version 39:
         </includes>
       </resource>
     </resources>
-    <!-- ensure test jars also get NOTICE & LICENSE files -->
+    <!-- ensure buttonController jars also get NOTICE & LICENSE files -->
     <testResources>
       <!-- This is the default setting from the super-pom -->
       <testResource>
-        <directory>src/test/resources</directory>
+        <directory>src/buttonController/resources</directory>
       </testResource>
       <!-- hack to ensure the N&L appear in jars -->
       <testResource>
@@ -323,7 +323,7 @@ Version 39:
           </configuration>
         </plugin>
         <plugin>
-          <!-- TODO see above - find better way to add N&L files to jars and test jars -->
+          <!-- TODO see above - find better way to add N&L files to jars and buttonController jars -->
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-remote-resources-plugin</artifactId>
           <configuration>
@@ -450,7 +450,7 @@ Version 39:
           <executions>
             <execution>
               <id>prepare-agent</id>
-              <phase>process-test-classes</phase>
+              <phase>process-buttonController-classes</phase>
               <goals>
                 <goal>prepare-agent</goal>
               </goals>
@@ -756,7 +756,7 @@ Version 39:
             <link>${commons.javadoc.javaee.link}</link>
           </links>
         </configuration>
-        <!-- Suppress test Javadocs -->
+        <!-- Suppress buttonController Javadocs -->
         <reportSets>
           <reportSet>
             <id>default</id>
@@ -935,8 +935,8 @@ Version 39:
                 <execution>
                   <id>checkAPIcompatibility</id>
                   <!-- default is:  <phase>process-classes</phase>  -->
-                  <!-- Note: if the plugin is ever enhanced to check test classes
-                       it will presumably need to be bound to process-test-classes instead 
+                  <!-- Note: if the plugin is ever enhanced to check buttonController classes
+                       it will presumably need to be bound to process-buttonController-classes instead
                   -->
                   <goals>
                     <goal>check</goal>
@@ -1100,7 +1100,7 @@ Version 39:
                 <id>create-source-jar</id>
                 <goals>
                   <goal>jar</goal>
-                  <goal>test-jar</goal>
+                  <goal>buttonController-jar</goal>
                 </goals>
               </execution>
             </executions>
@@ -1110,7 +1110,7 @@ Version 39:
             <executions>
               <execution>
                 <goals>
-                  <goal>test-jar</goal>
+                  <goal>buttonController-jar</goal>
                 </goals>
                 <configuration>
                   <!-- Avoids an error when releasing the parent pom -->
@@ -1179,9 +1179,9 @@ Version 39:
             <artifactId>maven-source-plugin</artifactId>
             <executions>
               <execution>
-                <id>attach-test-sources</id>
+                <id>attach-buttonController-sources</id>
                 <goals>
-                  <goal>test-jar</goal>
+                  <goal>buttonController-jar</goal>
                 </goals>
               </execution>
             </executions>
@@ -1198,7 +1198,7 @@ Version 39:
             <executions>
               <execution>
                 <goals>
-                  <goal>test-jar</goal>
+                  <goal>buttonController-jar</goal>
                 </goals>
               </execution>
             </executions>
@@ -1316,7 +1316,7 @@ Version 39:
      | mvn deploy -Ptest-deploy -Prelease -Dgpg.skip
      -->
     <profile>
-      <id>test-deploy</id>
+      <id>buttonController-deploy</id>
       <properties>
         <altDeploymentRepository>id::default::file:target/deploy</altDeploymentRepository>
       </properties>

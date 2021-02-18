@@ -65,7 +65,7 @@ jar, tar, zip, dump, 7z, arj.
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.brotli</groupId>
@@ -83,13 +83,13 @@ jar, tar, zip, dump, 7z, arj.
       <groupId>org.powermock</groupId>
       <artifactId>powermock-module-junit4</artifactId>
       <version>${powermock.version}</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.powermock</groupId>
       <artifactId>powermock-api-mockito</artifactId>
       <version>${powermock.version}</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 
@@ -214,7 +214,7 @@ jar, tar, zip, dump, 7z, arj.
           <configuration>
             <excludes>
               <!-- files used during tests -->
-              <exclude>src/test/resources/**</exclude>
+              <exclude>src/buttonController/resources/**</exclude>
               <exclude>.pmd</exclude>
               <exclude>.projectile</exclude>
             </excludes>
@@ -344,10 +344,10 @@ jar, tar, zip, dump, 7z, arj.
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
               <execution>
-                <phase>process-test-resources</phase>
+                <phase>process-buttonController-resources</phase>
                 <configuration>
                   <target>
-                    <untar src="${basedir}/src/test/resources/zip64support.tar.bz2"
+                    <untar src="${basedir}/src/buttonController/resources/zip64support.tar.bz2"
                            dest="${project.build.testOutputDirectory}"
                            compression="bzip2"/>
                   </target>

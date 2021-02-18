@@ -34,9 +34,9 @@
     <protobuf.basedir>${project.basedir}/../..</protobuf.basedir>
     <protobuf.source.dir>${protobuf.basedir}/src</protobuf.source.dir>
     <protoc>${protobuf.source.dir}/protoc</protoc>
-    <test.proto.dir>src/test/proto</test.proto.dir>
+    <buttonController.proto.dir>src/buttonController/proto</buttonController.proto.dir>
     <generated.sources.dir>${project.build.directory}/generated-sources</generated.sources.dir>
-    <generated.testsources.dir>${project.build.directory}/generated-test-sources</generated.testsources.dir>
+    <generated.testsources.dir>${project.build.directory}/generated-buttonController-sources</generated.testsources.dir>
   </properties>
 
   <licenses>
@@ -76,19 +76,19 @@
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>4.12</version>
-        <scope>test</scope>
+        <scope>buttonController</scope>
       </dependency>
       <dependency>
         <groupId>org.easymock</groupId>
         <artifactId>easymock</artifactId>
         <version>2.2</version>
-        <scope>test</scope>
+        <scope>buttonController</scope>
       </dependency>
       <dependency>
         <groupId>org.easymock</groupId>
         <artifactId>easymockclassextension</artifactId>
         <version>2.2.1</version>
-        <scope>test</scope>
+        <scope>buttonController</scope>
       </dependency>
       <dependency>
         <groupId>com.google.guava</groupId>
@@ -99,13 +99,13 @@
         <groupId>com.google.guava</groupId>
         <artifactId>guava-testlib</artifactId>
         <version>28.1-android</version>
-        <scope>test</scope>
+        <scope>buttonController</scope>
       </dependency>
       <dependency>
         <groupId>com.google.truth</groupId>
         <artifactId>truth</artifactId>
         <version>1.0</version>
-        <scope>test</scope>
+        <scope>buttonController</scope>
       </dependency>
     </dependencies>
   </dependencyManagement>

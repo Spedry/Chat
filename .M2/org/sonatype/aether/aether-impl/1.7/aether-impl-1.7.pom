@@ -86,13 +86,13 @@ under the License.
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.sonatype.aether</groupId>
-      <artifactId>aether-test-util</artifactId>
+      <artifactId>aether-buttonController-util</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 

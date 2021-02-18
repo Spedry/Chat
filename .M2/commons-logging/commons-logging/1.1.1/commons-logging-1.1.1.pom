@@ -18,8 +18,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <!--
     - Note that due to the special requirements of logging unit-tests, most
-    - tests are executed in the "integration-test" phase rather than the
-    - "test" phase. Please run "mvn integration-test" to run the full suite of
+    - tests are executed in the "integration-buttonController" phase rather than the
+    - "buttonController" phase. Please run "mvn integration-buttonController" to run the full suite of
     - available unit tests.
     -->
   <parent>
@@ -128,11 +128,11 @@
 
   <build>
     <sourceDirectory>src/java</sourceDirectory>
-    <testSourceDirectory>src/test</testSourceDirectory>
+    <testSourceDirectory>src/buttonController</testSourceDirectory>
 
     <testResources>
       <testResource>
-        <directory>src/test</directory>
+        <directory>src/buttonController</directory>
         <filtering>false</filtering>
         <includes>
           <include>**/*.properties</include>
@@ -143,7 +143,7 @@
     <plugins>
 
       <!--
-        - The custom test framework requires the unit test code to be
+        - The custom buttonController framework requires the unit buttonController code to be
         - in a jarfile so it can control its place in the classpath.
         -->
       <plugin>      
@@ -159,7 +159,7 @@
             <id>testjar</id>
             <phase>package</phase>
             <goals>
-              <goal>test-jar</goal>
+              <goal>buttonController-jar</goal>
             </goals>
             <configuration>
               <jarName>commons-logging</jarName>
@@ -308,8 +308,8 @@
           - Many of JCL's tests use tricky techniques to place the generated
           - JCL jarfiles on the classpath in various configurations. This means
           - that the tests must be run *after* the "package" build phase. The
-          - normal test phase is therefore disabled here, and the test plugin
-          - rebound to the "integration-test" phase instead.
+          - normal buttonController phase is therefore disabled here, and the buttonController plugin
+          - rebound to the "integration-buttonController" phase instead.
           -->
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -321,10 +321,10 @@
 
         <executions>
           <execution>
-            <id>integration-test</id>
-            <phase>integration-test</phase>
+            <id>integration-buttonController</id>
+            <phase>integration-buttonController</phase>
             <goals>
-              <goal>test</goal>
+              <goal>buttonController</goal>
             </goals>
             <configuration>
               <includes>
@@ -437,7 +437,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>log4j</groupId>

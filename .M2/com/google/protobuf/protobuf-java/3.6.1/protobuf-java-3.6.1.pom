@@ -22,17 +22,17 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.easymock</groupId>
       <artifactId>easymock</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>org.easymock</groupId>
       <artifactId>easymockclassextension</artifactId>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 
@@ -77,13 +77,13 @@
             </goals>
           </execution>
 
-          <!-- Generate the test protos -->
+          <!-- Generate the buttonController protos -->
           <execution>
-            <id>generate-test-sources</id>
-            <phase>generate-test-sources</phase>
+            <id>generate-buttonController-sources</id>
+            <phase>generate-buttonController-sources</phase>
             <configuration>
               <target>
-                <ant antfile="generate-test-sources-build.xml"/>
+                <ant antfile="generate-buttonController-sources-build.xml"/>
               </target>
             </configuration>
             <goals>
@@ -111,10 +111,10 @@
             </configuration>
           </execution>
           <execution>
-            <id>add-generated-test-sources</id>
-            <phase>generate-test-sources</phase>
+            <id>add-generated-buttonController-sources</id>
+            <phase>generate-buttonController-sources</phase>
             <goals>
-              <goal>add-test-source</goal>
+              <goal>add-buttonController-source</goal>
             </goals>
             <configuration>
               <sources>

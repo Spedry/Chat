@@ -66,7 +66,7 @@ See the Apache License Version 2.0 for the specific language governing permissio
         <executions>
           <execution>
             <goals>
-              <goal>test-jar</goal>
+              <goal>buttonController-jar</goal>
             </goals>
           </execution>
         </executions>

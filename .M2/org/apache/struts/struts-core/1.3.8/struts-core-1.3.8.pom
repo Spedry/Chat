@@ -29,7 +29,7 @@
     </resources>
     <testResources>
       <testResource>
-        <directory>src/test/java</directory>
+        <directory>src/buttonController/java</directory>
         <includes>
           <include>**/*.xml</include>
           <include>**/*.properties</include>

@@ -53,11 +53,11 @@
         </configuration>
         <executions>
           <execution>
-            <id>bundle-test-jar</id>
+            <id>bundle-buttonController-jar</id>
             <phase>package</phase>
             <goals>
               <goal>jar</goal>
-              <goal>test-jar</goal>
+              <goal>buttonController-jar</goal>
             </goals>
           </execution>
         </executions>

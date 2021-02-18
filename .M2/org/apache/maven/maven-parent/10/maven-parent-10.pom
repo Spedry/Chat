@@ -893,7 +893,7 @@ under the License.
               <reportSet>
                 <reports>
                   <report>javadoc</report>
-                  <report>test-javadoc</report>
+                  <report>buttonController-javadoc</report>
                 </reports>
               </reportSet>
             </reportSets>

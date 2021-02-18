@@ -73,13 +73,13 @@ under the License.
       <groupId>javax.servlet</groupId>
       <artifactId>servlet-api</artifactId>
       <version>2.3</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
     <dependency>
       <groupId>it.could</groupId>
       <artifactId>webdav</artifactId>
       <version>0.4</version>
-      <scope>test</scope>
+      <scope>buttonController</scope>
     </dependency>
   </dependencies>
 

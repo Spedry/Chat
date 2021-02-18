@@ -45,7 +45,7 @@ SS=965
 {\*\generator Riched20 10.0.18362}\viewkind4\uc1 
 \pard\box\brdrdash\brdrw0 \cf1\f0\fs16\lang1033 //logger.debug username - \f1\'e8\f0 o obsahuje\line //jeden logger na cel\'ed program\par
 
-\pard\box\brdrdash\brdrw0 //ako spravi\f1\'9d\f0  chat hromadn\'fd alebo jednodn\'fd alebo kombo\line //identifikova\f1\'9d\f0  prichadzajucu spravu na server login, register, messege\line     //odoslan\'edm informa\f1\'e8\f0 nej spravy informuj\'facej o typu d\'e1t ktor\'fa pr\'fddu e\f1\'9a\f0 te pred odoslan\'edm d\'e1t\line     //pribali\f1\'9d\f0  k d\'e1tam informa\f1\'e8\f0 nu spravu\line     //Port???\line\line     //Protokol medzi klienta-server\line //odosielanie obrazkov, emoji, gif\line //pou\f1\'9e\f0 it\'e1 literat\'fara knihy a hlavne stranky ako stackoverflow\line //\f1\'e8\f0 o presne budem popisova\f1\'9d\f0  v mojej bakalarke napr jednotlive kapitoli, ich po\f1\'e8\f0 et a na \f1\'e8\f0 o bud\'fa zameran\'e9\line //Odosiela\f1\'9d\f0  JSON object alebo JAVA object na server\line //je zlo\f1\'9e\f0 ite spravi\f1\'9d\f0  .exe s\'fabor\line //\f1\'e8\f0 as odoslania spr\'e1vy a "zobrazen\'e9" z FB\line //pou\f1\'9e\f0 i\f1\'9d\f0  oracle DOCS kni\f1\'9e\f0 nice\line //JAVA knihy\line\line //pou\f1\'9e\f0 i\f1\'9d\f0  JSON\line //identifik\'e1cia pomocou IF alebo SWITCH CASE\line //apache tomcat log4J kni\f1\'9e\f0 nica\line //vytvori\f1\'9d\f0  script na odosielanie spr\'e1v z cca 20000 users\line // testovanie pomocou pythom alebo postman na odosielanie spr\'e1v\par
+\pard\box\brdrdash\brdrw0 //ako spravi\f1\'9d\f0  chat hromadn\'fd alebo jednodn\'fd alebo kombo\line //identifikova\f1\'9d\f0  prichadzajucu spravu na clientHandler login, register, messege\line     //odoslan\'edm informa\f1\'e8\f0 nej spravy informuj\'facej o typu d\'e1t ktor\'fa pr\'fddu e\f1\'9a\f0 te pred odoslan\'edm d\'e1t\line     //pribali\f1\'9d\f0  k d\'e1tam informa\f1\'e8\f0 nu spravu\line     //Port???\line\line     //Protokol medzi klienta-clientHandler\line //odosielanie obrazkov, emoji, gif\line //pou\f1\'9e\f0 it\'e1 literat\'fara knihy a hlavne stranky ako stackoverflow\line //\f1\'e8\f0 o presne budem popisova\f1\'9d\f0  v mojej bakalarke napr jednotlive kapitoli, ich po\f1\'e8\f0 et a na \f1\'e8\f0 o bud\'fa zameran\'e9\line //Odosiela\f1\'9d\f0  JSON object alebo JAVA object na clientHandler\line //je zlo\f1\'9e\f0 ite spravi\f1\'9d\f0  .exe s\'fabor\line //\f1\'e8\f0 as odoslania spr\'e1vy a "zobrazen\'e9" z FB\line //pou\f1\'9e\f0 i\f1\'9d\f0  oracle DOCS kni\f1\'9e\f0 nice\line //JAVA knihy\line\line //pou\f1\'9e\f0 i\f1\'9d\f0  JSON\line //identifik\'e1cia pomocou IF alebo SWITCH CASE\line //apache tomcat log4J kni\f1\'9e\f0 nica\line //vytvori\f1\'9d\f0  script na odosielanie spr\'e1v z cca 20000 users\line // testovanie pomocou pythom alebo postman na odosielanie spr\'e1v\par
 
 \pard\cf0\par
 }
@@ -111,7 +111,7 @@ SS=1170
 }
 %-
 LV=1
-ND=Old client
+ND=Old clientSide
 DI=9
 NF=000000100000000000000000
 BC=clWindow
@@ -123,7 +123,7 @@ IX=0
 }
 %-
 LV=2
-ND=client
+ND=clientSide
 DI=10
 NF=000000000000000000000000
 BC=clWindow

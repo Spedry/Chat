@@ -1,13 +1,13 @@
 package controllers;
 
-import client.App;
-import client.Client;
-import client.PassHash;
+import client.Application;
+import client.ClientSide;
+import Hashing.Hashing;
+import client.MessageSender;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
@@ -18,31 +18,27 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
-import client.PassHash;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.LinkedBlockingQueue;
 
-public class LoginController implements Initializable {
+public class LoginController {
 
     @FXML
     public PasswordField passwordField;
     @FXML
     public TextField usernameField;
     private final Logger logger = LogManager.getLogger(this.getClass());
-    private Stage window;
-    private Client client;
-    private String jsonObject;
+    private final Stage window;
+    @Getter
+    private final ClientSide clientSide;
+    private final MessageSender messageSender;
+    private JSONObject jsonObject;
     @Getter
     private RegisterController registerController;
     @Getter
-    private PassHash passHash;
+    private Hashing hashing;
     private final String   data = "Data", userName = "Username", hash = "Password", message = "Message",
             messagefromUser = "MfU", showLoginofUser = "SLoU";
     private final String ioexception = "Reading a network file and got disconnected.\n" +
@@ -55,27 +51,22 @@ public class LoginController implements Initializable {
 
     public LoginController(Stage window) {
         this.window = window;
-        Thread clientSideHandlerThread = new Thread(client = new Client(this));
+        Thread clientSideHandlerThread = new Thread(clientSide = new ClientSide(this));
         clientSideHandlerThread.setDaemon(true);
         clientSideHandlerThread.start();
+        messageSender = clientSide.getMessageSender();
         logger.info("Thread for communication with server was created");
-    }
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        logger.warn("EMPTY Initializing");
     }
 
     @FXML
     public void loginOnAction() throws JSONException {
         if (usernameField.getText() != null) {
-            passHash = new PassHash();
+            hashing = new Hashing();
             jsonObject = new JSONObject()
                     .put("ID", "LoU")
                     .put("Data", new JSONObject()
-                            .put("Username", usernameField.getText()))
-                    .toString();
-            client.setInput(jsonObject);
+                            .put("Username", usernameField.getText()));
+            messageSender.printWriter(jsonObject);
         }
     }
 
@@ -85,16 +76,15 @@ public class LoginController implements Initializable {
                     .put("ID", "LoU") //Login of User
                     .put("Data", new JSONObject()
                             .put("Username", usernameField.getText())
-                            .put("Password", passHash.hashIt(passwordField.getText()))) //nahradiť za hash
-                    .toString();
-            client.setInput(jsonObject);
+                            .put("Password", hashing.hashIt(passwordField.getText())));
+            messageSender.printWriter(jsonObject);
         }
     }
 
     @FXML
     public void signUpOnAction(ActionEvent actionEvent) throws IOException {
-        registerController = new RegisterController(this, client);
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/registerScene.fxml"));
+        registerController = new RegisterController(this, messageSender);
+        FXMLLoader loader = new FXMLLoader(Application.class.getResource("/fxml/registerScene.fxml"));
         loader.setController(registerController);
         Parent registerScene = loader.load();
         Scene scene = new Scene(registerScene);
@@ -105,7 +95,7 @@ public class LoginController implements Initializable {
     }
 
     public void backToLoginScene(LoginController loginController) throws IOException {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/loginScene.fxml"));
+        FXMLLoader loader = new FXMLLoader(Application.class.getResource("/fxml/loginScene.fxml"));
         loader.setController(loginController);
         Parent loginScene = loader.load();
         Scene scene = new Scene(loginScene);
@@ -115,8 +105,10 @@ public class LoginController implements Initializable {
         logger.info("Show window of app");
     }
 
-    public void chatScene(ChatController chatController) throws IOException {
-        FXMLLoader loader = new FXMLLoader(App.class.getResource("/fxml/chatScene.fxml"));
+    public void chatScene() throws IOException {
+        ChatController chatController = new ChatController(messageSender, window);
+        clientSide.setChatController(chatController);
+        FXMLLoader loader = new FXMLLoader(Application.class.getResource("/fxml/chatScene.fxml"));
         loader.setController(chatController);
         Parent chatScene = loader.load();
         Scene scene = new Scene(chatScene);

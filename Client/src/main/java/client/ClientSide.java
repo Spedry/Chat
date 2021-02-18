@@ -1,38 +1,37 @@
 package client;
 
+import Hashing.RSA.RSA;
 import controllers.ChatController;
 import controllers.LoginController;
-import controllers.RegisterController;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
-import javafx.stage.Stage;
+import javafx.scene.control.Control;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import javax.net.ssl.SSLSocket;
-import javax.net.ssl.SSLSocketFactory;
-import javax.swing.plaf.TreeUI;
+
 import java.io.*;
-import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public class Client implements Runnable {
-
-    private static volatile Client instance;
+public class ClientSide implements Runnable {
     private final Logger logger = LogManager.getLogger(this.getClass());
-    @Setter
     private LoginController loginController;
+    @Setter
+    private ChatController chatController;
+    @Getter
+    private MessageSender messageSender;
     private final int port = 50000;
     private final String hostname = "213.160.168.243";
     private Socket socket;
@@ -43,7 +42,7 @@ public class Client implements Runnable {
     @Getter
     public LinkedBlockingQueue<JSONObject> dataQueue;
     private final String   data = "Data", userName = "Username", hash = "Password", message = "Message",
-            messagefromUser = "MfU", showLoginofUser = "SLoU";
+            messagefromUser = "MfU", showLoginofOnlineUser = "SLoOU";
     private final String ioexception = "Reading a network file and got disconnected.\n" +
             "Reading a local file that was no longer available.\n" +
             "Using some stream to read data and some other process closed the stream.\n" +
@@ -51,9 +50,12 @@ public class Client implements Runnable {
             "Trying to write to a file, but disk space was no longer available.\n" +
             "There are many more examples, but these are the most common, in my experience.";
     private boolean login = true;
+    @Getter
+    private RSA rsa;
 
-    public Client(LoginController loginController) {
+    public ClientSide(LoginController loginController) {
         this.loginController = loginController;
+        messageSender = new MessageSender(this);
         /*try {
             InetAddress ip;
             ip = InetAddress.getLocalHost();
@@ -79,45 +81,51 @@ public class Client implements Runnable {
         return instance;
     }*/
 
-    private void incomingDataHandler(BufferedReader br) throws IOException, JSONException, InterruptedException {
-        String data;
-        while((data = br.readLine()) != null) {
-            logger.info("Data received from while cycle: " + data);
-            dataQueue.put(new JSONObject(data)); // .put by mohlo byť nahradené za .add keďže dataQueue nieje omezená
+    private void incomingDataHandler(@NonNull BufferedReader br) {
+        try {
+            String data;
+            if ((data = br.readLine()) != null) {
+                logger.debug("Data for RSA: " + data);
+                dataQueue.put(new JSONObject(data)); // .put by mohlo byť nahradené za .add keďže dataQueue nieje omezená
+            }
+
+            logger.info("Start of while cycle to get JSONObject");
+            while((data = br.readLine()) != null) {
+                logger.info("Data was received"); //Data are in hash format
+                dataQueue.put(new JSONObject(rsa.decrypt(data))); // .put by mohlo byť nahradené za .add keďže dataQueue nieje omezená
+            }
+            logger.info("While cycle to get messages ended");
+
+            socket.close();
+            logger.info("Was socket connected: " + socket.isConnected());
+            logger.info("Was socket closed: " + socket.isClosed());
+        } catch (InterruptedException ie) {
+            logger.error("Waiting thread was interrupted - .PUT()", ie);
+        } catch (IOException ioe) {
+            logger.error(ioexception, ioe);
         }
-        logger.info("While cycle to get messages ended");
-        socket.close();
-        logger.info("Was socket connected: " + socket.isConnected());
-        logger.info("Was socket closed: " + socket.isClosed());
     }
     boolean key = true;
     @Override
     public void run() {
         try {
             out = new PrintWriter(socket.getOutputStream(), true);
-            in = new InputStreamReader(socket.getInputStream());
             dataQueue = new LinkedBlockingQueue<>();
-            br = new BufferedReader(in);
+            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (IOException ioe) {
             logger.info(ioexception, ioe);
         }
         try {
-            Thread incomingDataHandlerThread = new Thread(() -> {
-                try {
-                    incomingDataHandler(br);
-                } catch (IOException ioe) {
-                    logger.info(ioexception, ioe);
-                } catch (JSONException jsone) {
-                    logger.error("Error with JSONObject", jsone);
-                } catch (InterruptedException ie) {
-                    logger.error("Waiting thread was interrupted - .PUT()", ie);
-                }
-            });
-            logger.info("New thread to handle incoming data was created");
-            //incomingDataHandlerThread.setDaemon(true);
+            logger.info("Creating thread to handle incoming data");
+            Thread incomingDataHandlerThread = new Thread(() -> incomingDataHandler(br));
             incomingDataHandlerThread.start();
-            logger.info("Start of while cycle to login/register");
+            logger.info("New thread to handle incoming data was created");
 
+            logger.info("Receiving RSA public key");
+            setRSAKey();
+            logger.info("Key was received and successfully set");
+
+            logger.info("Start of while cycle to login/register");
             while (login) {
                 switch ((jsonObject = dataQueue.take()).getString("ID")) {
                     case "LoU":
@@ -131,8 +139,7 @@ public class Client implements Runnable {
                                 login = false;
                                 Platform.runLater(() -> {
                                     try {
-                                        ChatController chatController = new ChatController(this, dataQueue);
-                                        loginController.chatScene(chatController);
+                                        loginController.chatScene();
                                     } catch (IOException ioe) {
                                         ioe.printStackTrace();
                                     }
@@ -178,28 +185,68 @@ public class Client implements Runnable {
                         break;
                 }
             }
-            //logger.info("End of while cycle to login/register");
-            //logger.info("Start of while cycle which will manage incoming messages");
+            logger.info("End of while cycle to login/register");
 
-            /*FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/chatScene.fxml"));
-            loader.setController(chatController);*/
+            logger.info("Start of while cycle which will manage incoming messages");
+            while (true) {
+                switch ((jsonObject = dataQueue.take()).getString("ID")) { //PREROBIŤ
+                    case messagefromUser:
+                        String userName = null, message = null;
+                        userName = jsonObject.getJSONObject(data).getString(this.userName);
+                        message = jsonObject.getJSONObject(data).getString(this.message);
+                        logger.info("Data taken from dataQueue: " + jsonObject);
+                        String finalUserName = userName;
+                        String finalMessage = message;
+                        Platform.runLater(() -> chatController.showMessage(finalUserName, finalMessage));
+                        break;
+                    case showLoginofOnlineUser:
+                        JSONArray jsonArray = jsonObject.getJSONArray(data);
+                        List<String> listofOnlineUsers = new ArrayList<>();
+                        for (int i=0; i < jsonArray.length(); i++) {
+                            listofOnlineUsers.add(jsonArray.getString(i));
+                        }
+                        Platform.runLater(() -> chatController.showOnlineUser(listofOnlineUsers));
+                        break;
+                    case "SOU":
+                        Platform.runLater(() -> chatController.addOnlineUser(jsonObject.getJSONObject("Data").getString("Username")));
+                        break;
+                    case "DOU":
+                        Platform.runLater(() -> chatController.deleteOnlineUser(jsonObject.getJSONObject("Data").getString("Username")));
+                        break;
+                }
+            }
 
         }  catch (JSONException jsone) {
             logger.error("Error with JSONObject", jsone);
         } catch (InterruptedException ie) {
             logger.error("Waiting thread was interrupted - .TAKE()", ie);
+        } catch (NoSuchAlgorithmException nsae) {
+            logger.error("Cryptographic algorithm is requested but is not available in the environment", nsae);
         }
+    }
+
+    private void setRSAKey() throws InterruptedException, NoSuchAlgorithmException {
+        rsa = new RSA();
+        getPrintWriter().println(createJson("RSA", "Key", rsa.getBase64EncodedPublicKey(), null, null));
+        if(rsa.isOthersSidePublicKeyNull())
+            rsa.setOthersSidePublicKey((jsonObject = dataQueue.take()).getJSONObject("Data").getString("Key"));
+        //logger.info("KEY: " + rsa.test());
+
+    }
+
+    public PrintWriter getPrintWriter() {
+        return out;
     }
 
     private void setPublicKey() {
 
         switch (jsonObject.getString("ID")) {
             case "LoU":
-                loginController.getPassHash().setSalt(jsonObject);
+                loginController.getHashing().setSalt(jsonObject);
                 loginController.loginUser();
                 break;
             case "RoNU":
-                loginController.getRegisterController().getPassHash().setSalt(jsonObject);
+                loginController.getRegisterController().getHashing().setSalt(jsonObject);
                 loginController.getRegisterController().registerUser();
                 break;
         }
@@ -209,11 +256,19 @@ public class Client implements Runnable {
         socket.shutdownOutput();
     }
 
-    public PrintWriter getPrintWriter() {
-        return out;
-    }
 
-    public void setInput(String input) {
-        getPrintWriter().println(input);
+
+    private JSONObject createJson(@NonNull String IDString,
+                                  @NonNull String dataOne,
+                                  @NonNull Object objectOne,
+                                  String dataTwo,
+                                  Object objectTwo) throws JSONException {
+        JSONObject dataOfJsonObject = new JSONObject()
+                .put(dataOne, objectOne);
+        if (dataTwo != null && objectTwo != null)
+            dataOfJsonObject.put(dataTwo, objectTwo);
+        return new JSONObject()
+                .put("ID", IDString)
+                .put(data, dataOfJsonObject);
     }
 }

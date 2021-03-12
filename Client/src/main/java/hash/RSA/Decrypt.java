@@ -1,4 +1,4 @@
-package Hashing.RSA;
+package hash.RSA;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;

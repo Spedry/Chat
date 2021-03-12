@@ -1,4 +1,4 @@
-package Hashing;
+package hash;
 
 import lombok.Getter;
 import lombok.NonNull;

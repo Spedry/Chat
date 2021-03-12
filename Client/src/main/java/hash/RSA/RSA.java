@@ -1,4 +1,4 @@
-package Hashing.RSA;
+package hash.RSA;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -28,10 +28,6 @@ public class RSA {
     public String getBase64EncodedPublicKey() {
         return Base64.getEncoder().encodeToString(publicKey.getEncoded());
     }
-
-//    public String test() {
-//        return Base64.getEncoder().encodeToString(othersSidePublicKey.getEncoded());
-//    }
 
     public void setOthersSidePublicKey(String base64PublicKey) {
         try {

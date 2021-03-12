@@ -30,7 +30,7 @@ public class RegisterController {
     @FXML
     public TextField usernameField;
     @FXML
-    public Text errcesMessage;
+    public Text registerStatus;
     private JSONObject jsonObject = null;
     private MessageSender messageSender;
     private final Logger logger = LogManager.getLogger(this.getClass());
@@ -46,15 +46,16 @@ public class RegisterController {
 
     @FXML
     public void registerOnAction() throws JSONException {
-        hashing = new Hashing();
-        jsonObject = new JSONObject()
-                .put(Variables.ID, Variables.REGISTRATION_OF_NEW_USER);
-        messageSender.printWriter(jsonObject);
+        if(passwordField.getText().equals(repeatField.getText())) {
+            hashing = new Hashing();
+            jsonObject = new JSONObject()
+                    .put(Variables.ID, Variables.REGISTRATION_OF_NEW_USER);
+            messageSender.printWriter(jsonObject);
+        }
     }
 
     public void registerUser() {
         if(passwordField.getText().equals(repeatField.getText())) {
-            messageSuccess("Succes", "green");
             logger.info("Creating jsonobject");
             jsonObject = new JSONObject()
                     .put(Variables.ID, Variables.REGISTRATION_OF_NEW_USER) //Registration of New User
@@ -66,15 +67,15 @@ public class RegisterController {
         }
         else {
             logger.warn("Passwords do not match");
-            messageSuccess("Passwords do not match", "red");
+            registrationStatus("Passwords do not match", "red");
         }
         logger.info("Sending data to server");
         messageSender.printWriter(jsonObject);
     }
 
-    public void messageSuccess(String message, String color) {
-        errcesMessage.setText(message);
-        errcesMessage.setFill(Paint.valueOf(color));
+    public void registrationStatus(String message, String color) {
+        registerStatus.setFill(Paint.valueOf(color));
+        registerStatus.setText(message);
     }
     @FXML
     public void backChangeSceneOnAction(ActionEvent actionEvent) throws IOException {

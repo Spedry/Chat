@@ -5,8 +5,9 @@ import lombok.NonNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 import hash.Hashing;
+import shortcuts_for_M_and_V.Variables;
 
-public abstract class AbsUser extends loginToMySQL {
+public abstract class AbsUser extends LoginToMySQL {
     @Getter
     private final String userName, userHash;
     @Getter
@@ -16,13 +17,13 @@ public abstract class AbsUser extends loginToMySQL {
 
 
     public AbsUser(@NonNull JSONObject jsonObject, @NonNull byte[] publicKey) {
-        this.userName = getDatafromJson(jsonObject, "Username");
-        this.userHash = getDatafromJson(jsonObject, "Password");
+        this.userName = getDatafromJson(jsonObject, Variables.USERNAME);
+        this.userHash = getDatafromJson(jsonObject, Variables.PASSWORD);
         this.publicKey = publicKey;
     }
 
     String getDatafromJson(JSONObject jsonObject, String type) throws JSONException {
-        return jsonObject.getJSONObject("Data").getString(type);
+        return jsonObject.getJSONObject(Variables.DATA).getString(type);
     }
 
     public void secondHash() {

@@ -26,6 +26,7 @@ public class Server {
                 + "\n\t\t\tServer is starting..."
                 + "\n\t\t\tWaiting for input on port: " + port + "...");
         MessageHandler messageHandler = new MessageHandler();
+        messageHandler.loadRoom();
         try {
             while(true) {
                 ClientHandler clientsSide = new ClientHandler(serverConnect.accept(), messageHandler);

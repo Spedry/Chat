@@ -9,8 +9,6 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 
 public class MessageCell extends ListCell<Message> {
-    //private final HBoxController hBoxController;
-
     @FXML
     public VBox messageCell;
     @FXML
@@ -21,7 +19,6 @@ public class MessageCell extends ListCell<Message> {
 
     public MessageCell() {
         super();
-
         loader = new FXMLLoader(getClass().getResource("/fxml/messageCell.fxml"));
         loader.setController(this);
         try {

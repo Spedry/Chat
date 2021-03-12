@@ -27,7 +27,7 @@ public class ClientHandler implements Runnable {
     private InputStreamReader in;
     private JSONObject jsonObject = null, ENDJSON;
     private LinkedBlockingQueue<JSONObject> dataQueue;
-    private boolean login = false;
+    //private boolean login = false;
     @Getter
     private String thisThreadUserName;
     @Getter
@@ -123,25 +123,32 @@ public class ClientHandler implements Runnable {
     }
 
     private void enter() throws InterruptedException, NoSuchAlgorithmException {
-        boolean saltWasSend = false;
         byte[] salt = null;
         // TODO: CHANGE THE
         // TODO: SYSTEM WITH
         // TODO: saltWasSend PLZ
-        while (!login) {
+        loop: while (true) {
+            jsonObject = dataQueue.take();
+            logger.info("Data taken from dataQueue: " + jsonObject);
             logger.info("Switch for ID");
-            switch ((jsonObject = dataQueue.take()).getString(Variables.ID)) {
-                // TODO: zmeniť while (!login) na while jsonobject.equals"login successfully"
-                // TODO: ktorý bude odoslaný klientom po tom čo sa úspešne prihlási
-                //logger.info("Data taken from dataQueue: " + jsonObject);
+            switch (jsonObject.getString(Variables.ID)) {
                 case Variables.LOGIN_OF_USER:
                     logger.info("Case for " + Variables.LOGIN_OF_USER);
-                    if (!saltWasSend) { // ak bude možnosť prerobiť funguje je to ale je nu velice malá šanca chyby
+                    boolean login;
+                    if (salt == null) {
+                        logger.info("Getting salt from database");
                         GetterPublicKey getterPublicKey = new GetterPublicKey(jsonObject);
+                        logger.info("Salt was set");
                         salt = getterPublicKey.getPublicKey();
-                        String encodedString = org.apache.commons.codec.binary.Base64.encodeBase64String(salt);
+                        String encodedString;
+                        if (salt != null)
+                            encodedString = org.apache.commons.codec.binary.Base64.encodeBase64String(salt);
+                        else
+                            encodedString = Variables.ERROR;
+                        logger.info("Sending salt to user");
                         printWriter(Methods.createJson(Variables.LOGIN_OF_USER, Variables.KEY, encodedString));
-                        saltWasSend = true;
+                        logger.info("Salt was send");
+                        //saltWasSend = true;
                     } else {
                         logger.info("Creating LoginUser class");
                         LoginUser loginUser = new LoginUser(jsonObject, salt);
@@ -150,14 +157,18 @@ public class ClientHandler implements Runnable {
                         logger.info("Name set to this thread is: " + thisThreadUserName);
                         logger.info("Sending data about successful login");
                         printWriter(Methods.createJson(Variables.LOGIN_OF_USER, Variables.ATTEMPT, login));
-                        saltWasSend = false;
+                        if (login)
+                            break loop;
                     }
                     break;
                 case Variables.REGISTRATION_OF_NEW_USER: // ak bude možnosť prerobiť funguje je to ale je nu velice malá šanca chyby
                     logger.info("Case for " + Variables.REGISTRATION_OF_NEW_USER);
-                    if (!saltWasSend) {
+                    if (salt == null) {
                         salt = getPublicKey();
-                        saltWasSend = true;
+                        String encodedString = org.apache.commons.codec.binary.Base64.encodeBase64String(salt);
+                        logger.info("Sending salt to user");
+                        printWriter(Methods.createJson(Variables.REGISTRATION_OF_NEW_USER, Variables.KEY, encodedString));
+                        logger.info("Salt was send");
                     } else {
                         // možnosť vzniknutia problému kedy je možná uživatela registrovať
                         // ale nastane chyba teda program si aj napriek chybe bude myslieť
@@ -166,7 +177,7 @@ public class ClientHandler implements Runnable {
                         RegisterUser registerUser = new RegisterUser(jsonObject, salt);
                         logger.info("Sending data about successful registration");
                         printWriter(Methods.createJson(Variables.REGISTRATION_OF_NEW_USER, Variables.ATTEMPT, registerUser.register()));
-                        saltWasSend = false;
+                        salt = null;
                     }
                     break;
                 default:
@@ -175,7 +186,7 @@ public class ClientHandler implements Runnable {
             }
         }
         logger.info("Adding user into client list");
-        if (login) messageHandler.addToClientList(this);
+        messageHandler.addToClientList(this);
         logger.info("Sending list of online users");
         messageHandler.sendOnlineUsersList(this);
     }
@@ -185,11 +196,7 @@ public class ClientHandler implements Runnable {
         Hashing hashing = new Hashing();
         logger.info("Generating salt");
         salt = hashing.generateSalt();
-        String encodedString = org.apache.commons.codec.binary.Base64.encodeBase64String(salt);
         logger.info("Salt was generated");
-        logger.info("Sending salt to user");
-        printWriter(Methods.createJson(Variables.REGISTRATION_OF_NEW_USER, Variables.KEY, encodedString));
-        logger.info("Salt was send");
         return salt;
     }
 

@@ -2,12 +2,11 @@ package controllers;
 
 import client.Application;
 import client.ClientSide;
-import Hashing.Hashing;
+import hash.Hashing;
 import client.MessageSender;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
@@ -18,10 +17,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
+import shortcuts_for_M_and_V.Variables;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class LoginController {
 
@@ -39,15 +37,6 @@ public class LoginController {
     private RegisterController registerController;
     @Getter
     private Hashing hashing;
-    private final String   data = "Data", userName = "Username", hash = "Password", message = "Message",
-            messagefromUser = "MfU", showLoginofUser = "SLoU";
-    private final String ioexception = "Reading a network file and got disconnected.\n" +
-            "Reading a local file that was no longer available.\n" +
-            "Using some stream to read data and some other process closed the stream.\n" +
-            "Trying to read/write a file, but don't have permission.\n" +
-            "Trying to write to a file, but disk space was no longer available.\n" +
-            "There are many more examples, but these are the most common, in my experience.";
-    private boolean login = true;
 
     public LoginController(Stage window) {
         this.window = window;
@@ -59,24 +48,24 @@ public class LoginController {
     }
 
     @FXML
-    public void loginOnAction() throws JSONException {
+    public void loginOnAction() throws JSONException { //TODO: ZMENIT ALE FAKT
         if (usernameField.getText() != null) {
             hashing = new Hashing();
             jsonObject = new JSONObject()
-                    .put("ID", "LoU")
-                    .put("Data", new JSONObject()
-                            .put("Username", usernameField.getText()));
+                    .put(Variables.ID, Variables.LOGIN_OF_USER)
+                    .put(Variables.DATA, new JSONObject()
+                            .put(Variables.USERNAME, usernameField.getText()));
             messageSender.printWriter(jsonObject);
         }
     }
 
     public void loginUser() {
-        if (usernameField.getText() != null || passwordField.getText() != null) {
+        if (usernameField.getText() != null || passwordField.getText() != null) { //TODO: ZMENIT ALE FAKT
             jsonObject = new JSONObject()
-                    .put("ID", "LoU") //Login of User
-                    .put("Data", new JSONObject()
-                            .put("Username", usernameField.getText())
-                            .put("Password", hashing.hashIt(passwordField.getText())));
+                    .put(Variables.ID, Variables.LOGIN_OF_USER) //Login of User
+                    .put(Variables.DATA, new JSONObject()
+                            .put(Variables.USERNAME, usernameField.getText())
+                            .put(Variables.PASSWORD, hashing.hashIt(passwordField.getText())));
             messageSender.printWriter(jsonObject);
         }
     }

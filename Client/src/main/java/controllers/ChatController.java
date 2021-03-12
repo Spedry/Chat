@@ -9,24 +9,25 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import lombok.NonNull;
+import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import shortcuts_for_M_and_V.Methods;
+import shortcuts_for_M_and_V.Variables;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.concurrent.LinkedBlockingQueue;
 
 public class ChatController implements Initializable {
     private final Logger logger = LogManager.getLogger(this.getClass());
-    private final String data = "Data", userName = "Username", hash = "Password", message = "Message",
-            messagefromUser = "MfU", showLoginofUser = "SLoU";
     private final Stage window;
     private final MessageSender messageSender;
-    private LinkedBlockingQueue<JSONObject> dataQueue;
+    @Setter
+    private int currentRoomID = 0;
+    @FXML
+    public Label nameofCurrentRoom;
     @FXML
     public ListView roomListView;
     @FXML
@@ -39,7 +40,6 @@ public class ChatController implements Initializable {
     public ScrollPane chatMessageScrollPane;
     @FXML
     public VBox chatBox;
-
     ObservableList<Room> roomObservableList = FXCollections.observableArrayList();
     ObservableList<Message> messageObservableList = FXCollections.observableArrayList();
     ObservableList<String> onlineUsersObservableList = FXCollections.observableArrayList();
@@ -52,36 +52,51 @@ public class ChatController implements Initializable {
     @FXML //initialized manually
     public void sendOnEnterPress() throws JSONException {
         // TODO: zapracovať createJson()
+        logger.info("Sending message from room ID: " + currentRoomID);
         JSONObject jsonObject = new JSONObject()
-                .put("ID", messagefromUser) //message from User
-                .put(data, new JSONObject()
-                        .put(message, messageField.getText()));
+                .put(Variables.ID, Variables.MESSAGE_FROM_USER) //message from User
+                .put(Variables.DATA, new JSONObject()
+                        .put(Variables.MESSAGE, messageField.getText())
+                        .put(Variables.ROOM_ID, currentRoomID) );
         messageSender.printWriter(jsonObject);
         messageField.clear();
     }
 
+    //TODO: funkcia kde si može užívateľ nastaviť lubovolnú room ako general
     @FXML
-    public void goToHomeOnAction() {
+    public void goToHomeOnAction() { //LOAD ROOM GENERAL  => ID 0
         logger.info("goToHome button");
-        messageSender.printWriter(createJson("LR", "RoomID", 000,null, null));
+        messageSender.printWriter(Methods.createJson(Variables.LOAD_AN_EXISTING_ROOM, Variables.ROOM_ID, 0));
+        if (currentRoomID != 0) {
+            setCurrentRoomID(0);
+            clearMessageListView();
+        }
     }
 
     @FXML
     public void switchBetweenGroupAndFriendOnAction() {
         logger.info("switchBetweenGroupAndFriend button");
-        // TODO: switch scény medzi skupinam a priateľmi
-        roomObservableList.add(new Room("Group", 001));
-        roomObservableList.add(new Room("Group", 002));
-        roomObservableList.add(new Room("Group", 003));
-
+        // TODO: switch scény medzi skupinami a priateľmi
     }
 
-    public void showMessage(String userName, String userMessage) {
-        messageObservableList.add(new Message(userName, userMessage));
-        messageListView.scrollTo(messageListView.getItems().size() - 1);
+    public void clearMessageListView() {
+        messageListView.getItems().clear();
+    }
+
+    public void addRoomButton(int roomId, String roomName) {
+        roomObservableList.add(new Room(roomId, roomName));
+    }
+
+    public void deleteRoomButton(int ID) {
+        //TODO: THIS
+    }
+
+    public void setNameofCurrentRoom(String roomName) {
+        nameofCurrentRoom.setText(roomName);
     }
 
     public void showOnlineUser(List<String> listofOnlineUsers) {
+        onlineUsersObservableList.clear();
         for (String onlineUser : listofOnlineUsers) {
             onlineUsersObservableList.add(onlineUser);
         }
@@ -92,7 +107,7 @@ public class ChatController implements Initializable {
     }
 
     public void deleteOnlineUser(String onlineUser) {
-        for (String user: onlineUsersObservableList) {
+        for (String user : onlineUsersObservableList) {
             if (user.equals(onlineUser)) {
                 logger.info("User: " + user + " was removed");
                 onlineUsersObservableList.remove(user);
@@ -101,10 +116,15 @@ public class ChatController implements Initializable {
         }
     }
 
+    public void showMessage(String userName, String userMessage) {
+        messageObservableList.add(new Message(userName, userMessage));
+        messageListView.scrollTo(messageListView.getItems().size() - 1);
+    }
+
     private void createRoomListView() {
-        roomObservableList.add(new Room("Create", 000));
+        roomObservableList.add(new Room(0, "Create"));
         roomListView.setItems(roomObservableList);
-        roomListView.setCellFactory(param -> new RoomCell(messageSender, window));
+        roomListView.setCellFactory(param -> new RoomCell(messageSender, window, this));
         //vBoxForListView.getChildren().add(groups);
     }
 
@@ -130,18 +150,7 @@ public class ChatController implements Initializable {
         createRoomListView();
         createMessageListView();
         createOnlineUsersListView();
-    }
-    private JSONObject createJson(@NonNull String IDString,
-                                  @NonNull String dataOne,
-                                  @NonNull Object objectOne,
-                                  String dataTwo,
-                                  Object objectTwo) throws JSONException {
-        JSONObject dataOfJsonObject = new JSONObject()
-                .put(dataOne, objectOne);
-        if (dataTwo != null && objectTwo != null)
-            dataOfJsonObject.put(dataTwo, objectTwo);
-        return new JSONObject()
-                .put("ID", IDString)
-                .put(data, dataOfJsonObject);
+
+        nameofCurrentRoom.setText("General");
     }
 }

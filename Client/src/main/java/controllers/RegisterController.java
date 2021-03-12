@@ -15,9 +15,11 @@ import javafx.stage.Stage;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import Hashing.Hashing;
+import hash.Hashing;
 import org.json.JSONException;
 import org.json.JSONObject;
+import shortcuts_for_M_and_V.Variables;
+
 import java.io.IOException;
 
 public class RegisterController {
@@ -29,7 +31,7 @@ public class RegisterController {
     public TextField usernameField;
     @FXML
     public Text errcesMessage;
-    public JSONObject jsonObject = null;
+    private JSONObject jsonObject = null;
     private MessageSender messageSender;
     private final Logger logger = LogManager.getLogger(this.getClass());
     @Getter
@@ -46,20 +48,19 @@ public class RegisterController {
     public void registerOnAction() throws JSONException {
         hashing = new Hashing();
         jsonObject = new JSONObject()
-                .put("ID", "RoNU");
+                .put(Variables.ID, Variables.REGISTRATION_OF_NEW_USER);
         messageSender.printWriter(jsonObject);
     }
 
     public void registerUser() {
         if(passwordField.getText().equals(repeatField.getText())) {
-            //pridať odpoveď servera na už existujúce username
             messageSuccess("Succes", "green");
             logger.info("Creating jsonobject");
             jsonObject = new JSONObject()
-                    .put("ID", "RoNU") //Registration of New User
-                    .put("Data", new JSONObject()
-                            .put("Username", usernameField.getText())
-                            .put("Password", hashing.hashIt(passwordField.getText())));
+                    .put(Variables.ID, Variables.REGISTRATION_OF_NEW_USER) //Registration of New User
+                    .put(Variables.DATA, new JSONObject()
+                            .put(Variables.USERNAME, usernameField.getText())
+                            .put(Variables.PASSWORD, hashing.hashIt(passwordField.getText())));
             logger.info("Jsonobject was created");
             logger.info(jsonObject);
         }

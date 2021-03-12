@@ -11,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import lombok.Getter;
 import org.apache.logging.log4j.LogManager;
@@ -22,7 +24,8 @@ import shortcuts_for_M_and_V.Variables;
 import java.io.IOException;
 
 public class LoginController {
-
+    @FXML
+    public Text loginStatus;
     @FXML
     public PasswordField passwordField;
     @FXML
@@ -68,6 +71,11 @@ public class LoginController {
                             .put(Variables.PASSWORD, hashing.hashIt(passwordField.getText())));
             messageSender.printWriter(jsonObject);
         }
+    }
+
+    public void loginStatus(String message, String color) {
+        loginStatus.setFill(Paint.valueOf(color));
+        loginStatus.setText(message);
     }
 
     @FXML

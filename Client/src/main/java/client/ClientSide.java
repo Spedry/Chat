@@ -1,11 +1,9 @@
 package client;
 
-import Hashing.RSA.RSA;
+import hash.RSA.RSA;
 import controllers.ChatController;
 import controllers.LoginController;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Control;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -14,10 +12,10 @@ import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import shortcuts_for_M_and_V.Methods;
+import shortcuts_for_M_and_V.Variables;
 import java.io.*;
 import java.net.Socket;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,17 +36,9 @@ public class ClientSide implements Runnable {
     private PrintWriter out;
     private InputStreamReader in;
     private JSONObject jsonObject;
-    BufferedReader br;
+    private BufferedReader br;
     @Getter
-    public LinkedBlockingQueue<JSONObject> dataQueue;
-    private final String   data = "Data", userName = "Username", hash = "Password", message = "Message",
-            messagefromUser = "MfU", showLoginofOnlineUser = "SLoOU";
-    private final String ioexception = "Reading a network file and got disconnected.\n" +
-            "Reading a local file that was no longer available.\n" +
-            "Using some stream to read data and some other process closed the stream.\n" +
-            "Trying to read/write a file, but don't have permission.\n" +
-            "Trying to write to a file, but disk space was no longer available.\n" +
-            "There are many more examples, but these are the most common, in my experience.";
+    private LinkedBlockingQueue<JSONObject> dataQueue;
     private boolean login = true;
     @Getter
     private RSA rsa;
@@ -66,20 +56,9 @@ public class ClientSide implements Runnable {
         try {
             socket = new Socket(hostname, port);
         } catch (IOException ioe) {
-            logger.error(ioexception, ioe);
+            logger.error(Variables.IOEXCEPTION, ioe);
         }
     }
-    // Singleton pattern https://en.wikipedia.org/wiki/Singleton_pattern
-    /*public static Client getInstance() {
-        if(instance == null){ //if there is no instance available... create new one
-            synchronized (Client.class) {
-                if(instance == null){ // double check - Thread Safe Singleton: https://www.journaldev.com/1377/java-singleton-design-pattern-best-practices-examples
-                    instance = new Client();
-                }
-            }
-        }
-        return instance;
-    }*/
 
     private void incomingDataHandler(@NonNull BufferedReader br) {
         try {
@@ -102,7 +81,7 @@ public class ClientSide implements Runnable {
         } catch (InterruptedException ie) {
             logger.error("Waiting thread was interrupted - .PUT()", ie);
         } catch (IOException ioe) {
-            logger.error(ioexception, ioe);
+            logger.error(Variables.IOEXCEPTION, ioe);
         }
     }
     boolean key = true;
@@ -113,7 +92,7 @@ public class ClientSide implements Runnable {
             dataQueue = new LinkedBlockingQueue<>();
             br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         } catch (IOException ioe) {
-            logger.info(ioexception, ioe);
+            logger.info(Variables.IOEXCEPTION, ioe);
         }
         try {
             logger.info("Creating thread to handle incoming data");
@@ -127,15 +106,15 @@ public class ClientSide implements Runnable {
 
             logger.info("Start of while cycle to login/register");
             while (login) {
-                switch ((jsonObject = dataQueue.take()).getString("ID")) {
-                    case "LoU":
+                switch ((jsonObject = dataQueue.take()).getString(Variables.ID)) {
+                    case Variables.LOGIN_OF_USER:
                         if (key) {
                             setPublicKey();
                             key = false;
                         } else {
-                            logger.info("Case for LoU");
-                            if (jsonObject.getJSONObject("Data").getBoolean("Attempt")) {
-                                logger.info("LoU was successful");
+                            logger.info("Case for " + Variables.LOGIN_OF_USER);
+                            if (jsonObject.getJSONObject(Variables.DATA).getBoolean(Variables.ATTEMPT)) {
+                                logger.info(Variables.LOGIN_OF_USER + " was successful");
                                 login = false;
                                 Platform.runLater(() -> {
                                     try {
@@ -146,18 +125,18 @@ public class ClientSide implements Runnable {
                                 });
                                 logger.info("Scene was changed to chatScene");
                             } else
-                                logger.info("LoU was unsuccessful");
+                                logger.info(Variables.LOGIN_OF_USER + " was unsuccessful");
                             key = true;
                         }
                         break;
-                    case "RoNU":
+                    case Variables.REGISTRATION_OF_NEW_USER:
                         if (key) {
                             setPublicKey();
                             key = false;
                         } else {
-                            logger.info("Case for RoNU");
-                            if (jsonObject.getJSONObject("Data").getBoolean("Attempt")) {
-                                logger.info("RoNU was successful");
+                            logger.info("Case for " + Variables.REGISTRATION_OF_NEW_USER);
+                            if (jsonObject.getJSONObject(Variables.DATA).getBoolean(Variables.ATTEMPT)) {
+                                logger.info(Variables.REGISTRATION_OF_NEW_USER + " was successful");
                                 Timer timer = new Timer();
                                 timer.schedule(
                                         new TimerTask() {
@@ -176,7 +155,7 @@ public class ClientSide implements Runnable {
                                 );
                                 logger.info("Scene was changed to loginScene");
                             } else
-                                logger.info("RuNU was unsuccessful");
+                                logger.info(Variables.REGISTRATION_OF_NEW_USER + " was unsuccessful");
                             key = true;
                         }
                         break;
@@ -188,30 +167,58 @@ public class ClientSide implements Runnable {
             logger.info("End of while cycle to login/register");
 
             logger.info("Start of while cycle which will manage incoming messages");
-            while (true) {
-                switch ((jsonObject = dataQueue.take()).getString("ID")) { //PREROBIŤ
-                    case messagefromUser:
-                        String userName = null, message = null;
-                        userName = jsonObject.getJSONObject(data).getString(this.userName);
-                        message = jsonObject.getJSONObject(data).getString(this.message);
-                        logger.info("Data taken from dataQueue: " + jsonObject);
-                        String finalUserName = userName;
-                        String finalMessage = message;
-                        Platform.runLater(() -> chatController.showMessage(finalUserName, finalMessage));
+            while (!(jsonObject = dataQueue.take()).equals("ENDJSON")) {
+                logger.info("Data taken from dataQueue: " + jsonObject);
+                switch (jsonObject.getString(Variables.ID)) {
+                    case Variables.MESSAGE_FROM_USER:
+                        logger.info("Case for " + Variables.MESSAGE_FROM_USER);
+                        final String userName = jsonObject.getJSONObject(Variables.DATA).getString(Variables.USERNAME);
+                        final String message = jsonObject.getJSONObject(Variables.DATA).getString(Variables.MESSAGE);
+                        Platform.runLater(() ->
+                                chatController.showMessage(userName, message));
                         break;
-                    case showLoginofOnlineUser:
-                        JSONArray jsonArray = jsonObject.getJSONArray(data);
+                    case Variables.SHOW_LOGIN_OF_ONLINE_USER:
+                        logger.info("Case for " + Variables.SHOW_LOGIN_OF_ONLINE_USER);
+                        JSONArray jsonArray = jsonObject.getJSONArray(Variables.DATA);
                         List<String> listofOnlineUsers = new ArrayList<>();
                         for (int i=0; i < jsonArray.length(); i++) {
                             listofOnlineUsers.add(jsonArray.getString(i));
                         }
-                        Platform.runLater(() -> chatController.showOnlineUser(listofOnlineUsers));
+                        Platform.runLater(() ->
+                                chatController.showOnlineUser(listofOnlineUsers));
                         break;
-                    case "SOU":
-                        Platform.runLater(() -> chatController.addOnlineUser(jsonObject.getJSONObject("Data").getString("Username")));
+                    case Variables.SHOW_ONLINE_USER:
+                        logger.info("Case for " + Variables.SHOW_ONLINE_USER);
+                        Platform.runLater(() ->
+                                chatController.addOnlineUser(jsonObject.getJSONObject(Variables.DATA).getString(Variables.USERNAME)));
                         break;
-                    case "DOU":
-                        Platform.runLater(() -> chatController.deleteOnlineUser(jsonObject.getJSONObject("Data").getString("Username")));
+                    case Variables.DELETE_ONLINE_USER:
+                        logger.info("Case for " + Variables.DELETE_ONLINE_USER);
+                        Platform.runLater(() ->
+                                chatController.deleteOnlineUser(jsonObject.getJSONObject(Variables.DATA).getString(Variables.USERNAME)));
+                        break;
+                    case Variables.CREATE_NEW_ROOM:
+                        logger.info("Case for " + Variables.CREATE_NEW_ROOM);
+                        Platform.runLater(() ->
+                                chatController.addRoomButton(jsonObject.getJSONObject(Variables.DATA).getInt(Variables.ROOM_ID),
+                                        jsonObject.getJSONObject(Variables.DATA).getString(Variables.ROOM_NAME)));
+                        break;
+                    case Variables.LOAD_INTO_THE_ROOM:
+                        logger.info("Case for " + Variables.LOAD_INTO_THE_ROOM);
+                        Platform.runLater(() -> {
+                                chatController.addRoomButton(jsonObject.getJSONObject(Variables.DATA).getInt(Variables.ROOM_ID),
+                                jsonObject.getJSONObject(Variables.DATA).getString(Variables.ROOM_NAME));
+                                chatController.setNameofCurrentRoom(jsonObject.getJSONObject(Variables.DATA).getString(Variables.ROOM_NAME));
+                            chatController.setCurrentRoomID(jsonObject.getJSONObject(Variables.DATA).getInt(Variables.ROOM_ID));
+
+                        });
+                        break;
+                    case Variables.LOAD_AN_EXISTING_ROOM:
+                        logger.info("Case for " + Variables.LOAD_AN_EXISTING_ROOM);
+                        Platform.runLater(() -> {
+                            chatController.setNameofCurrentRoom(jsonObject.getJSONObject(Variables.DATA).getString(Variables.ROOM_NAME));
+                            chatController.clearMessageListView();
+                        });
                         break;
                 }
             }
@@ -227,20 +234,17 @@ public class ClientSide implements Runnable {
 
     private void setRSAKey() throws InterruptedException, NoSuchAlgorithmException {
         rsa = new RSA();
-        getPrintWriter().println(createJson("RSA", "Key", rsa.getBase64EncodedPublicKey(), null, null));
+        getPrintWriter().println(Methods.createJson(Variables.RIVEST_SHAMIR_ADLEMAN, Variables.KEY, rsa.getBase64EncodedPublicKey(), null, null));
         if(rsa.isOthersSidePublicKeyNull())
-            rsa.setOthersSidePublicKey((jsonObject = dataQueue.take()).getJSONObject("Data").getString("Key"));
-        //logger.info("KEY: " + rsa.test());
-
+            rsa.setOthersSidePublicKey((jsonObject = dataQueue.take()).getJSONObject(Variables.DATA).getString(Variables.KEY));
     }
 
     public PrintWriter getPrintWriter() {
         return out;
     }
 
-    private void setPublicKey() {
-
-        switch (jsonObject.getString("ID")) {
+    private void setPublicKey() { // OMRKNÚŤ
+        switch (jsonObject.getString(Variables.ID)) {
             case "LoU":
                 loginController.getHashing().setSalt(jsonObject);
                 loginController.loginUser();
@@ -254,21 +258,5 @@ public class ClientSide implements Runnable {
 
     public void closeSocket() throws IOException {
         socket.shutdownOutput();
-    }
-
-
-
-    private JSONObject createJson(@NonNull String IDString,
-                                  @NonNull String dataOne,
-                                  @NonNull Object objectOne,
-                                  String dataTwo,
-                                  Object objectTwo) throws JSONException {
-        JSONObject dataOfJsonObject = new JSONObject()
-                .put(dataOne, objectOne);
-        if (dataTwo != null && objectTwo != null)
-            dataOfJsonObject.put(dataTwo, objectTwo);
-        return new JSONObject()
-                .put("ID", IDString)
-                .put(data, dataOfJsonObject);
     }
 }

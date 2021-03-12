@@ -5,14 +5,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
+import shortcuts_for_M_and_V.Variables;
+
 import java.sql.*;
 
-public class GetterPublicKey extends loginToMySQL {
+public class GetterPublicKey extends LoginToMySQL {
     private final Logger logger = LogManager.getLogger(this.getClass());
     private final String userName;
 
     public GetterPublicKey(@NonNull JSONObject jsonObject) {
-        this.userName = jsonObject.getJSONObject("Data").getString("Username");
+        this.userName = jsonObject.getJSONObject(Variables.DATA).getString(Variables.USERNAME);
         logger.info("GetterPublicKey class was created");
     }
 

@@ -15,7 +15,7 @@ public class RegisterUser extends AbsUser {
         logger.info("RegisterUser class was created");
     }
 
-    public boolean Register() {
+    public boolean register() {
         logger.info("Start of attempt to register");
         logger.info("Connecting to database");
         boolean registered = false;
@@ -28,7 +28,7 @@ public class RegisterUser extends AbsUser {
             try (PreparedStatement preparedStmt = conn.prepareStatement(SELECT)) {
                 ResultSet QUERY = preparedStmt.executeQuery(SELECT);
                 logger.info("Querying trough database");
-                                while(QUERY.next()) {
+                while(QUERY.next()) {
                     String UserName = QUERY.getString("UserName");
                     if (UserName.equals(getUserName())) {
                         possibleToReg = false;
@@ -36,13 +36,11 @@ public class RegisterUser extends AbsUser {
                         break;
                     }
                 }
-            }  catch (JSONException jsone) {
-                logger.error("Error with JSONObject", jsone);
             }
             logger.info("Creating SELECT");
             SELECT = "INSERT INTO users (UserName, UserHash, PublicKey, PrivateKey) VALUES (?, ?, ?, ?)";
-            try (PreparedStatement preparedStmt = conn.prepareStatement(SELECT)) {
-                if (possibleToReg) {
+            if (possibleToReg) {
+                try (PreparedStatement preparedStmt = conn.prepareStatement(SELECT)) {
                     logger.info("Second hash");
                     secondHash();
                     logger.debug("SELECT is: " + SELECT);
@@ -56,7 +54,7 @@ public class RegisterUser extends AbsUser {
                     logger.info("New user successfully registered");
                 }
             }
-        }catch (SQLException sqle) {
+        } catch (SQLException sqle) {
             logger.error("Error trying connect to database", sqle);
         }
         return registered;

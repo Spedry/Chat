@@ -1,5 +1,6 @@
 package database;
 
+import lombok.NonNull;
 import org.apache.logging.log4j.LogManager;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,15 +8,14 @@ import org.apache.logging.log4j.Logger;
 import java.sql.*;
 
 public class LoginUser extends AbsUser {
-
     private final Logger logger = LogManager.getLogger(this.getClass());
 
-    public LoginUser(JSONObject jsonObject, byte[] publicKey) {
+    public LoginUser(@NonNull JSONObject jsonObject, @NonNull byte[] publicKey) {
         super(jsonObject, publicKey);
         logger.info("LoginUser class was created");
     }
 
-    public boolean Login() {
+    public boolean login() {
         logger.info("Start of attempt to login");
         logger.info("Connecting to database");
         boolean login = false;
@@ -41,8 +41,6 @@ public class LoginUser extends AbsUser {
                         break;
                     }
                 }
-            }  catch (JSONException jsone) {
-                logger.error("Error with JSONObject", jsone);
             }
         } catch (SQLException sqle) {
             logger.error("Error trying connect to database", sqle);
@@ -52,7 +50,7 @@ public class LoginUser extends AbsUser {
 
     private boolean compareHashes(int userID, PreparedStatement preparedStmt, String pass) throws SQLException {
         logger.info("Creating SELECT");
-        String SELECT = "SELECT UserHash FROM Users WHERE UserID = " + userID;
+        String SELECT = "SELECT UserHash FROM users WHERE UserID = " + userID;
         logger.info("SELECT is: " + SELECT);
         ResultSet QUERY = preparedStmt.executeQuery(SELECT);
         while (QUERY.next()) {

@@ -1,13 +1,10 @@
 package server;
 
-import database.GetterPublicKey;
-import database.LoginUser;
-import database.RegisterUser;
+import database.*;
 import hash.Hashing;
 import hash.RSA.RSA;
 import lombok.NonNull;
 import org.apache.logging.log4j.LogManager;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.apache.logging.log4j.Logger;
@@ -17,37 +14,30 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
-import java.security.spec.InvalidKeySpecException;
-import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import lombok.Getter;
+import shortcuts_for_M_and_V.Methods;
+import shortcuts_for_M_and_V.Variables;
 
 public class ClientHandler implements Runnable {
     private final Socket prepojenie;
     private final Logger logger = LogManager.getLogger(this.getClass());
     private final MessageHandler messageHandler;
-    public ClientHandler(Socket prepojenie, MessageHandler messageHandler) {
-        this.prepojenie = prepojenie;
-        this.messageHandler = messageHandler;
-    }
-
     private PrintWriter out;
     private InputStreamReader in;
     private JSONObject jsonObject = null, ENDJSON;
     private LinkedBlockingQueue<JSONObject> dataQueue;
-    private final String   data = "Data", userName = "Username", hash = "Password", message = "Message",
-            messagefromUser = "MfU", loginofUser = "LoU", registrationofNewUser = "RoNU",
-            showLoginofOnlineUser = "SLoOU";
-    private final String ioexception = "Reading a network file and got disconnected.\n" +
-            "Reading a local file that was no longer available.\n" +
-            "Using some stream to read data and some other process closed the stream.\n" +
-            "Trying to read/write a file, but don't have permission.\n" +
-            "Trying to write to a file, but disk space was no longer available.\n" +
-            "There are many more examples, but these are the most common, in my experience.";
     private boolean login = false;
     @Getter
-    private String usersName;
+    private String thisThreadUserName;
+    @Getter
+    private int thisThreadRoomID = 0;
     private RSA rsa;
+
+    public ClientHandler(Socket prepojenie, MessageHandler messageHandler) {
+        this.prepojenie = prepojenie;
+        this.messageHandler = messageHandler;
+    }
 
     private void incomingDataHandler(@NonNull BufferedReader br) {
         try {
@@ -68,10 +58,10 @@ public class ClientHandler implements Runnable {
         } catch (InterruptedException ie) {
             logger.error("Waiting thread was interrupted - .PUT()", ie);
         } catch (IOException ioe) {
-            logger.error(ioexception, ioe);
+            logger.error(Variables.IOEXCEPTION, ioe);
         } finally {
             ENDJSON = new JSONObject()
-                    .put("ID", "END");
+                    .put(Variables.ID, "END");
             try {
                 dataQueue.put(ENDJSON);
             } catch (InterruptedException ie) {
@@ -79,7 +69,6 @@ public class ClientHandler implements Runnable {
             }
         }
     }
-
     @Override
     public void run() {
         try {
@@ -87,7 +76,7 @@ public class ClientHandler implements Runnable {
             in = new InputStreamReader(prepojenie.getInputStream());
             dataQueue = new LinkedBlockingQueue<>();
         } catch (IOException ioe) {
-            logger.warn(ioexception, ioe);
+            logger.warn(Variables.IOEXCEPTION, ioe);
         }
         try (BufferedReader br = new BufferedReader(in)) {
 
@@ -110,7 +99,7 @@ public class ClientHandler implements Runnable {
             logger.info("Ending while cycle for incoming messages");
 
         } catch (IOException ioe) {
-            logger.error(ioexception, ioe);
+            logger.error(Variables.IOEXCEPTION, ioe);
         } catch (JSONException jsone) {
             logger.error("Error with JSONObject", jsone);
         } catch (InterruptedException ie) {
@@ -127,10 +116,10 @@ public class ClientHandler implements Runnable {
         rsa = new RSA();
         logger.info(rsa.othersSidePublicKey);
         if(rsa.isOthersSidePublicKeyNull())
-            rsa.setOthersSidePublicKey((jsonObject = dataQueue.take()).getJSONObject("Data").getString("Key"));
+            rsa.setOthersSidePublicKey((jsonObject = dataQueue.take()).getJSONObject(Variables.DATA).getString(Variables.KEY));
         logger.info(rsa.othersSidePublicKey);
         logger.info("KEY: " + rsa.test());
-        getPrintWriter().println(createJson("RSA", "Key", rsa.getBase64EncodedPublicKey(), null, null));
+        getPrintWriter().println(Methods.createJson(Variables.RIVEST_SHAMIR_ADLEMAN, Variables.KEY, rsa.getBase64EncodedPublicKey()));
     }
 
     private void enter() throws InterruptedException, NoSuchAlgorithmException {
@@ -141,31 +130,31 @@ public class ClientHandler implements Runnable {
         // TODO: saltWasSend PLZ
         while (!login) {
             logger.info("Switch for ID");
-            switch ((jsonObject = dataQueue.take()).getString("ID")) {
+            switch ((jsonObject = dataQueue.take()).getString(Variables.ID)) {
                 // TODO: zmeniť while (!login) na while jsonobject.equals"login successfully"
                 // TODO: ktorý bude odoslaný klientom po tom čo sa úspešne prihlási
                 //logger.info("Data taken from dataQueue: " + jsonObject);
-                case loginofUser:
-                    logger.info("Case for " + loginofUser);
+                case Variables.LOGIN_OF_USER:
+                    logger.info("Case for " + Variables.LOGIN_OF_USER);
                     if (!saltWasSend) { // ak bude možnosť prerobiť funguje je to ale je nu velice malá šanca chyby
                         GetterPublicKey getterPublicKey = new GetterPublicKey(jsonObject);
                         salt = getterPublicKey.getPublicKey();
                         String encodedString = org.apache.commons.codec.binary.Base64.encodeBase64String(salt);
-                        printWriter(createJson("LoU", "Key", encodedString, null, null));
+                        printWriter(Methods.createJson(Variables.LOGIN_OF_USER, Variables.KEY, encodedString));
                         saltWasSend = true;
                     } else {
                         logger.info("Creating LoginUser class");
                         LoginUser loginUser = new LoginUser(jsonObject, salt);
-                        if (login = loginUser.Login())
-                            usersName = loginUser.getUserName();
-                        logger.info("Name set to this thread is: " + usersName);
+                        if (login = loginUser.login())
+                            thisThreadUserName = loginUser.getUserName();
+                        logger.info("Name set to this thread is: " + thisThreadUserName);
                         logger.info("Sending data about successful login");
-                        printWriter(createJson("LoU", "Attempt", login, null, null));
+                        printWriter(Methods.createJson(Variables.LOGIN_OF_USER, Variables.ATTEMPT, login));
                         saltWasSend = false;
                     }
                     break;
-                case registrationofNewUser: // ak bude možnosť prerobiť funguje je to ale je nu velice malá šanca chyby
-                    logger.info("Case for " + registrationofNewUser);
+                case Variables.REGISTRATION_OF_NEW_USER: // ak bude možnosť prerobiť funguje je to ale je nu velice malá šanca chyby
+                    logger.info("Case for " + Variables.REGISTRATION_OF_NEW_USER);
                     if (!saltWasSend) {
                         salt = getPublicKey();
                         saltWasSend = true;
@@ -176,12 +165,12 @@ public class ClientHandler implements Runnable {
                         logger.info("Creating RegisterUser class");
                         RegisterUser registerUser = new RegisterUser(jsonObject, salt);
                         logger.info("Sending data about successful registration");
-                        printWriter(createJson(registrationofNewUser, "Attempt", registerUser.Register(), null, null));
+                        printWriter(Methods.createJson(Variables.REGISTRATION_OF_NEW_USER, Variables.ATTEMPT, registerUser.register()));
                         saltWasSend = false;
                     }
                     break;
                 default:
-                    logger.warn("unknown ID");
+                    logger.warn("UNKNOWN ID");
                     break;
             }
         }
@@ -199,29 +188,67 @@ public class ClientHandler implements Runnable {
         String encodedString = org.apache.commons.codec.binary.Base64.encodeBase64String(salt);
         logger.info("Salt was generated");
         logger.info("Sending salt to user");
-        printWriter(createJson("RoNU", "Key", encodedString, null, null));
+        printWriter(Methods.createJson(Variables.REGISTRATION_OF_NEW_USER, Variables.KEY, encodedString));
         logger.info("Salt was send");
         return salt;
     }
 
     // bude prijímať správy dokým bude uživateľ online - po odpojení uživateľa sa vygeneruje JSONObject ENDJSON ktorý ukončí cyklus
     private void incomingMessage() throws InterruptedException {
+        int roomId = 0;
         while (!(jsonObject = dataQueue.take()).equals(ENDJSON)) {
             logger.info("Data taken from dataQueue: " + jsonObject);
-            switch (jsonObject.getString("ID")) {
-                case messagefromUser:
-                    String msg = extractData(message);
-                    messageHandler.addToMessages(createJson(messagefromUser, userName, usersName, message, msg));
-                    messageHandler.broadcast();
+            switch (jsonObject.getString(Variables.ID)) {
+                case Variables.MESSAGE_FROM_USER:
+                    logger.info("Case for " + Variables.MESSAGE_FROM_USER);
+                    messageHandler.addToMessages(Methods.createJson(Variables.MESSAGE_FROM_USER,
+                            Variables.USERNAME, thisThreadUserName,
+                            Variables.MESSAGE, extractDataString(Variables.MESSAGE),
+                            Variables.ROOM_ID, extractDataInt(Variables.ROOM_ID)));
+                    messageHandler.cast();
                     break;
-                case "LR":
-                    logger.info(jsonObject.getJSONObject("Data").getInt("RoomID"));
-
+                case Variables.CREATE_NEW_ROOM:
+                    logger.info("Case for " + Variables.CREATE_NEW_ROOM);
+                    CreateNewRoom createNewRoom = new CreateNewRoom(jsonObject);
+                    if (createNewRoom.createRoom()) {
+                        messageHandler.createRoom(createNewRoom.getRoomId());
+                        printWriter(Methods.createJson(Variables.CREATE_NEW_ROOM,
+                                Variables.ROOM_ID, createNewRoom.getRoomId() ,
+                                Variables.ROOM_NAME, createNewRoom.getRoomName()));
+                    }
+                    break; //TODO:
+                case Variables.LOG_INTO_THE_ROOM:
+                    logger.info("Case for " + Variables.LOG_INTO_THE_ROOM);
+                    LogIntotheRoom logIntotheRoom = new LogIntotheRoom(jsonObject);
+                    if (logIntotheRoom.login()) {
+                        printWriter(Methods.createJson(Variables.LOG_INTO_THE_ROOM,
+                                Variables.ROOM_ID, logIntotheRoom.getRoomId(),
+                                Variables.ROOM_NAME, logIntotheRoom.getRoomName()));
+                        }
+                    roomId = logIntotheRoom.getRoomId();
+                case Variables.LOAD_AN_EXISTING_ROOM:
+                    logger.info("Case for " + Variables.LOAD_AN_EXISTING_ROOM);
+                    if (jsonObject.getString(Variables.ID).equals(Variables.LOAD_AN_EXISTING_ROOM))
+                        roomId = jsonObject.getJSONObject(Variables.DATA).getInt(Variables.ROOM_ID);
+                    if (!(thisThreadRoomID == roomId)) {
+                        messageHandler.deleteClientFromRoom(this);
+                        thisThreadRoomID = roomId;
+                        GetRoomName getRoomName = new GetRoomName(roomId);
+                        printWriter(Methods.createJson(Variables.LOAD_AN_EXISTING_ROOM, Variables.ROOM_NAME, getRoomName.getRoomName()));
+                        if (roomId == 0) {
+                            logger.info("Room0 sending list of all online users");
+                            messageHandler.sendOnlineUsersList(this);
+                        }
+                        else {
+                            logger.info("Room" + roomId + " sending list of users in room");
+                            messageHandler.sendRoomList(roomId, this);
+                        }
+                        messageHandler.addClientIntotheRoom(roomId, this);
+                    }
                     break;
                 default:
                     logger.warn("unknown ID");
                     break;
-
             }
         }
     }
@@ -240,31 +267,13 @@ public class ClientHandler implements Runnable {
         printWriter(message);
     }
 
-    public JSONObject createJson(@NonNull String IDString,
-                                  @NonNull String dataOne,
-                                  @NonNull Object objectOne,
-                                  String dataTwo,
-                                  Object objectTwo) throws JSONException {
-        JSONObject dataOfJsonObject = new JSONObject()
-                .put(dataOne, objectOne);
-        if (dataTwo != null && objectTwo != null)
-            dataOfJsonObject.put(dataTwo, objectTwo);
-        return new JSONObject()
-                .put("ID", IDString)
-                .put(data, dataOfJsonObject);
-    }
-
-    public String extractData(String typeOfData) throws JSONException {
+    public String extractDataString(String typeOfData) throws JSONException {
         logger.info("TEST: " + jsonObject);
-        return jsonObject.getJSONObject(data).getString(typeOfData);
+        return jsonObject.getJSONObject(Variables.DATA).getString(typeOfData);
     }
 
-    public JSONObject createJsonListofUsers(List<String> listofOnlineUsers) {
-        JSONArray jsonArray = new JSONArray(listofOnlineUsers);
-        JSONObject jsonObject = new JSONObject()
-                .put("ID", showLoginofOnlineUser)
-                .put(data, jsonArray);
-        logger.info(jsonObject);
-        return jsonObject;
+    public int extractDataInt(String typeOfData) throws JSONException {
+        logger.info("TEST: " + jsonObject);
+        return jsonObject.getJSONObject(Variables.DATA).getInt(typeOfData);
     }
 }

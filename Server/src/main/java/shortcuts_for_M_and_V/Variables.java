@@ -12,6 +12,7 @@ public class Variables {
             ROOM = "Room",
             ROOM_ID = "RoomID",
             ROOM_NAME = "RoomName",
+            ERROR = "Error",
             MESSAGE = "Message",
             MESSAGE_FROM_USER = "MfU",
             LOGIN_OF_USER = "LoU",

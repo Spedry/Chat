@@ -43,9 +43,9 @@ public class Hashing {
         return sb.toString();
     }
 
-    public void setSalt(@NonNull JSONObject jsonObject) {
+    public void setSalt(@NonNull String stringToEncode) {
         // Setting salt
-        String getBackEncodedString = jsonObject.getJSONObject("Data").getString("Key");
+        String getBackEncodedString = stringToEncode;
         this.salt = org.apache.commons.codec.binary.Base64.decodeBase64(getBackEncodedString);
         // Salt was set = toString(salt)
     }

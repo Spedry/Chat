@@ -31,6 +31,13 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\Client\src\main\java\controllers\RegisterController.java">
+          <value>
+            <Attribute>
+              <option name="separator" value=";" />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\Client\src\main\java\controllers\list\Cell.java">
           <value>
             <Attribute>

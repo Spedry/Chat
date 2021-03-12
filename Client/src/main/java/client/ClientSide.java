@@ -39,7 +39,6 @@ public class ClientSide implements Runnable {
     private BufferedReader br;
     @Getter
     private LinkedBlockingQueue<JSONObject> dataQueue;
-    private boolean login = true;
     @Getter
     private RSA rsa;
 
@@ -84,7 +83,6 @@ public class ClientSide implements Runnable {
             logger.error(Variables.IOEXCEPTION, ioe);
         }
     }
-    boolean key = true;
     @Override
     public void run() {
         try {
@@ -104,18 +102,29 @@ public class ClientSide implements Runnable {
             setRSAKey();
             logger.info("Key was received and successfully set");
 
+            boolean key = true;
             logger.info("Start of while cycle to login/register");
-            while (login) {
-                switch ((jsonObject = dataQueue.take()).getString(Variables.ID)) {
+            loop: while (true) {
+                jsonObject = dataQueue.take();
+                logger.info("Data taken from dataQueue: " + jsonObject);
+                logger.info("Switch for ID");
+                switch (jsonObject.getString(Variables.ID)) {
                     case Variables.LOGIN_OF_USER:
                         if (key) {
-                            setPublicKey();
-                            key = false;
+                            String stringToEncode;
+                            logger.info("Trying to get salt");
+                            if (!(stringToEncode = jsonObject.getJSONObject("Data").getString("Key")).equals(Variables.ERROR)) {
+                                loginController.getHashing().setSalt(stringToEncode);
+                                loginController.loginUser();
+                                key = false;
+                            } else {
+                                loginController.loginStatus("Incorrect username or password", "Red");
+                                logger.info("Failed to get salt");
+                            }
                         } else {
                             logger.info("Case for " + Variables.LOGIN_OF_USER);
                             if (jsonObject.getJSONObject(Variables.DATA).getBoolean(Variables.ATTEMPT)) {
                                 logger.info(Variables.LOGIN_OF_USER + " was successful");
-                                login = false;
                                 Platform.runLater(() -> {
                                     try {
                                         loginController.chatScene();
@@ -124,19 +133,24 @@ public class ClientSide implements Runnable {
                                     }
                                 });
                                 logger.info("Scene was changed to chatScene");
-                            } else
+                                break loop;
+                            } else {
+                                loginController.loginStatus("Incorrect username or password", "Red");
                                 logger.info(Variables.LOGIN_OF_USER + " was unsuccessful");
+                            }
                             key = true;
                         }
                         break;
                     case Variables.REGISTRATION_OF_NEW_USER:
                         if (key) {
-                            setPublicKey();
+                            loginController.getRegisterController().getHashing().setSalt(jsonObject.getJSONObject("Data").getString("Key"));
+                            loginController.getRegisterController().registerUser();
                             key = false;
                         } else {
                             logger.info("Case for " + Variables.REGISTRATION_OF_NEW_USER);
                             if (jsonObject.getJSONObject(Variables.DATA).getBoolean(Variables.ATTEMPT)) {
                                 logger.info(Variables.REGISTRATION_OF_NEW_USER + " was successful");
+                                Platform.runLater(()-> loginController.getRegisterController().registrationStatus("Success", "green"));
                                 Timer timer = new Timer();
                                 timer.schedule(
                                         new TimerTask() {
@@ -154,8 +168,10 @@ public class ClientSide implements Runnable {
                                         }, 3000
                                 );
                                 logger.info("Scene was changed to loginScene");
-                            } else
+                            } else {
                                 logger.info(Variables.REGISTRATION_OF_NEW_USER + " was unsuccessful");
+                                loginController.getRegisterController().registrationStatus("Username is already in use", "Red");
+                            }
                             key = true;
                         }
                         break;
@@ -241,19 +257,6 @@ public class ClientSide implements Runnable {
 
     public PrintWriter getPrintWriter() {
         return out;
-    }
-
-    private void setPublicKey() { // OMRKNÚŤ
-        switch (jsonObject.getString(Variables.ID)) {
-            case "LoU":
-                loginController.getHashing().setSalt(jsonObject);
-                loginController.loginUser();
-                break;
-            case "RoNU":
-                loginController.getRegisterController().getHashing().setSalt(jsonObject);
-                loginController.getRegisterController().registerUser();
-                break;
-        }
     }
 
     public void closeSocket() throws IOException {

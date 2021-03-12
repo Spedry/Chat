@@ -1,6 +1,5 @@
 package client;
 
-import controllers.ChatController;
 import controllers.LoginController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

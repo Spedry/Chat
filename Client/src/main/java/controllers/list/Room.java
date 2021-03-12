@@ -8,7 +8,7 @@ public class Room {
     @Getter
     final int ID;
 
-    public Room(String name, int ID) {
+    public Room(int ID, String name) {
         this.name = name;
         this.ID = ID;
     }

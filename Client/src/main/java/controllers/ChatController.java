@@ -4,11 +4,17 @@ import client.MessageSender;
 import controllers.list.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import lombok.Getter;
 import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,6 +28,7 @@ import java.util.ResourceBundle;
 
 public class ChatController implements Initializable {
     private final Logger logger = LogManager.getLogger(this.getClass());
+    @Getter
     private final Stage window;
     private final MessageSender messageSender;
     @Setter
@@ -35,14 +42,25 @@ public class ChatController implements Initializable {
     @FXML
     public ListView messageListView;
     @FXML
+    public Button minimize;
+    @FXML
+    public Button maximize;
+    @FXML
+    public Button close;
+    @FXML
     public TextField messageField;
     @FXML
     public ScrollPane chatMessageScrollPane;
     @FXML
     public VBox chatBox;
-    ObservableList<Room> roomObservableList = FXCollections.observableArrayList();
-    ObservableList<Message> messageObservableList = FXCollections.observableArrayList();
-    ObservableList<String> onlineUsersObservableList = FXCollections.observableArrayList();
+    @FXML
+    public ImageView drag;
+    @Getter
+    private final ObservableList<Room> roomObservableList = FXCollections.observableArrayList();
+    private final ObservableList<Message> messageObservableList = FXCollections.observableArrayList();
+    private final ObservableList<String> onlineUsersObservableList = FXCollections.observableArrayList();
+    private double xOffset = 0;
+    private double yOffset = 0;
 
     public ChatController(MessageSender messageSender, Stage widnow) {
         this.messageSender = messageSender;
@@ -138,6 +156,27 @@ public class ChatController implements Initializable {
         messageListView.setCellFactory(param -> new MessageCell());
     }
 
+    @FXML
+    public void minimizeOnAction(ActionEvent actionEvent) {
+        Stage stage = (Stage) minimize.getScene().getWindow();
+        stage.setIconified(true);
+    }
+
+    @FXML
+    public void maximizeOnAction(ActionEvent actionEvent) {
+        Stage stage = (Stage) maximize.getScene().getWindow();
+        if (stage.isMaximized())
+            stage.setMaximized(false);
+        else
+            stage.setMaximized(true);
+    }
+
+    @FXML
+    public void closeOnAction(ActionEvent actionEvent) {
+        Stage stage = (Stage) close.getScene().getWindow();
+        stage.close();
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         logger.info("Initializing");
@@ -146,11 +185,27 @@ public class ChatController implements Initializable {
             sendOnEnterPress();
         });
 
+
+        /*roomListView.getStylesheets().add("css/css.css");
+        roomListView.setId("listview-rooms");
+        messageListView.getStylesheets().add("css/css.css");
+        messageListView.setId("listview-messages");*/
+
         logger.info("creating list listviews");
         createRoomListView();
         createMessageListView();
         createOnlineUsersListView();
 
         nameofCurrentRoom.setText("General");
+
+        drag.setOnMousePressed(event -> {
+            xOffset = window.getX() - event.getScreenX();
+            yOffset = window.getY() - event.getScreenY();
+        });
+
+        drag.setOnMouseDragged(event -> {
+            window.setX(event.getScreenX() + xOffset);
+            window.setY(event.getScreenY() + yOffset);
+        });
     }
 }

@@ -13,7 +13,7 @@
   <build>
     <testResources>
       <testResource>
-        <directory>src/buttonController/java</directory>
+        <directory>src/test/java</directory>
         <includes>
           <include>**/*Test.java</include>
           <include>org/mortbay/**/*.xml</include>
@@ -94,7 +94,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mortbay.jetty</groupId>

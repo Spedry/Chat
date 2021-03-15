@@ -122,7 +122,7 @@ limitations under the License.
     <contributor>
       <name>Jeffery Dever</name>
       <roles>
-        <role>Representing http-clientSide</role>
+        <role>Representing http-client</role>
       </roles>
     </contributor>
     <contributor>
@@ -140,7 +140,7 @@ limitations under the License.
       <name>Oleg Kalnichevski</name>
       <email>oleg@ural.ru</email>
       <roles>
-        <role>Representing http-clientSide</role>
+        <role>Representing http-client</role>
       </roles>
     </contributor>
     <contributor>
@@ -154,7 +154,7 @@ limitations under the License.
       <name>Alex Karasulu</name>
       <email>aok123 at bellsouth.net</email>
       <roles>
-        <role>Submitted Binary class and buttonController</role>
+        <role>Submitted Binary class and test</role>
       </roles>
     </contributor>
     <contributor>
@@ -192,7 +192,7 @@ limitations under the License.
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.10</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   <properties>
@@ -249,7 +249,7 @@ limitations under the License.
         <executions>
           <execution>
             <goals>
-              <goal>buttonController-jar</goal>
+              <goal>test-jar</goal>
             </goals>
           </execution>
         </executions>

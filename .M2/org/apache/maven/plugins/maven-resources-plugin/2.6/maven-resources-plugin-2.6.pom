@@ -36,9 +36,9 @@ under the License.
   <name>Maven Resources Plugin</name>
   <description>
     The Resources Plugin handles the copying of project resources to the output
-    directory. There are two different kinds of resources: main resources and buttonController resources. The
+    directory. There are two different kinds of resources: main resources and test resources. The
     difference is that the main resources are the resources associated to the main
-    source code while the buttonController resources are associated to the buttonController source code.
+    source code while the test resources are associated to the test source code.
     Thus, this allows the separation of resources for the main source code and its
     unit tests.
   </description>
@@ -142,13 +142,13 @@ under the License.
       <groupId>org.apache.maven.shared</groupId>
       <artifactId>maven-plugin-testing-harness</artifactId>
       <version>1.0-beta-1</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
       <version>1.4</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -207,7 +207,7 @@ under the License.
                 <localRepositoryPath>${project.build.directory}/local-repo</localRepositoryPath>
                 <goals>
                   <goal>clean</goal>
-                  <goal>process-buttonController-resources</goal>
+                  <goal>process-test-resources</goal>
                 </goals>
                 <settingsFile>src/it/settings.xml</settingsFile>
                 <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
@@ -225,7 +225,7 @@ under the License.
             <executions>
               <execution>
                 <goals>
-                  <goal>buttonController-jar</goal>
+                  <goal>test-jar</goal>
                 </goals>
               </execution>
             </executions>
@@ -236,7 +236,7 @@ under the License.
             <executions>
               <execution>
                 <goals>
-                  <goal>buttonController-descriptor</goal>
+                  <goal>test-descriptor</goal>
                 </goals>
               </execution>
             </executions>

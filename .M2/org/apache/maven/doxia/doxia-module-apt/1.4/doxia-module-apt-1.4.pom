@@ -37,9 +37,9 @@ under the License.
     APT format is supported both as source and target formats.
   </description>
 
-<!-- START SNIPPET: buttonController -->
-    <!-- buttonController snippet -->
-<!-- END SNIPPET: buttonController -->
+<!-- START SNIPPET: test -->
+    <!-- test snippet -->
+<!-- END SNIPPET: test -->
 
   <dependencies>
     <dependency>

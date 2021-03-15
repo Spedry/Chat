@@ -65,25 +65,25 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
-      <artifactId>maven-buttonController-tools</artifactId>
+      <artifactId>maven-test-tools</artifactId>
       <version>1.0-alpha-2</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>easymock</groupId>
       <artifactId>easymock</artifactId>
       <version>1.2_Java1.3</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven.shared</groupId>
       <artifactId>maven-plugin-testing-harness</artifactId>
       <version>1.1</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>

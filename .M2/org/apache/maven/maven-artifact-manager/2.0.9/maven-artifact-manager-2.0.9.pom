@@ -36,7 +36,7 @@ under the License.
     <dependency>
       <groupId>org.apache.maven.wagon</groupId>
       <artifactId>wagon-file</artifactId>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.codehaus.plexus</groupId>
@@ -58,7 +58,7 @@ under the License.
       <groupId>easymock</groupId>
       <artifactId>easymock</artifactId>
       <version>1.2_Java1.3</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   <build>

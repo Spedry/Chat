@@ -244,10 +244,10 @@ under the License.
             </configuration>
             <executions>
               <execution>
-                <id>integration-buttonController</id>
+                <id>integration-test</id>
                 <goals>
                   <goal>install</goal>
-                  <goal>integration-buttonController</goal>
+                  <goal>integration-test</goal>
                   <goal>verify</goal>
                 </goals>
               </execution>

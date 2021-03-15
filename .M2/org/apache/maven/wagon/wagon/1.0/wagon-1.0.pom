@@ -133,19 +133,19 @@ under the License.
   <modules>
     <module>wagon-provider-api</module>
     <module>wagon-providers</module>
-    <module>wagon-provider-buttonController</module>
+    <module>wagon-provider-test</module>
     <module>wagon-tcks</module>
   </modules>
 
   <properties>
-    <maven.buttonController.redirectTestOutputToFile>true</maven.buttonController.redirectTestOutputToFile>
+    <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   <dependencyManagement>
@@ -157,12 +157,12 @@ under the License.
       </dependency>
       <dependency>
         <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-provider-buttonController</artifactId>
+        <artifactId>wagon-provider-test</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
         <groupId>org.apache.maven.wagon</groupId>
-        <artifactId>wagon-ssh-common-buttonController</artifactId>
+        <artifactId>wagon-ssh-common-test</artifactId>
         <version>${project.version}</version>
       </dependency>
       <dependency>
@@ -198,7 +198,7 @@ under the License.
         <groupId>org.codehaus.plexus</groupId>
         <artifactId>plexus-container-default</artifactId>
         <version>1.0-alpha-9</version>
-        <scope>buttonController</scope>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>org.codehaus.plexus</groupId>

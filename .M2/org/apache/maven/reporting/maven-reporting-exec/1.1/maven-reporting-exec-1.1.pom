@@ -130,12 +130,12 @@
       <version>0.9.0.M2</version>
     </dependency>
 
-    <!-- buttonController -->
+    <!-- test -->
     <dependency>
       <groupId>org.apache.maven.plugin-testing</groupId>
       <artifactId>maven-plugin-testing-harness</artifactId>
       <version>2.0-alpha-1</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
       <exclusions>
         <exclusion>
           <groupId>org.codehaus.plexus</groupId>
@@ -147,31 +147,31 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.8.2</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-compat</artifactId>
       <version>${mavenVersion}</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-embedder</artifactId>
       <version>${mavenVersion}</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-aether-provider</artifactId>
       <version>${mavenVersion}</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.sonatype.aether</groupId>
       <artifactId>aether-connector-wagon</artifactId>
       <version>1.7</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
       <exclusions>
         <exclusion>
           <groupId>org.codehaus.plexus</groupId>
@@ -183,7 +183,7 @@
       <groupId>org.apache.maven.wagon</groupId>
       <artifactId>wagon-http-lightweight</artifactId>
       <version>1.0</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
       <exclusions>
         <exclusion>
           <groupId>org.codehaus.plexus</groupId>
@@ -195,7 +195,7 @@
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
       <version>r07</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
 
 
@@ -203,7 +203,7 @@
       <groupId>org.apache.maven.doxia</groupId>
       <artifactId>doxia-site-renderer</artifactId>
       <version>1.1.4</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
       <exclusions>
         <exclusion>
           <groupId>org.codehaus.plexus</groupId>
@@ -227,7 +227,7 @@
       <groupId>org.codehaus.plexus</groupId>
       <artifactId>plexus-velocity</artifactId>
       <version>1.1.8</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
       <exclusions>
         <exclusion>
           <groupId>org.codehaus.plexus</groupId>
@@ -240,14 +240,14 @@
       <groupId>org.apache.velocity</groupId>
       <artifactId>velocity</artifactId>
       <version>1.5</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>velocity</groupId>
       <artifactId>velocity</artifactId>
       <version>1.5</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -318,10 +318,10 @@
         </configuration>
         <executions>
           <execution>
-            <id>integration-buttonController</id>
+            <id>integration-test</id>
             <goals>
               <goal>install</goal>
-              <goal>integration-buttonController</goal>
+              <goal>integration-test</goal>
               <goal>verify</goal>
             </goals>
           </execution>

@@ -413,7 +413,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
   </dependencies> 
 
@@ -426,7 +426,7 @@
     <commons.release.version>2.5</commons.release.version>
     <commons.jira.id>LANG</commons.jira.id>
     <commons.jira.pid>12310481</commons.jira.pid>
-    <random.exclude.buttonController>**/RandomUtilsFreqTest.java</random.exclude.buttonController>
+    <random.exclude.test>**/RandomUtilsFreqTest.java</random.exclude.test>
   </properties> 
 
 
@@ -441,7 +441,7 @@
           </includes>
           <excludes>
             <exclude>**/EntitiesPerformanceTest.java</exclude>
-            <exclude>${random.exclude.buttonController}</exclude>
+            <exclude>${random.exclude.test}</exclude>
           </excludes>
         </configuration>
       </plugin>
@@ -460,14 +460,14 @@
 
   <profiles>
       <!--
-        RandomUtils frequency tests have been put in a separate buttonController case which
+        RandomUtils frequency tests have been put in a separate test case which
         is only run when using this profile because it fails too frequently.
         See https://issues.apache.org/jira/browse/LANG-592
         -->
       <profile>
-        <id>buttonController-random-freq</id>
+        <id>test-random-freq</id>
         <properties>
-          <random.exclude.buttonController/>
+          <random.exclude.test/>
         </properties> 
         <build>
           <plugins>

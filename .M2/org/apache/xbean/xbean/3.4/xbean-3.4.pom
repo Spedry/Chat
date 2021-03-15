@@ -38,7 +38,7 @@
     <version>3.4</version>
     
     <description>
-        XBean is a plugin based clientHandler architecture.
+        XBean is a plugin based server architecture.
     </description>
     
     <url>http://geronimo.apache.org/xbean</url>
@@ -224,7 +224,7 @@
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>3.8.1</version>
-            <scope>buttonController</scope>
+            <scope>test</scope>
         </dependency>
         
     </dependencies>

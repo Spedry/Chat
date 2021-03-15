@@ -144,7 +144,7 @@
     </mailingList>
   </mailingLists>
   <build>
-    <!-- TODO find a better way to add N&L files to jars and buttonController jars
+    <!-- TODO find a better way to add N&L files to jars and test jars
          See also maven-remote-resources-plugin configuration below. 
     -->
     <resources>
@@ -162,11 +162,11 @@
         </includes>
       </resource>
     </resources>
-    <!-- ensure buttonController jars also get NOTICE & LICENSE files -->
+    <!-- ensure test jars also get NOTICE & LICENSE files -->
     <testResources>
       <!-- This is the default setting from the super-pom -->
       <testResource>
-        <directory>src/buttonController/resources</directory>
+        <directory>src/test/resources</directory>
       </testResource>
       <!-- hack to ensure the N&L appear in jars -->
       <testResource>
@@ -256,7 +256,7 @@
           <version>2.2.1</version>
         </plugin>
         <plugin>
-          <!-- TODO see above - find better way to add N&L files to jars and buttonController jars -->
+          <!-- TODO see above - find better way to add N&L files to jars and test jars -->
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-remote-resources-plugin</artifactId>
           <configuration>
@@ -444,7 +444,7 @@
           <useLastCommittedRevision>true</useLastCommittedRevision>
           <!-- default revision number if unavailable -->
           <revisionOnScmFailure>??????</revisionOnScmFailure>
-          <!-- svnjava works even if an svn command-line clientSide is not on the path -->
+          <!-- svnjava works even if an svn command-line client is not on the path -->
           <providerImplementations>
             <svn>javasvn</svn>
           </providerImplementations>
@@ -720,9 +720,9 @@
             <artifactId>maven-source-plugin</artifactId>
             <executions>
               <execution>
-                <id>attach-buttonController-sources</id>
+                <id>attach-test-sources</id>
                 <goals>
-                  <goal>buttonController-jar</goal>
+                  <goal>test-jar</goal>
                 </goals>
               </execution>
             </executions>
@@ -739,7 +739,7 @@
             <executions>
               <execution>
                 <goals>
-                  <goal>buttonController-jar</goal>
+                  <goal>test-jar</goal>
                 </goals>
               </execution>
             </executions>
@@ -813,7 +813,7 @@
      | mvn deploy -Ptest-deploy -Prelease -Dgpg.skip
      -->
     <profile>
-      <id>buttonController-deploy</id>
+      <id>test-deploy</id>
       <properties>
         <altDeploymentRepository>id::default::file:target/deploy</altDeploymentRepository>
       </properties>

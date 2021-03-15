@@ -213,10 +213,10 @@
           <htmlCustomization>src/docbkx/resources/xsl/html_chunk.xsl</htmlCustomization>
           <htmlStylesheet>css/hc-tutorial.css</htmlStylesheet>
           <entities>
-            <room>
+            <entity>
               <name>version</name>
               <value>${pom.version}</value>
-            </room>
+            </entity>
           </entities>
           <postProcess>
             <copy todir="target/site/tutorial">

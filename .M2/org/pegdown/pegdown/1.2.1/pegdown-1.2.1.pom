@@ -40,13 +40,13 @@
             <groupId>net.sf.jtidy</groupId>
             <artifactId>jtidy</artifactId>
             <version>r938</version>
-            <scope>buttonController</scope>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.specs2</groupId>
             <artifactId>specs2_2.9.2</artifactId>
             <version>1.12.2</version>
-            <scope>buttonController</scope>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

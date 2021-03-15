@@ -42,7 +42,7 @@
     architectures based on the "Model 2" approach, a variation of the classic 
     Model-View-Controller (MVC) design paradigm. Under Model 2, a servlet (or 
     equivalent) manages business logic execution, and presentation logic 
-    resides mainly in clientHandler pages.
+    resides mainly in server pages.
    </description>
    <url>http://struts.apache.org/</url>
    <inceptionYear>2000</inceptionYear>

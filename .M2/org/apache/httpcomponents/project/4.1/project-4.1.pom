@@ -405,10 +405,10 @@
             <htmlCustomization>src/docbkx/resources/xsl/html_chunk.xsl</htmlCustomization>
             <htmlStylesheet>css/hc-tutorial.css</htmlStylesheet>
             <entities>
-              <room>
+              <entity>
                 <name>version</name>
                 <value>${project.version}</value>
-              </room>
+              </entity>
             </entities>
           </configuration>
         </plugin>
@@ -473,7 +473,7 @@
      | mvn deploy -Ptest-deploy -Prelease -Dgpg.skip
      -->
     <profile>
-      <id>buttonController-deploy</id>
+      <id>test-deploy</id>
       <properties>
         <altDeploymentRepository>id::default::file:target/deploy</altDeploymentRepository>
       </properties>

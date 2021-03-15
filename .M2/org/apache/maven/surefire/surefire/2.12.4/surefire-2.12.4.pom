@@ -33,7 +33,7 @@
   <packaging>pom</packaging>
 
   <name>SureFire</name>
-  <description>Surefire is a buttonController framework project.</description>
+  <description>Surefire is a test framework project.</description>
   <url>http://maven.apache.org/surefire</url>
   <inceptionYear>2004</inceptionYear>
 
@@ -222,13 +222,13 @@
         <groupId>jmock</groupId>
         <artifactId>jmock</artifactId>
         <version>1.0.1</version>
-        <scope>buttonController</scope>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
         <version>3.8.1</version>
-        <scope>buttonController</scope>
+        <scope>test</scope>
       </dependency>      
     </dependencies>
   </dependencyManagement>
@@ -236,7 +236,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -252,7 +252,7 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>${shadedVersion}</version>
           <configuration>
-            <!-- NOTE: Be sure to isolate the Surefire version under buttonController from the version running the tests! -->
+            <!-- NOTE: Be sure to isolate the Surefire version under test from the version running the tests! -->
             <useSystemClassLoader>false</useSystemClassLoader>
           </configuration>
         </plugin>
@@ -281,9 +281,9 @@
               <exclude>.git/**/*</exclude>
               <exclude>**/.idea</exclude>
               <exclude>**/.svn/**/*</exclude>
-              <exclude>src/buttonController/resources/**/*</exclude>
+              <exclude>src/test/resources/**/*</exclude>
               <exclude>**/*.jj</exclude>
-              <exclude>src/buttonController/resources/**/*.css</exclude>
+              <exclude>src/test/resources/**/*.css</exclude>
               <exclude>**/*.iml</exclude>
               <exclude>**/*.ipr</exclude>
               <exclude>**/*.iws</exclude>

@@ -29,7 +29,7 @@
     </resources>
     <testResources>
       <testResource>
-        <directory>src/buttonController/java</directory>
+        <directory>src/test/java</directory>
         <excludes>
           <exclude>**/*.java</exclude>
         </excludes>
@@ -72,7 +72,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>javax.servlet</groupId>

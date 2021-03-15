@@ -366,7 +366,7 @@
   </organization>
   <build>
     <sourceDirectory>src/java</sourceDirectory>
-    <testSourceDirectory>src/buttonController</testSourceDirectory>
+    <testSourceDirectory>src/test</testSourceDirectory>
     <resources>
       <resource>
         <targetPath>META-INF</targetPath>
@@ -390,8 +390,8 @@
         <artifactId>maven-cobertura-plugin</artifactId>
         <version>1.1.1</version>
         <configuration>
-          <scope>buttonController</scope>
-          <comment>Required only for generating buttonController coverage reports.</comment>
+          <scope>test</scope>
+          <comment>Required only for generating test coverage reports.</comment>
         </configuration>
       </plugin>
     </plugins>
@@ -401,7 +401,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.1</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
   </dependencies>
   <distributionManagement>

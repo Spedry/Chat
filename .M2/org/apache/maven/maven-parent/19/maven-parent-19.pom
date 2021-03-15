@@ -762,7 +762,7 @@ under the License.
               <reportSet>
                 <reports>
                   <report>javadoc</report>
-                  <report>buttonController-javadoc</report>
+                  <report>test-javadoc</report>
                 </reports>
               </reportSet>
             </reportSets>

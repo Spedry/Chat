@@ -29,7 +29,7 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.apache.httpcomponents</groupId>
-    <artifactId>httpcomponents-clientSide</artifactId>
+    <artifactId>httpcomponents-client</artifactId>
     <version>4.0.2</version>
   </parent>
   <artifactId>httpclient</artifactId>
@@ -37,7 +37,7 @@
   <description>
    HttpComponents Client (base module)
   </description>
-  <url>http://hc.apache.org/httpcomponents-clientSide</url>
+  <url>http://hc.apache.org/httpcomponents-client</url>
   <packaging>jar</packaging>  
 
   <licenses>
@@ -68,7 +68,7 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${junit.version}</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -115,7 +115,7 @@
     </resources>
     <testResources>
       <testResource>
-        <directory>src/buttonController/resources</directory>
+        <directory>src/test/resources</directory>
         <filtering>false</filtering>
         <includes>
             <include>*</include>
@@ -170,7 +170,7 @@
         <executions>
           <execution>
             <goals>
-              <goal>buttonController-jar</goal>
+              <goal>test-jar</goal>
             </goals>
           </execution>
         </executions>

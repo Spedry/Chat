@@ -131,7 +131,7 @@ under the License.
         <groupId>org.apache.maven.doxia</groupId>
         <artifactId>doxia-core</artifactId>
         <version>${projectVersion}</version>
-        <type>buttonController-jar</type>
+        <type>test-jar</type>
       </dependency>
       <!-- Plexus -->
       <dependency>
@@ -151,7 +151,7 @@ under the License.
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>3.8.2</version>
-      <scope>buttonController</scope>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 

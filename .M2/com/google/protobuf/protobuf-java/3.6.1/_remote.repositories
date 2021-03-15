@@ -1,5 +1,4 @@
 #NOTE: This is a Maven Resolver internal implementation file, its format can be changed without prior notice.
-#Thu Nov 19 21:40:57 CET 2020
+#Mon Mar 15 16:17:43 CET 2021
 protobuf-java-3.6.1.jar>central=
-protobuf-java-3.6.1-sources.jar>central=
 protobuf-java-3.6.1.pom>central=

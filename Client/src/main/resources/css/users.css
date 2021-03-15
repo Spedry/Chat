@@ -1,0 +1,8 @@
+.listview-users, .list-cell:even, .list-cell:inactive {
+	-fx-background-color: dark-secondary-color;
+	-fx-text-fill: button-color;
+}
+.listview-users, .list-cell:odd {
+	-fx-background-color: dark-secondary-color;
+	-fx-text-fill: button-color;
+}

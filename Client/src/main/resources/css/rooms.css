@@ -1,0 +1,10 @@
+.listview-rooms, .list-cell:even, .list-cell:inactive {
+	-fx-background-color: dark-primary-color;
+	-fx-text-fill: button-color;
+	-fx-padding: 2px;
+}
+.listview-rooms, .list-cell:odd {
+	-fx-background-color: dark-primary-color;
+	-fx-text-fill: button-color;
+	-fx-padding: 2px;
+}

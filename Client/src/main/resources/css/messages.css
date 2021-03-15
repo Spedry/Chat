@@ -1,0 +1,8 @@
+.listview-messages, .list-cell:even, .list-cell:inactive {
+	-fx-background-color: dark-tertiary-color;
+	-fx-text-fill: button-color;
+}
+.listview-messages, .list-cell:odd {
+	-fx-background-color: dark-tertiary-color;
+	-fx-text-fill: button-color;
+}

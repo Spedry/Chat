@@ -21,15 +21,6 @@
 	-fx-background-color: dark-tertiary-color;
 }
 
-.list-view .list-cell:even, .list-cell:inactive {
-	-fx-background-color: dark-secondary-color;
-	-fx-text-fill: button-color;
-}
-.list-view .list-cell:odd {
-	-fx-background-color: dark-secondary-color;
-	-fx-text-fill: button-color;
-}
-
 .scroll-pane, .viewport {
     -fx-background-color: dark-tertiary-color;
 	-fx-border-color: dark-tertiary-color;
@@ -61,4 +52,9 @@
 .button {
 	-fx-background-color: button-color;
 	-fx-text-fill: text-bar-color;
+}
+
+.room {
+	-fx-background-radius: 100;
+	-fx-margin: 5;
 }

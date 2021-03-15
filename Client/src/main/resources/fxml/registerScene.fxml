@@ -5,31 +5,86 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" styleClass="primary-root" stylesheets="@../css/css.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
+      <HBox alignment="TOP_CENTER" layoutX="179.0" layoutY="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fx:id="drag" fitHeight="20.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/drag.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
       <VBox alignment="CENTER" layoutX="350.0" layoutY="79.0" AnchorPane.bottomAnchor="80.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="80.0">
          <children>
-            <AnchorPane layoutX="300.0" layoutY="80.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="245.0" prefWidth="200.0" style="-fx-background-color: #2C2F33;" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="80.0">
+            <AnchorPane layoutX="300.0" layoutY="80.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="250.0" style="-fx-background-color: #2C2F33;" AnchorPane.leftAnchor="350.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="80.0">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Register into the chat" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0">
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="15.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Register" textAlignment="CENTER" textFill="WHITE" textOverrun="CLIP" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="30.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Text fx:id="registerStatus" fill="#cd9090" layoutX="11.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="179.0" />
-                  <TextField fx:id="usernameField" layoutX="25.0" layoutY="65.0" promptText="Username" text="Test" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="65.0" />
-                  <PasswordField fx:id="passwordField" layoutX="25.0" layoutY="105.0" promptText="Password" text="Test" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="105.0" />
-                  <PasswordField fx:id="repeatField" layoutX="25.0" layoutY="145.0" promptText="Repeat" text="Test" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="145.0" />
-                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="35.0" layoutY="190.0" mnemonicParsing="false" onAction="#registerOnAction" style="-fx-background-color: #7289DA;" text="Register" textAlignment="CENTER" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="190.0" />
-                  <Hyperlink accessibleRole="BUTTON" alignment="CENTER" layoutX="84.0" layoutY="215.0" onAction="#backChangeSceneOnAction" text="Back" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="80.0" />
+                  <Text fx:id="registerStatus" fill="#cd9090" layoutX="11.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="200.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="60.0" />
+                  <TextField fx:id="usernameField" layoutX="25.0" layoutY="65.0" prefHeight="30.0" prefWidth="180.0" promptText="Username" text="Test" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="85.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></TextField>
+                  <PasswordField fx:id="passwordField" layoutX="25.0" layoutY="123.0" prefHeight="30.0" prefWidth="180.0" promptText="Password" text="Test" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="125.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></PasswordField>
+                  <PasswordField fx:id="repeatField" layoutX="25.0" layoutY="145.0" prefHeight="30.0" prefWidth="180.0" promptText="Repeat" text="Test" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="165.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></PasswordField>
+                  <Button alignment="CENTER" contentDisplay="CENTER" layoutX="35.0" layoutY="190.0" mnemonicParsing="false" onAction="#registerOnAction" prefHeight="20.0" prefWidth="60.0" style="-fx-background-color: #7289DA;" text="Register" textAlignment="CENTER" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="230.0" />
+                  <Hyperlink accessibleRole="BUTTON" alignment="CENTER" layoutX="84.0" layoutY="215.0" onAction="#backChangeSceneOnAction" text="Back" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="260.0">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Hyperlink>
                </children>
             </AnchorPane>
          </children>
       </VBox>
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="60.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button fx:id="close" layoutX="28.0" layoutY="2.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#closeOnAction" prefHeight="20.0" prefWidth="20.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/close.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="maximize" layoutX="-12.0" layoutY="2.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#maximizeOnAction" prefHeight="20.0" prefWidth="20.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="2.0">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/maximize.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="minimize" layoutX="-12.0" layoutY="27.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#minimizeOnAction" prefHeight="20.0" prefWidth="20.0" AnchorPane.rightAnchor="46.0" AnchorPane.topAnchor="2.0">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/minimize.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

@@ -6,39 +6,82 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="650.0" prefWidth="1000.0" styleClass="primary-root" stylesheets="@../css/css.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
+      <HBox alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fx:id="drag" fitHeight="20.0" fitWidth="600.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/drag.png" />
+               </image>
+            </ImageView>
+         </children>
+      </HBox>
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="60.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Button fx:id="close" layoutX="28.0" layoutY="2.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#closeOnAction" prefHeight="20.0" prefWidth="20.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/close.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="maximize" layoutX="-12.0" layoutY="2.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#maximizeOnAction" prefHeight="20.0" prefWidth="20.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="2.0">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/maximize.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="minimize" layoutX="-12.0" layoutY="27.0" maxHeight="20.0" maxWidth="20.0" minHeight="20.0" minWidth="20.0" mnemonicParsing="false" onAction="#minimizeOnAction" prefHeight="20.0" prefWidth="20.0" AnchorPane.rightAnchor="46.0" AnchorPane.topAnchor="2.0">
+               <graphic>
+                  <ImageView fitHeight="24.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/minimize.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+         </children>
+      </AnchorPane>
       <VBox alignment="CENTER" layoutX="350.0" layoutY="79.0" AnchorPane.bottomAnchor="80.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="80.0">
          <children>
             <AnchorPane prefHeight="300.0" prefWidth="250.0" styleClass="secondary-root">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="27.0" layoutY="29.0" text="Login" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0">
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="27.0" layoutY="29.0" text="Login" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="30.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Text fx:id="loginStatus" fill="#a84747" layoutX="29.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="191.13671875" />
+                  <Text fx:id="loginStatus" fill="#a84747" layoutX="29.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="191.13671875" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="60.0" />
                   <TextField fx:id="usernameField" layoutX="26.0" layoutY="61.0" promptText="Username" text="Spedry" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="85.0">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </TextField>
-                  <PasswordField fx:id="passwordField" layoutX="26.0" layoutY="113.0" promptText="Password" text="123" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="145.0">
+                  <PasswordField fx:id="passwordField" layoutX="26.0" layoutY="113.0" promptText="Password" text="123" AnchorPane.leftAnchor="35.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="135.0">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </PasswordField>
-                  <Button alignment="CENTER" layoutX="70.0" layoutY="178.0" mnemonicParsing="false" onAction="#loginOnAction" prefHeight="20.0" prefWidth="60.0" text="Login" textAlignment="CENTER" textFill="#23272a" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="200.0">
+                  <Button alignment="CENTER" layoutX="70.0" layoutY="178.0" mnemonicParsing="false" onAction="#loginOnAction" prefHeight="20.0" prefWidth="60.0" text="Login" textAlignment="CENTER" textFill="#23272a" AnchorPane.leftAnchor="45.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="230.0">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Button>
-                  <Hyperlink accessibleRole="BUTTON" alignment="CENTER" contentDisplay="CENTER" layoutX="76.0" layoutY="206.0" onAction="#signUpOnAction" prefHeight="23.0" prefWidth="60.0" styleClass="label" text="Sign up?" textAlignment="CENTER" textFill="#c60b0b" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="245.0">
+                  <Hyperlink accessibleRole="BUTTON" alignment="CENTER" contentDisplay="CENTER" layoutX="76.0" layoutY="206.0" onAction="#signUpOnAction" prefHeight="23.0" prefWidth="60.0" styleClass="label" text="Sign up?" textAlignment="CENTER" textFill="#c60b0b" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="70.0" AnchorPane.topAnchor="260.0">
                      <font>
                         <Font size="14.0" />
                      </font>

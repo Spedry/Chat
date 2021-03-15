@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class Application extends javafx.application.Application {
         Parent root = loader.load();
         Scene login = new Scene(root);
         window.setScene(login);
+        window.initStyle(StageStyle.UNDECORATED);
         logger.info("Set scene to loginScene");
         window.show();
         logger.info("Show window of app");

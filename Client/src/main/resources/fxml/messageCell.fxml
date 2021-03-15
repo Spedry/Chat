@@ -6,17 +6,25 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox fx:id="messageCell" maxWidth="360.0" style="-fx-padding: 5;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="messageCell" maxWidth="360.0" prefHeight="70.0" prefWidth="360.0" style="-fx-padding: 5;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="31.0" prefWidth="350.0">
+      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity">
          <children>
-            <ImageView fx:id="profileImg" fitHeight="30.0" fitWidth="27.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="profileImg" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../icons/user.png" />
                </image>
             </ImageView>
-            <Label fx:id="userName" alignment="CENTER" prefHeight="37.0" prefWidth="86.0" text="Label" textAlignment="CENTER" textFill="WHITE" />
+            <Label fx:id="userName" prefHeight="31.0" prefWidth="289.0" text="Label" textFill="WHITE">
+               <font>
+                  <Font size="18.0" />
+               </font>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </Label>
          </children>
       </HBox>
       <Label fx:id="userMessage" text="Label" textFill="WHITE" wrapText="true">

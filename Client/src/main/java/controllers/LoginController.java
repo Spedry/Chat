@@ -7,14 +7,19 @@ import client.MessageSender;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import lombok.Getter;
+import lombok.Setter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONException;
@@ -22,15 +27,30 @@ import org.json.JSONObject;
 import shortcuts_for_M_and_V.Variables;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class LoginController {
+public class LoginController implements Initializable {
     @FXML
     public Text loginStatus;
     @FXML
     public PasswordField passwordField;
     @FXML
     public TextField usernameField;
+    @FXML
+    public Button minimize;
+    @FXML
+    public Button maximize;
+    @FXML
+    public Button close;
+    @FXML
+    public ImageView drag;
+    private double xOffset = 0;
+    private double yOffset = 0;
+    @Setter
+    public boolean maximized = false;
     private final Logger logger = LogManager.getLogger(this.getClass());
+    @Getter
     private final Stage window;
     @Getter
     private final ClientSide clientSide;
@@ -80,14 +100,12 @@ public class LoginController {
 
     @FXML
     public void signUpOnAction(ActionEvent actionEvent) throws IOException {
-        registerController = new RegisterController(this, messageSender);
+        registerController = new RegisterController(this, messageSender, window);
         FXMLLoader loader = new FXMLLoader(Application.class.getResource("/fxml/registerScene.fxml"));
         loader.setController(registerController);
         Parent registerScene = loader.load();
-        Scene scene = new Scene(registerScene);
-        window.setScene(scene);
         logger.info("Set scene to registerScene");
-        window.show();
+        getWindow().getScene().setRoot(registerScene);
         logger.info("Show window of app");
     }
 
@@ -95,10 +113,8 @@ public class LoginController {
         FXMLLoader loader = new FXMLLoader(Application.class.getResource("/fxml/loginScene.fxml"));
         loader.setController(loginController);
         Parent loginScene = loader.load();
-        Scene scene = new Scene(loginScene);
-        window.setScene(scene);
         logger.info("Set scene to loginScene");
-        window.show();
+        getWindow().getScene().setRoot(loginScene);
         logger.info("Show window of app");
     }
 
@@ -108,10 +124,46 @@ public class LoginController {
         FXMLLoader loader = new FXMLLoader(Application.class.getResource("/fxml/chatScene.fxml"));
         loader.setController(chatController);
         Parent chatScene = loader.load();
-        Scene scene = new Scene(chatScene);
-        window.setScene(scene);
         logger.info("Set scene to chatScene");
-        window.show();
+        getWindow().getScene().setRoot(chatScene);
         logger.info("Show window of app");
+    }
+
+    @FXML
+    public void minimizeOnAction(ActionEvent actionEvent) {
+        Stage stage = (Stage) minimize.getScene().getWindow();
+        stage.setIconified(true);
+    }
+
+    @FXML
+    public void maximizeOnAction(ActionEvent actionEvent) {
+        Stage stage = (Stage) maximize.getScene().getWindow();
+        if (stage.isMaximized()) {
+            stage.setMaximized(false);
+            setMaximized(false);
+        }
+        else {
+            stage.setMaximized(true);
+            setMaximized(true);
+        }
+    }
+
+    @FXML
+    public void closeOnAction(ActionEvent actionEvent) {
+        Stage stage = (Stage) close.getScene().getWindow();
+        stage.close();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        drag.setOnMousePressed(event -> {
+            xOffset = window.getX() - event.getScreenX();
+            yOffset = window.getY() - event.getScreenY();
+        });
+
+        drag.setOnMouseDragged(event -> {
+            window.setX(event.getScreenX() + xOffset);
+            window.setY(event.getScreenY() + yOffset);
+        });
     }
 }

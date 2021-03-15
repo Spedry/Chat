@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
-  <headerType>gui</headerType>
+  <headerType>console</headerType>
   <jar>Y:\Java\Chat\out\artifacts\Server_jar\Server.jar</jar>
-  <outfile>Y:\Java\Chat\server.exe</outfile>
+  <outfile>Y:\Java\Chat\out\artifacts\Server\Server.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
@@ -14,9 +14,12 @@
   <restartOnCrash>false</restartOnCrash>
   <manifest></manifest>
   <icon></icon>
+  <classPath>
+    <mainClass>server.Server</mainClass>
+  </classPath>
   <jre>
-    <path>C:\Program Files\Java\jdk-13.0.2</path>
-    <bundledJre64Bit>true</bundledJre64Bit>
+    <path>jre</path>
+    <bundledJre64Bit>false</bundledJre64Bit>
     <bundledJreAsFallback>false</bundledJreAsFallback>
     <minVersion>13.0.2</minVersion>
     <maxVersion></maxVersion>
